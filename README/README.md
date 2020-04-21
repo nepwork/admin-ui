@@ -1,6 +1,6 @@
 # CARE - COVID-19 App for Relief and Economic Security
 
-This app was developed by the covidsim.team for research, modeling and simulations for mitigation of COVID-19 spread in LDCs and EM/DEs.
+This app is being developed by the covidsim.team for research, modeling and simulations for mitigation of COVID-19 spread in LDCs and EM/DEs.
 
 You can find 
 - the design details in REQUIREMENTS.md.
