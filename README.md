@@ -2,13 +2,24 @@
 
 This app and website is being developed by the covidsim.team for research, modeling and simulations for mitigation of COVID-19 spread in LDCs and EM/DEs.
 
-This repo contains the common modules and core setup for the user interface and dashboards for our COVID-19 models and simulation.
+This repo contains 4 major modules
 
-We are using Angular 9.1 (thus Typescript 3.8, RxJS 6.5) with SCSS for the web frontend and Ionic 5 for Android and iOS apps. Shared components will be made into libraries using Nx.
+- first is the scaffolding for our own **website**. this is currently on hold because Google Sites is currently enough for our fairly static content. We are using Angular 9.1 (thus Typescript 3.8, RxJS 6.5) with SCSS for the web frontend and Ionic 5 for Android and iOS apps. Shared components will be made into libraries using Nx. This will be placed under ***covidsim.team*** when we move away from Google Sites, possibly due to need for dynamic and interactive components/content.
 
-Please check the README folder for further information regarding the app, requirements, build process and contribution guidelines.
+- second is the **dashboard** folder which I started today. this is going to see the most contribution activity and is the most urgently needed deliverable. The main focus of this will be the interactive map of Nepal with hotspots and other embedded stats. It also has the foundation needed for different kinds of charts and graphs. It uses Angular 9+ & Typescript
+Bootstrap 4+ & SCSS. This will be placed under ***dashboard.covidsim.team***
+
+- third is the serverless **functions** folder within the dashboard folder. This is our light backend for the dashboard. unify-core has a more involved python backend, which will be supplemented with a Java/Scala middleware soon. I will explain why we have 3 of these backend projects in authorea. These cloud functions are responsible for enriching our dashboards with its contents. The python setup will be for Apache Spark jobs. The Java/Scala setup will sit closer to neo4j and the ELK stack for search, logging and monitoring tools. The end points from these will be accessible for authenticated and/or authorized clients and users from ***api.covidsim.team***
+
+- fourth is the **ion** folder which contains our ionic/angular based apps and has subfolders for android, ios and a PWA. It uses Ionic 5. This will be accessible from play store, app store and ***app.covidsim.team***
+
+The app, the website and the dashboard might have shared components and libraries. These will be put in a common 5th folder **lib**.
+
+Please check the README folder for further information regarding the app, requirements, build process and contribution guidelines. Each of the above 4 may have their own additional README files too.
 
 __________________________________________________
+
+# Development flow for the website
 
 ## Development server
 
