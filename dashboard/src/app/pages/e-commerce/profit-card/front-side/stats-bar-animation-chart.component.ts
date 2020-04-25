@@ -57,7 +57,7 @@ export class StatsBarAnimationChartComponent implements AfterViewInit, OnDestroy
         bottom: 0,
       },
       legend: {
-        data: ['transactions', 'orders'],
+        data: ['Positive', 'Negative'],
         borderWidth: 0,
         borderRadius: 0,
         itemWidth: 15,
