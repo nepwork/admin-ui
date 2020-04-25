@@ -21,7 +21,7 @@ export class LeafletComponent {
     layers: [
       L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' }),
     ],
-    zoom: 5,
-    center: L.latLng({ lat: 38.991709, lng: -76.886109 }),
+    zoom: 7,
+    center: L.latLng({ lat: 27.700769, lng: 85.300140 }),
   };
 }

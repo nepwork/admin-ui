@@ -21,19 +21,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       value: 'default',
       name: 'Light',
+      icon: 'bulb-outline',
     },
     {
       value: 'dark',
       name: 'Dark',
+      icon: 'moon-outline',
     },
-    {
-      value: 'cosmic',
-      name: 'Cosmic',
-    },
-    {
-      value: 'corporate',
-      name: 'Corporate',
-    },
+    // {
+    //   value: 'cosmic',
+    //   name: 'Cosmic',
+    // },
+    // {
+    //   value: 'corporate',
+    //   name: 'Corporate',
+    // },
   ];
 
   currentTheme = 'default';

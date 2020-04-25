@@ -45,11 +45,11 @@ export class ECommerceVisitorsAnalyticsComponent implements OnDestroy {
     this.chartLegend = [
       {
         iconColor: visitorsLegend.firstIcon,
-        title: 'Unique Visitors',
+        title: 'Land Borders',
       },
       {
         iconColor: visitorsLegend.secondIcon,
-        title: 'Page Views',
+        title: 'Return Flights',
       },
     ];
   }
