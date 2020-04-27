@@ -6,6 +6,8 @@ import { FormInputsComponent } from './form-inputs/form-inputs.component';
 import { FormLayoutsComponent } from './form-layouts/form-layouts.component';
 import { DatepickerComponent } from './datepicker/datepicker.component';
 import { ButtonsComponent } from './buttons/buttons.component';
+import { FormLaboratoriesComponent } from './form-laboratories/form-laboratories.component';
+import { FormMunicipalityComponent } from './form-municipality/form-municipality.component';
 
 const routes: Routes = [
   {
@@ -21,8 +23,12 @@ const routes: Routes = [
         component: FormLayoutsComponent,
       },
       {
-        path: 'layouts',
-        component: FormLayoutsComponent,
+        path: 'laboratory',
+        component: FormLaboratoriesComponent,
+      },
+      {
+        path: 'municipality',
+        component: FormMunicipalityComponent,
       },
       {
         path: 'buttons',

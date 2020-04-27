@@ -58,9 +58,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/tables/smart-table',
       },
       {
-        title: 'Hierarchical Data',
-        link: '/pages/tables/tree-grid',
+        title: 'Municipality Form',
+        link: '/pages/forms/municipality',
       },
+      // {
+      //   title: 'Laboratory Form',
+      //   link: '/pages/forms/laboratory',
+      // },
+      // {
+      //   title: 'Hierarchical Data',
+      //   link: '/pages/tables/tree-grid',
+      // },
     ],
   },
   // {
