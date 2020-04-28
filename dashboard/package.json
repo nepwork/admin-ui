@@ -4,10 +4,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/akveo/ngx-admin.git"
+    "url": "git+https://github.com/covidsimteam/ui-core.git"
   },
   "bugs": {
-    "url": "https://github.com/akveo/ngx-admin/issues"
+    "url": "https://github.com/covidsimteam/ui-core/issues"
   },
   "scripts": {
     "ng": "ng",
