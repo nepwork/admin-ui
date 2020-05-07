@@ -1,13 +1,12 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { FeatureCollection } from '../models/geojson/feature-collection.model';
+import { Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WardsService {
 
-  private allWards: FeatureCollection;
+  // private allWards: FeatureCollection;
 
   constructor(private http: HttpClient) { }
 

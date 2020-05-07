@@ -1,5 +1,5 @@
-import { Database, Doc, ExistingDoc } from './domain.model';
 import { EventEmitter } from '@angular/core';
+import { Doc, ExistingDoc } from './domain.model';
 
 export interface DBService {
   instantiate(): any;

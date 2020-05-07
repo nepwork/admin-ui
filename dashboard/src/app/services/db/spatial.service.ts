@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-
+import { EventEmitter, Injectable } from '@angular/core';
 import { DBService } from '../../models/db.service.model';
-import { Database, Doc, ExistingDoc } from '../../models/domain.model';
-import { EventEmitter } from '@angular/core';
+import { Database } from '../../models/domain.model';
 import { PouchDBService } from './pouchdb.service';
+
 
 @Injectable({
   providedIn: 'root',
