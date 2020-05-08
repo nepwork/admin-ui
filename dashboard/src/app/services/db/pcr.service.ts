@@ -10,7 +10,9 @@ import { PouchDBService } from './pouchdb.service';
 })
 export class PcrService implements DBService {
 
-  constructor(private dbService: PouchDBService) { }
+  constructor(private dbService: PouchDBService) {
+    this.instantiate();
+  }
 
   instantiate() {
     this.dbService.instantiate(Database.pcr_tests);

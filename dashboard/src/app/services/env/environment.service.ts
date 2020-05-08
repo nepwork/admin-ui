@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
+import { AppConf } from '../../../environments/environment';
 
-// TODO
 
 @Injectable({
   providedIn: 'root',
 })
 export class EnvironmentService {
 
-  constructor() { }
+  constructor(private appConf: AppConf) { }
 
-  get authUri(): String { return 'http://mockhost'; }
-
-  get dbUri(): string { return 'http://mockhost'; }
+  get dbUri(): string { return this.appConf.conf.docDBUri; }
 }
