@@ -4,21 +4,22 @@
   <meta charset="utf-8">
   <title>COVSIMTEAM - NEPAL Dashboard</title>
 
+<!-- firebase is being disabled as we will be hosting this elsewhere for now -->
     <!-- update the version number as needed -->
-    <script defer src="/__/firebase/7.14.1/firebase-app.js"></script>
+    <!-- <script defer src="/__/firebase/7.14.1/firebase-app.js"></script> -->
     <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/7.14.1/firebase-auth.js"></script>
+    <!-- <script defer src="/__/firebase/7.14.1/firebase-auth.js"></script>
     <script defer src="/__/firebase/7.14.1/firebase-database.js"></script>
     <script defer src="/__/firebase/7.14.1/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/7.14.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/7.14.1/firebase-storage.js"></script> -->
 
-    <script defer src="/__/firebase/7.14.1/firebase-analytics.js"></script>
+    <!-- <script defer src="/__/firebase/7.14.1/firebase-analytics.js"></script> -->
 
     <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+    <!-- <script defer src="/__/firebase/init.js"></script> -->
 
     <!-- initialize firebase with project config -->
-    <script defer src="./firebase.conf.js"></script>
+    <!-- <script defer src="./firebase.conf.js"></script> -->
 
   <base href="/">
 
@@ -26,6 +27,7 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpVhQiwAllg1RAFaxMWSpQruuGARy0Y1k&libraries=places"></script>
+  <script> window.global = window.global || window; </script>
 </head>
 <body>
   <ngx-app>Loading...</ngx-app>
@@ -39,6 +41,7 @@
     <div class="blob blob-4"></div>
     <div class="blob blob-5"></div>
   </div>
+  <span style="text-align: center; color:rgb(255, 228, 32)">Initiating Secured Connection...</span>
 
 </body>
 </html>
