@@ -9,7 +9,7 @@ export class LoggingService {
 
   constructor() { }
 
-  public error(err: string) {
+  error(err: string) {
     console.error(JSON.stringify(err));
   }
 }
