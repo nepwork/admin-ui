@@ -10,35 +10,37 @@ import { PouchDBService } from './pouchdb.service';
 })
 export class RdtService implements DBService {
 
+  private rdtDB = Database.rdt_tests;
+
   constructor(private dbService: PouchDBService) {
     this.instantiate();
   }
 
   instantiate() {
-    this.dbService.instantiate(Database.rdt_tests);
+    this.dbService.instantiate(this.rdtDB);
   }
 
   remoteSync(): EventEmitter<any> {
-    return this.dbService.remoteSync(Database.rdt_tests);
+    return this.dbService.remoteSync(this.rdtDB);
   }
 
   getChangeListener(): EventEmitter<any> {
-    return this.dbService.getChangeListener(Database.rdt_tests);
+    return this.dbService.getChangeListener(this.rdtDB);
   }
 
   get(id: string): Promise<any> {
-    return this.dbService.get(Database.rdt_tests, id);
+    return this.dbService.get(this.rdtDB, id);
   }
 
   create(doc: Doc): Promise<any> {
-    return this.dbService.create(Database.rdt_tests, doc);
+    return this.dbService.create(this.rdtDB, doc);
   }
 
   update(doc: ExistingDoc): Promise<any> {
-    return this.dbService.update(Database.rdt_tests, doc);
+    return this.dbService.update(this.rdtDB, doc);
   }
 
   delete(doc: ExistingDoc): Promise<any> {
-    return this.dbService.delete(Database.rdt_tests, doc);
+    return this.dbService.delete(this.rdtDB, doc);
   }
 }

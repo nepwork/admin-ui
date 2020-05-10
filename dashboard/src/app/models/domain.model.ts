@@ -14,6 +14,7 @@ export enum Database {
   spatial = 'nepal_spatial',
   pcr_tests = 'pcr_tests',
   rdt_tests = 'rdt_tests',
+  audit = 'usage_audit',
 }
 
 export interface ExistingDoc {

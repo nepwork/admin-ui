@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CovidsimteamService } from './covidsimteam.service';
+import { CovidSimTeamService } from './covidsimteam.service';
 
-describe('CovidsimteamService', () => {
-  let service: CovidsimteamService;
+describe('CovidSimTeamService', () => {
+  let service: CovidSimTeamService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CovidsimteamService);
+    service = TestBed.inject(CovidSimTeamService);
   });
 
   it('should be created', () => {

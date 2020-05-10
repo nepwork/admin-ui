@@ -10,16 +10,12 @@ import { LoggingService } from '../logging.service';
 })
 export class PouchDBService {
 
-  private databases: DBList;
+  private databases: DBList = {};
 
   constructor(private environment: EnvironmentService, private logger: LoggingService) {
-    this.databases = {
-      covidsimteam: { name: Database.covidsimteam, listener: new EventEmitter() },
-      returnees: { name: Database.returnees, listener: new EventEmitter() },
-      spatial: { name: Database.spatial, listener: new EventEmitter() },
-      pcr_tests: { name: Database.pcr_tests, listener: new EventEmitter() },
-      rdt_tests: { name: Database.rdt_tests, listener: new EventEmitter() },
-    };
+    Object.values(Database).forEach(dbName => {
+      this.databases[dbName] = { name: dbName, listener: new EventEmitter() };
+    });
   }
 
   public instantiate(dbName: Database) {

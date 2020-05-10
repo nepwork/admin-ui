@@ -8,37 +8,39 @@ import { PouchDBService } from './pouchdb.service';
 @Injectable({
   providedIn: 'root',
 })
-export class CovidsimteamService implements DBService {
+export class CovidSimTeamService implements DBService {
+
+  private teamDB = Database.covidsimteam;
 
   constructor(private dbService: PouchDBService) {
     this.instantiate();
   }
 
   instantiate() {
-    this.dbService.instantiate(Database.pcr_tests);
+    this.dbService.instantiate(this.teamDB);
   }
 
   remoteSync(): EventEmitter<any> {
-    return this.dbService.remoteSync(Database.pcr_tests);
+    return this.dbService.remoteSync(this.teamDB);
   }
 
   getChangeListener(): EventEmitter<any> {
-    return this.dbService.getChangeListener(Database.pcr_tests);
+    return this.dbService.getChangeListener(this.teamDB);
   }
 
   get(id: string): Promise<any> {
-    return this.dbService.get(Database.pcr_tests, id);
+    return this.dbService.get(this.teamDB, id);
   }
 
   create(doc: Doc): Promise<any> {
-    return this.dbService.create(Database.pcr_tests, doc);
+    return this.dbService.create(this.teamDB, doc);
   }
 
   update(doc: ExistingDoc): Promise<any> {
-    return this.dbService.update(Database.pcr_tests, doc);
+    return this.dbService.update(this.teamDB, doc);
   }
 
   delete(doc: ExistingDoc): Promise<any> {
-    return this.dbService.delete(Database.pcr_tests, doc);
+    return this.dbService.delete(this.teamDB, doc);
   }
 }
