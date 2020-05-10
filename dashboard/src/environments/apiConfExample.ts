@@ -8,11 +8,3 @@ export const appUris = {
   docDBUser: 'user',
   docDBPassword: 'pass',
 };
-
-export interface Conf {
-  dashboardUri: string;
-  docDBUri: string;
-  docDBUser: string;
-  docDBPassword: string;
-}
-

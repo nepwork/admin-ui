@@ -8,18 +8,22 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 // Create apiConf.ts based on apiConfExample.ts if you reached here after a build error, likely in a freshly cloned repo
-import { Conf, appUris } from './apiConf';
+import { appUris } from './apiConf';
+import { DBConf, UriConf } from './env.types';
 
 export const environment = {
   production: false,
 };
 
 export class AppConf {
-  public conf: Conf;
+
+  public uri: UriConf;
+  public db: DBConf;
+
   constructor() {
-    this.conf.dashboardUri = appUris.prodDashboard;
-    this.conf.docDBUri = appUris.prodDocDB;
-    this.conf.docDBUser = appUris.docDBUser;
-    this.conf.docDBPassword = appUris.docDBPassword;
+    this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB };
+    this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
   }
 }
+
+export const appConf = new AppConf();

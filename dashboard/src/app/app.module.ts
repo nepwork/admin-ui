@@ -20,6 +20,7 @@ import {
   NbToastrModule,
   NbWindowModule,
 } from '@nebular/theme';
+import { AppConf, appConf } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -41,6 +42,7 @@ import {
     ThemeModule.forRoot(),
   ],
   bootstrap: [AppComponent],
+  providers: [{ provide: AppConf, useValue: appConf }],
 })
 export class AppModule {
 }
