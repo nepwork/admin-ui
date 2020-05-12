@@ -21,7 +21,7 @@ export class AppConf {
   public db: DBConf;
 
   constructor() {
-    this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB };
+    this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB, proxyUri: appUris.devProxy };
     this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
   }
 }
