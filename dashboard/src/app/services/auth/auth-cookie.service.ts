@@ -23,7 +23,6 @@ export class AuthCookieService {
     delete doc._id;
     try {
       const created = await this.dbService.create(this.auditDB, doc);
-      console.log('AuthCookieService -> created', created);
       const { _id } = created;
       this.currentCookieId = _id;
     } catch (error) {
