@@ -29,11 +29,17 @@ export class PouchDBService {
 
   public remoteSync(dbName: Database): EventEmitter<any> {
     const dbMeta = this.databases[dbName];
+
     const remoteDB = new PouchDB(`${this.environment.dbUri}/${dbName}`);
     const localDB = dbMeta.instance ? dbMeta.instance : this.instantiate(dbName);
+
+    const emitOnChange = (change: any) => dbMeta.listener.emit(change);
+
     localDB.sync(remoteDB, { live: true })
-          .on('change', (change: any) => { dbMeta.listener.emit(change); })
-          .on('error', (err: any) => { this.logger.error(err); });
+          .on('change', emitOnChange)
+          .on('complete', emitOnChange)
+          .on('error', (err: any) => this.logger.error(err));
+
     return dbMeta.listener;
   }
 
