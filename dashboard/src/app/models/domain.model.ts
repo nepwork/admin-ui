@@ -24,3 +24,9 @@ export interface ExistingDoc {
 }
 
 export type Doc = Partial<ExistingDoc>;
+
+export enum CurrentUser {
+  isLoggedIn = 'isLoggedIn',
+  name = 'username',
+  pass = 'password',
+}

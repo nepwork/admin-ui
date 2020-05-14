@@ -1,0 +1,81 @@
+<h1 id="title" class="title">Login</h1>
+<p class="sub-title">Hello! Log in with your email.</p>
+
+<nb-alert *ngIf="showMessages.error && !submitted" outline="danger" role="alert">
+  <p class="alert-title"><b>Login Failed</b></p>
+  <ul class="alert-message-list">
+    <li class="alert-message">{{ showMessages.error }}</li>
+  </ul>
+</nb-alert>
+
+<nb-alert *ngIf="showMessages.success && !submitted" outline="success" role="alert">
+  <p class="alert-title"><b>Login Succeeded</b></p>
+  <ul class="alert-message-list">
+    <li class="alert-message">{{ showMessages.success }}</li>
+  </ul>
+</nb-alert>
+
+<form [formGroup]="loginForm" (submit)="login()" aria-labelledby="title">
+
+  <div class="form-control-group">
+    <label class="label" for="input-username">Username:</label>
+    <input nbInput
+           fullWidth
+           formControlName="username"
+           name="username"
+           id="input-username"
+           pattern=".+@.+\..+"
+           placeholder="Username"
+           fieldSize="large"
+           autofocus
+           [status]="f.username.dirty ? (f.username.invalid  ? 'danger' : 'success') : 'basic'"
+           [required]="getConfigValue('forms.validation.username.required')"
+           [attr.aria-invalid]="f.username.invalid && f.username.touched ? true : null">
+    <ng-container *ngIf="f.username.invalid && f.username.touched">
+      <p class="caption status-danger" *ngIf="f.username.errors?.required">
+        Username is required
+      </p>
+    </ng-container>
+  </div>
+
+  <div class="form-control-group">
+    <span class="label-with-link">
+      <label class="label" for="input-password">Password:</label>
+      <a class="forgot-password caption-2" routerLink="../request-password">Forgot Password?</a>
+    </span>
+    <input nbInput
+           fullWidth
+           formControlName="password"
+           name="password"
+           type="password"
+           id="input-password"
+           placeholder="Password"
+           fieldSize="large"
+           [status]="f.password.dirty ? (f.password.invalid  ? 'danger' : 'success') : 'basic'"
+           [required]="true"
+           [minlength]="6"
+           [maxlength]="36"
+           [attr.aria-invalid]="f.password.invalid && f.password.touched ? true : null">
+    <ng-container *ngIf="f.password.invalid && f.password.touched ">
+      <p class="caption status-danger" *ngIf="f.password.errors?.required">
+        Password is required.
+      </p>
+      <p class="caption status-danger" *ngIf="f.password.errors?.minlength || f.password.errors?.maxlength">
+        Password should contain more than 6 characters.
+      </p>
+    </ng-container>
+  </div>
+
+  <button nbButton
+          fullWidth
+          status="primary"
+          size="large"
+          [disabled]="submitted || !loginForm.valid"
+          [class.btn-pulse]="submitted">
+    Log In
+  </button>
+</form>
+
+<section class="another-action" aria-label="Register">
+  Don't have an account? <a class="text-link" routerLink="../register">Register</a>
+</section>
