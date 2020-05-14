@@ -1,7 +1,7 @@
 export interface UriConf {
   dashboardUri: string;
   docDBUri: string;
-  proxyUri: string;
+  proxyUri?: string;
 }
 
 export interface DBConf {

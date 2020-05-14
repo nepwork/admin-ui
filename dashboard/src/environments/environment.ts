@@ -18,11 +18,12 @@ export const environment = {
 export class AppConf {
 
   public uri: UriConf;
-  public db: DBConf;
+  // public db: DBConf; // disabled per user db feature of couchdb
 
   constructor() {
-    this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB, proxyUri: appUris.devProxy };
-    this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
+    this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB};
+    // proxyUri: appUris.devProxy
+    // this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
   }
 }
 

@@ -11,9 +11,7 @@ export class EnvironmentService {
 
   get dbUri(): string { return this.appConf.uri.docDBUri; }
 
-  get authUri(): string { return `${this.appConf.uri.proxyUri}auth/`; } // auth/realms/dev/protocol/openid-connect/token
+  get authUri(): string { return `${this.appConf.uri.docDBUri}_session`; }
+  // auth/realms/dev/protocol/openid-connect/token
 
-  get dashboardUser(): string { return this.appConf.db.docDBUser; }
-
-  get dashboardPassword(): string { return this.appConf.db.docDBPassword; }
 }
