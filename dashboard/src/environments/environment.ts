@@ -9,7 +9,7 @@
 
 // Create apiConf.ts based on apiConfExample.ts if you reached here after a build error, likely in a freshly cloned repo
 import { appUris } from './apiConf';
-import { DBConf, UriConf } from './env.types';
+import { UriConf } from './env.types';
 
 export const environment = {
   production: false,

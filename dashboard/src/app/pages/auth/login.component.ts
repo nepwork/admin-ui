@@ -48,7 +48,6 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe((response: BasicAuth.Response) => {
         if (BasicAuth.isSuccess(response)) {
-          console.log('LoginComponent -> login -> response', response);
           this.router.navigate([this.returnUrl]);
         } else {
           this.showMessages.error = response.error;
