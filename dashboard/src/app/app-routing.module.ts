@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './services/guards/auth.guard';
-
+// TODO: Investigate all routes and authguard
 export const routes: Routes = [
   {
     path: 'dashboard',
