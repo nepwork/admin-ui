@@ -1,11 +1,9 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './services/guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'dashboard',
-    canActivate: [AuthGuard],
+    path: 'hub',
     loadChildren: () => import('./pages/pages.module')
       .then(m => m.PagesModule),
   },
@@ -14,8 +12,8 @@ export const routes: Routes = [
     loadChildren: () => import('./pages/auth/login.module')
       .then(m => m.LoginModule),
   },
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: 'dashboard' },
+  { path: '', redirectTo: 'hub', pathMatch: 'full' },
+  { path: '**', redirectTo: 'hub' },
 ];
 
 const config: ExtraOptions = {

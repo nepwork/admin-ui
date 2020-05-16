@@ -5,6 +5,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import { AuthGuard } from '../services/guards/auth.guard';
 
 const routes: Routes = [{
   path: '',
@@ -24,7 +25,8 @@ const routes: Routes = [{
         .then(m => m.LayoutModule),
     },
     {
-      path: 'forms',
+      path: 'secured/forms',
+      canActivate: [AuthGuard],
       loadChildren: () => import('./forms/forms.module')
         .then(m => m.FormsModule),
     },
@@ -54,7 +56,8 @@ const routes: Routes = [{
         .then(m => m.ChartsModule),
     },
     {
-      path: 'editors',
+      path: 'secured/editors',
+      canActivate: [AuthGuard],
       loadChildren: () => import('./editors/editors.module')
         .then(m => m.EditorsModule),
     },
@@ -70,7 +73,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: 'home',
       pathMatch: 'full',
     },
     {
