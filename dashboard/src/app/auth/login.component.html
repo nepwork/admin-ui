@@ -1,5 +1,5 @@
 <h1 id="title" class="title">Login</h1>
-<p class="sub-title">Hello! Log in with your email.</p>
+<p class="sub-title">Please log in to access data entry pages.</p>
 
 <nb-alert *ngIf="showMessages.error && !submitted" outline="danger" role="alert">
   <p class="alert-title"><b>Login Failed</b></p>
@@ -24,7 +24,6 @@
            formControlName="username"
            name="username"
            id="input-username"
-           pattern=".+@.+\..+"
            placeholder="Username"
            fieldSize="large"
            autofocus

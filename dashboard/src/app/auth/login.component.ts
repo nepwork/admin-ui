@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { BasicAuth } from '../../models/response.model';
-import { AuthService } from '../../services/auth/auth.service';
+import { BasicAuth } from '../models/response.model';
+import { AuthService } from '../services/auth/auth.service';
 
 @Component({
   selector: 'ngx-login',
@@ -47,8 +47,9 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.f.username.value, this.f.password.value)
       .pipe(first())
       .subscribe((response: BasicAuth.Response) => {
+        console.log("LoginComponent -> login -> response", response);
         if (BasicAuth.isSuccess(response)) {
-          this.router.navigate([this.returnUrl]);
+          this.router.navigateByUrl(this.returnUrl);
         } else {
           this.showMessages.error = response.error;
         }
