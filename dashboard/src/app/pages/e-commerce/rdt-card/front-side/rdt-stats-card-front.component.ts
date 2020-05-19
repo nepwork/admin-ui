@@ -3,11 +3,11 @@ import { ProfitBarAnimationChartData } from '../../../../@core/data/profit-bar-a
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
-  selector: 'ngx-stats-card-front',
-  styleUrls: ['./stats-card-front.component.scss'],
-  templateUrl: './stats-card-front.component.html',
+  selector: 'ngx-rdt-stats-card-front',
+  styleUrls: ['./rdt-stats-card-front.component.scss'],
+  templateUrl: './rdt-stats-card-front.component.html',
 })
-export class StatsCardFrontComponent {
+export class RdtStatsCardFrontComponent {
 
   private alive = true;
 

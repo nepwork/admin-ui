@@ -14,17 +14,14 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { ThemeModule } from '../../@theme/theme.module';
 import { ECommerceComponent } from './e-commerce.component';
-import { ProfitCardComponent } from './profit-card/profit-card.component';
+import { PcrCardComponent } from './pcr-card/pcr-card.component';
 import { ECommerceChartsPanelComponent } from './charts-panel/charts-panel.component';
 import { OrdersChartComponent } from './charts-panel/charts/orders-chart.component';
 import { ProfitChartComponent } from './charts-panel/charts/profit-chart.component';
 import { ChartPanelHeaderComponent } from './charts-panel/chart-panel-header/chart-panel-header.component';
 import { ChartPanelSummaryComponent } from './charts-panel/chart-panel-summary/chart-panel-summary.component';
 import { ChartModule } from 'angular2-chartjs';
-import { StatsCardBackComponent } from './profit-card/back-side/stats-card-back.component';
-import { StatsAreaChartComponent } from './profit-card/back-side/stats-area-chart.component';
-import { StatsBarAnimationChartComponent } from './profit-card/front-side/stats-bar-animation-chart.component';
-import { StatsCardFrontComponent } from './profit-card/front-side/stats-card-front.component';
+
 import { TrafficRevealCardComponent } from './traffic-reveal-card/traffic-reveal-card.component';
 import { TrafficBarComponent } from './traffic-reveal-card/front-side/traffic-bar/traffic-bar.component';
 import { TrafficFrontCardComponent } from './traffic-reveal-card/front-side/traffic-front-card.component';
@@ -56,6 +53,18 @@ import { EarningPieChartComponent } from './earning-card/back-side/earning-pie-c
 import { EarningCardFrontComponent } from './earning-card/front-side/earning-card-front.component';
 import { EarningLiveUpdateChartComponent } from './earning-card/front-side/earning-live-update-chart.component';
 
+import { RdtCardComponent } from './rdt-card/rdt-card.component';
+
+import { PcrStatsCardBackComponent } from './pcr-card/back-side/pcr-stats-card-back.component';
+import { PcrStatsAreaChartComponent } from './pcr-card/back-side/pcr-stats-area-chart.component';
+import { PcrStatsBarAnimationChartComponent } from './pcr-card/front-side/pcr-stats-bar-animation-chart.component';
+import { PcrStatsCardFrontComponent } from './pcr-card/front-side/pcr-stats-card-front.component';
+
+import { RdtStatsAreaChartComponent } from './rdt-card/back-side/rdt-stats-area-chart.component';
+import { RdtStatsBarAnimationChartComponent } from './rdt-card/front-side/rdt-stats-bar-animation-chart.component';
+import { RdtStatsCardFrontComponent } from './rdt-card/front-side/rdt-stats-card-front.component';
+import { RdtStatsCardBackComponent } from './rdt-card/back-side/rdt-stats-card-back.component';
+
 @NgModule({
   imports: [
     ThemeModule,
@@ -74,16 +83,12 @@ import { EarningLiveUpdateChartComponent } from './earning-card/front-side/earni
   ],
   declarations: [
     ECommerceComponent,
-    StatsCardFrontComponent,
-    StatsAreaChartComponent,
-    StatsBarAnimationChartComponent,
-    ProfitCardComponent,
     ECommerceChartsPanelComponent,
     ChartPanelHeaderComponent,
     ChartPanelSummaryComponent,
     OrdersChartComponent,
     ProfitChartComponent,
-    StatsCardBackComponent,
+    PcrStatsCardBackComponent,
     TrafficRevealCardComponent,
     TrafficBarChartComponent,
     TrafficFrontCardComponent,
@@ -105,6 +110,17 @@ import { EarningLiveUpdateChartComponent } from './earning-card/front-side/earni
     EarningCardBackComponent,
     EarningPieChartComponent,
     EarningLiveUpdateChartComponent,
+
+    RdtCardComponent,
+    RdtStatsAreaChartComponent,
+    RdtStatsCardFrontComponent,
+    RdtStatsCardBackComponent,
+    RdtStatsBarAnimationChartComponent,
+// TODO consider using the same component with different inputs or using a higher order component for RDTs and PCRs
+    PcrCardComponent,
+    PcrStatsCardFrontComponent,
+    PcrStatsAreaChartComponent,
+    PcrStatsBarAnimationChartComponent,
   ],
   providers: [
     CountryOrdersMapService,

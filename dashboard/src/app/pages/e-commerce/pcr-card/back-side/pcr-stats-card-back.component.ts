@@ -4,10 +4,10 @@ import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-stats-card-back',
-  styleUrls: ['./stats-card-back.component.scss'],
-  templateUrl: './stats-card-back.component.html',
+  styleUrls: ['./pcr-stats-card-back.component.scss'],
+  templateUrl: './pcr-stats-card-back.component.html',
 })
-export class StatsCardBackComponent implements OnDestroy {
+export class PcrStatsCardBackComponent implements OnDestroy {
 
   private alive = true;
 
