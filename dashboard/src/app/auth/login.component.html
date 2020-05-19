@@ -28,7 +28,7 @@
            fieldSize="large"
            autofocus
            [status]="f.username.dirty ? (f.username.invalid  ? 'danger' : 'success') : 'basic'"
-           [required]="getConfigValue('forms.validation.username.required')"
+           [required]="true"
            [attr.aria-invalid]="f.username.invalid && f.username.touched ? true : null">
     <ng-container *ngIf="f.username.invalid && f.username.touched">
       <p class="caption status-danger" *ngIf="f.username.errors?.required">

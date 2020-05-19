@@ -55,6 +55,4 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  getConfigValue(key: string): any {}
-
-  }
+}
