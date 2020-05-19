@@ -5,7 +5,7 @@ import { LayoutService } from '../../../../@core/utils';
 
 @Component({
   selector: 'ngx-stats-ares-chart',
-  styleUrls: ['pcr-stats-card-back.component.scss'],
+  styleUrls: ['test-stats-card-back.component.scss'],
   template: `
     <div echarts [options]="option"
          class="echart"

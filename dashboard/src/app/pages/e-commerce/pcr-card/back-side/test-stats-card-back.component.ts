@@ -1,16 +1,16 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Input } from '@angular/core';
 import { StatsBarData } from '../../../../@core/data/stats-bar';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'ngx-stats-card-back',
-  styleUrls: ['./pcr-stats-card-back.component.scss'],
-  templateUrl: './pcr-stats-card-back.component.html',
+  styleUrls: ['./test-stats-card-back.component.scss'],
+  templateUrl: './test-stats-card-back.component.html',
 })
-export class PcrStatsCardBackComponent implements OnDestroy {
+export class TestStatsCardBackComponent implements OnDestroy {
 
   private alive = true;
-
+  @Input() testName: string;
   chartData: number[];
 
   constructor(private statsBarData: StatsBarData) {

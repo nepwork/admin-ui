@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProfitBarAnimationChartData } from '../../../../@core/data/profit-bar-animation-chart';
 import { takeWhile } from 'rxjs/operators';
 
 @Component({
-  selector: 'ngx-rdt-stats-card-front',
-  styleUrls: ['./rdt-stats-card-front.component.scss'],
-  templateUrl: './rdt-stats-card-front.component.html',
+  selector: 'ngx-stats-card-front',
+  styleUrls: ['./test-stats-card-front.component.scss'],
+  templateUrl: './test-stats-card-front.component.html',
 })
-export class RdtStatsCardFrontComponent {
+export class TestStatsCardFrontComponent {
 
   private alive = true;
+  @Input() testName: string;
 
   linesData: { firstLine: number[]; secondLine: number[] };
 

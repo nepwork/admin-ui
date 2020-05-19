@@ -1,5 +1,5 @@
 <nb-card-header>
-  <span class="title">Positives</span>
+  <span class="title">{{ testName }} Positives</span>
 </nb-card-header>
 <nb-card-body>
   <div class="info">
@@ -16,5 +16,5 @@
       </div>
     </div>
   </div>
-  <ngx-rdt-stats-area-chart [points]="chartData"></ngx-rdt-stats-area-chart>
+  <ngx-stats-ares-chart [points]="chartData"></ngx-stats-ares-chart>
 </nb-card-body>
