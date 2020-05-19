@@ -8,11 +8,20 @@ import { BubbleMapComponent } from './bubble/bubble-map.component';
 import { SearchMapComponent } from './search-map/search-map.component';
 import { MapComponent } from './search-map/map/map.component';
 import { SearchComponent } from './search-map/search/search.component';
+import { RegionComponent } from './region/region.component';
 
 const routes: Routes = [{
   path: '',
   component: MapsComponent,
   children: [{
+    path: 'area/:name',
+    component: RegionComponent,
+  },
+  {
+    path: 'area/:name/:type',
+    component: RegionComponent,
+  },
+  {
     path: 'gmaps',
     component: GmapsComponent,
   }, {
@@ -41,4 +50,5 @@ export const routedComponents = [
   SearchMapComponent,
   MapComponent,
   SearchComponent,
+  RegionComponent,
 ];
