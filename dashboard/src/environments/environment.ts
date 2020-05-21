@@ -9,7 +9,7 @@
 
 // Create apiConf.ts based on apiConfExample.ts if you reached here after a build error, likely in a freshly cloned repo
 import { appUris } from './apiConf';
-import { UriConf } from './env.types';
+import { UriConf, DBConf } from './env.types';
 
 export const environment = {
   production: false,
@@ -18,12 +18,12 @@ export const environment = {
 export class AppConf {
 
   public uri: UriConf;
-  // public db: DBConf; // disabled per user db feature of couchdb
+  public db: DBConf; // TODO add restricted authorization for role public before using this on prod
 
   constructor() {
     this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB};
     // proxyUri: appUris.devProxy
-    // this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
+    this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
   }
 }
 
