@@ -4,6 +4,10 @@
     <div leaflet
       [leafletOptions]="options"
       (leafletMapReady)="onMapReady($event)"
+      leafletFullscreen
+      (leafletFullscreenEntered)="fullscreenEntered()"
+      (leafletFullscreenExited)="fullscreenExited()"
+      (leafletFullscreenReady)="fullscreenControlReady()"
     >
     </div>
   </nb-card-body>

@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import * as L from 'leaflet';
 import { Subject, Subscription } from 'rxjs';
-import { RegionService } from '../../../services/map/region.service';
+import { RegionService } from '../../../services/components/map/region.service';
 
 @Component({
   selector: 'ngx-region',
@@ -49,6 +49,19 @@ export class RegionComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+
+  fullscreenEntered() {
+    // console.log('Fullscreen mode entered !');
+  }
+
+  fullscreenExited() {
+    // console.log('Fullscreen mode exited !');
+  }
+
+  fullscreenControlReady() {
+    // console.log('Fullscreen control ready !');
+  }
+
 
   // baseLayers = {
   //   center: [27.700769, 85.30014],
