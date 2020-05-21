@@ -5,13 +5,15 @@ import { NbCardModule } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { ThemeModule } from '../../@theme/theme.module';
 import { MapsRoutingModule, routedComponents } from './maps-routing.module';
+import { LeafletFullscreenModule } from '../../lib/leaflet-fullscreen/public-api';
 
 
 @NgModule({
   imports: [
     ThemeModule,
     GoogleMapsModule,
-    LeafletModule.forRoot(),
+    LeafletModule,
+    LeafletFullscreenModule,
     MapsRoutingModule,
     NgxEchartsModule,
     NbCardModule,
