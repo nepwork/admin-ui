@@ -1,6 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, inject } from '@angular/core/testing';
 
 import { RegionComponent } from './region.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { AppConf, appConf } from '../../../../environments/environment';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('RegionComponent', () => {
   let component: RegionComponent;
@@ -8,7 +11,9 @@ describe('RegionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegionComponent ]
+      declarations: [ RegionComponent ],
+      imports: [ RouterTestingModule, HttpClientTestingModule ],
+      providers: [{ provide: AppConf, useValue: appConf }],
     })
     .compileComponents();
   }));
@@ -19,7 +24,7 @@ describe('RegionComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create', inject([AppConf], () => {
     expect(component).toBeTruthy();
-  });
+  }));
 });

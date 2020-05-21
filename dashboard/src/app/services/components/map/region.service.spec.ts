@@ -1,18 +1,18 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { RdtService } from './rdt.service';
+import { RegionService } from './region.service';
+import { AppConf, appConf } from '../../../../environments/environment';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AppConf, appConf } from '../../../environments/environment';
 
-describe('RdtService', () => {
-  let service: RdtService;
+describe('RegionService', () => {
+  let service: RegionService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [{ provide: AppConf, useValue: appConf }],
     });
-    service = TestBed.inject(RdtService);
+    service = TestBed.inject(RegionService);
   });
 
   it('should be created', inject([AppConf], () => {
