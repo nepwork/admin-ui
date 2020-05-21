@@ -29,4 +29,5 @@ export enum CurrentUser {
   isLoggedIn = 'isLoggedIn',
   name = 'username',
   pass = 'password',
+  role = 'role',
 }

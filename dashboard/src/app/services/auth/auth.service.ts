@@ -14,17 +14,33 @@ export class AuthService {
   private isAuthenticated_ = false;
   private user_: string;
   private pass_: string;
+  private role_: string;
 
   constructor(
     private http: HttpClient,
     private environment: EnvironmentService,
     ) { }
 
-  login(username: string, password: string): Observable<BasicAuth.Response> {
-    return this.basicAuthRequest(username, password, true);
+  /**
+   * @param username CouchDB username
+   * @param password CouchDB password
+   * @param role is not used for authorization request to CouchDB.
+   * It is used to decide whether to reuse the credentials
+   * given the Couch user has the role claimed in the login request.
+  */
+  login(username: string, password: string, role: string = 'public'): Observable<BasicAuth.Response> {
+    return this.basicAuthRequest(username, password, role, true);
   }
 
-  basicAuthRequest(username: string, password: string, refreshCredentials: boolean) {
+  /**
+   * @param username CouchDB username
+   * @param password CouchDB password
+   * @param role is not used for authorization request to CouchDB.
+   * It is used to decide whether to reuse the credentials
+   * given the Couch user has the role claimed in the login request.
+   * @param refreshCredentials needs to be set to true to be able to reuse the credentials for future requests
+  */
+  basicAuthRequest(username: string, password: string, role: string, refreshCredentials: boolean = false) {
     const base64AuthString = btoa(`${username}:${password}`);
     return this.http.get<BasicAuth.Response>(this.environment.authUri, {
         headers: {
@@ -32,25 +48,30 @@ export class AuthService {
           Authorization: `Basic ${base64AuthString}`,
         },
       }).pipe(tap(response => {
-        if (refreshCredentials) {
-          this.refreshCurrentUserCredentials(BasicAuth.isSuccess(response), username, password);
+        if (BasicAuth.isSuccess(response)) {
+          const successResponse: BasicAuth.Success = response;
+          const roleIsMatching: boolean = successResponse.userCtx.roles.indexOf(role) !== -1;
+          if (refreshCredentials && roleIsMatching) {
+            this.refreshCurrentUserCredentials(true, username, password, role);
+          }
         }
       }));
   }
 
-  private refreshCurrentUserCredentials(isAuthenticated: boolean, user: string, pass: string) {
+  private refreshCurrentUserCredentials(isAuthenticated: boolean, user: string, pass: string, role: string) {
     if (isAuthenticated) {
-      this.setCredentials(user, pass);
+      this.setCredentials(user, pass, role);
     } else {
       this.removeCredentials();
     }
   }
 
-  private setCredentials(username: string, password: string): void {
+  private setCredentials(username: string, password: string, role: string): void {
     this.user_ = username;
     this.pass_ = password;
     this.isAuthenticated_ = true;
-    Object.entries({ username, password, isLoggedIn: 'true' })
+    this.role_ = role;
+    Object.entries({ username, password, role, isLoggedIn: 'true' })
       .forEach(([key, val]) => localStorage.setItem(key, val));
   }
 
@@ -63,6 +84,11 @@ export class AuthService {
     this.pass_ = null;
     this.isAuthenticated_ = false;
     Object.values(CurrentUser).forEach(localStorage.removeItem);
+  }
+
+  get role(): string {
+    if (this.role_) return this.role_;
+    return localStorage.getItem(CurrentUser.role);
   }
 
   get user(): string {
