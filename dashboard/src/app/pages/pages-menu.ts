@@ -12,11 +12,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'map-outline',
     children: [
       {
-        title: 'Kathmandu: Tests',
+        title: 'Kathmandu: Returnees',
         link: '/hub/maps/area/kathmandu',
       },
       {
-        title: 'Kathmandu: Returnees',
+        title: 'Kathmandu: Tests',
         link: '/hub/maps/area/kathmandu/tests',
       },
       {

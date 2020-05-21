@@ -21,7 +21,7 @@ describe('LeafletFullscreenDirective', async () => {
       ],
       imports: [
         LeafletModule,
-      ]
+      ],
     });
 
     fixture = TestBed.createComponent(TestComponent);

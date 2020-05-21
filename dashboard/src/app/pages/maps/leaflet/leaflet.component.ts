@@ -1,10 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as L from 'leaflet';
-import { merge, Subject } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import 'style-loader!leaflet/dist/leaflet.css';
-import { FeatureCollection } from '../../../models/geojson/feature-collection.model';
-import { WardsService } from '../../../services/wards.service';
 
 
 @Component({
@@ -30,7 +27,7 @@ export class LeafletComponent implements OnInit, OnDestroy {
   private map: L.Map;
   private mapReady: Subject<Boolean> = new Subject();
 
-  constructor(private wardsService: WardsService) {}
+  constructor() {}
 
   onMapReady(map: L.Map) {
     this.map = map;
@@ -39,14 +36,14 @@ export class LeafletComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.componentAlive = true;
-    merge(
-      this.mapReady,
-        this.wardsService.getAll()
-        .pipe(takeWhile(() => this.componentAlive)),
-    )
-    .subscribe((featureCollection: FeatureCollection) => {
-      L.geoJSON(featureCollection).addTo(this.map);
-    });
+    // merge(
+    //   this.mapReady,
+    //     this.wardsService.getAll()
+    //     .pipe(takeWhile(() => this.componentAlive)),
+    // )
+    // .subscribe((featureCollection: FeatureCollection) => {
+    //   L.geoJSON(featureCollection).addTo(this.map);
+    // });
   }
 
   ngOnDestroy() {

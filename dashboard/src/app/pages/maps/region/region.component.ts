@@ -7,7 +7,7 @@ import { RegionService } from '../../../services/components/map/region.service';
 @Component({
   selector: 'ngx-region',
   templateUrl: './region.component.html',
-  styleUrls: ['./region.component.scss']
+  styleUrls: ['./region.component.scss'],
 })
 export class RegionComponent implements OnInit, OnDestroy {
 
