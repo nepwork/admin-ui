@@ -62,8 +62,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'grid-outline',
     children: [
       {
-        title: 'Spreadsheet Data',
-        link: '/hub/secured/tables/smart-table',
+        title: 'Returnee Stats',
+        link: '/hub/secured/tables/returnee-table',
+      },
+      {
+        title: 'PCR Tests',
+        link: '/hub/secured/tables/pcr-table',
+      },
+      {
+        title: 'RDT Tests',
+        link: '/hub/secured/tables/rdt-table',
       },
       {
         title: 'Municipality Form',

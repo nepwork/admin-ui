@@ -3,14 +3,24 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { TablesComponent } from './tables.component';
 import { SmartTableComponent } from './smart-table/smart-table.component';
-import { TreeGridComponent } from './tree-grid/tree-grid.component';
+import { TreeGridComponent, FsIconComponent } from './tree-grid/tree-grid.component';
+import { PcrComponent } from './pcr/pcr.component';
+import { ReturneeComponent } from './returnee/returnee.component';
 
 const routes: Routes = [{
   path: '',
   component: TablesComponent,
   children: [
     {
-      path: 'smart-table',
+      path: 'returnee-table',
+      component: ReturneeComponent,
+    },
+    {
+      path: 'pcr-table',
+      component: PcrComponent,
+    },
+    {
+      path: 'rdt-table',
       component: SmartTableComponent,
     },
     {
@@ -27,6 +37,9 @@ const routes: Routes = [{
 export class TablesRoutingModule { }
 
 export const routedComponents = [
+  FsIconComponent,
+  ReturneeComponent,
+  PcrComponent,
   TablesComponent,
   SmartTableComponent,
   TreeGridComponent,

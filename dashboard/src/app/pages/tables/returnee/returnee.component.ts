@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-
 import { SmartTableData } from '../../../@core/data/smart-table';
 
 import { Column } from '../../../models/tabular/column.model';
 import { settings } from '../../../models/tabular/settings.values';
 
+
 @Component({
-  selector: 'ngx-smart-table',
-  templateUrl: './smart-table.component.html',
-  styleUrls: ['./smart-table.component.scss'],
+  selector: 'ngx-returnee',
+  templateUrl: './returnee.component.html',
+  styleUrls: ['./returnee.component.scss'],
 })
-export class SmartTableComponent implements OnInit {
+export class ReturneeComponent implements OnInit {
 
   columns: Column[];
-  settingsAndColumns = settings;
+  columnsAndSetting = settings;
 
   source: LocalDataSource = new LocalDataSource();
 
   constructor(private service: SmartTableData) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const data = this.service.getData();
     this.source.load(data);
   }
@@ -32,4 +32,5 @@ export class SmartTableComponent implements OnInit {
       event.confirm.reject();
     }
   }
+
 }

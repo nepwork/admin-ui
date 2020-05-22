@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { DBService } from '../../models/db.service.interface';
+import { DBService } from './db.service.interface';
 import { Database, Doc, ExistingDoc } from '../../models/domain.model';
 import { EventEmitter } from '@angular/core';
 import { PouchDBService } from './pouchdb.service';
@@ -13,11 +13,11 @@ export class RdtService implements DBService {
   private rdtDB = Database.rdt_tests;
 
   constructor(private dbService: PouchDBService) {
-    this.instantiate();
+    this.instance();
   }
 
-  instantiate() {
-    this.dbService.instantiate(this.rdtDB);
+  instance() {
+    return this.dbService.instance(this.rdtDB);
   }
 
   remoteSync(): EventEmitter<any> {
@@ -28,11 +28,20 @@ export class RdtService implements DBService {
     return this.dbService.getChangeListener(this.rdtDB);
   }
 
+  getAll() {
+    this.instance().allDocs({
+      include_docs: true,
+      startkey: 'province:1:district:1',
+      endkey: 'province:7:district:77',
+      limit: 80,
+    });
+  }
+
   get(id: string): Promise<any> {
     return this.dbService.get(this.rdtDB, id);
   }
 
-  create(doc: Doc): Promise<any> {
+  create(doc: ExistingDoc): Promise<any> {
     return this.dbService.create(this.rdtDB, doc);
   }
 

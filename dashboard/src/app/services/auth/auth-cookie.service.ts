@@ -11,7 +11,7 @@ export class AuthCookieService {
   private currentCookieId: string;
 
   constructor(private dbService: PouchDBService) {
-    this.dbService.instantiate(this.auditDB);
+    this.dbService.instance(this.auditDB);
   }
 
   async get(): Promise<any> {
@@ -22,7 +22,7 @@ export class AuthCookieService {
   async create(doc: Doc): Promise<any> {
     delete doc._id;
     try {
-      const created = await this.dbService.create(this.auditDB, doc);
+      const created = await this.dbService.createUsingPost(this.auditDB, doc);
       const { _id } = created;
       this.currentCookieId = _id;
     } catch (error) {

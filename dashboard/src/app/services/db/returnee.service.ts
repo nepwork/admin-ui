@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-
-import { DBService } from '../../models/db.service.interface';
-import { Database, Doc, ExistingDoc } from '../../models/domain.model';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { Database, ExistingDoc } from '../../models/domain.model';
+import { DBService } from './db.service.interface';
 import { PouchDBService } from './pouchdb.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +12,11 @@ export class ReturneeService implements DBService {
   private returneeDB = Database.returnees;
 
   constructor(private dbService: PouchDBService) {
-    this.instantiate();
+    this.instance();
   }
 
-  instantiate() {
-    this.dbService.instantiate(this.returneeDB);
+  instance() {
+    this.dbService.instance(this.returneeDB);
   }
 
   remoteSync(): EventEmitter<any> {
@@ -32,7 +31,7 @@ export class ReturneeService implements DBService {
     return this.dbService.get(this.returneeDB, id);
   }
 
-  create(doc: Doc): Promise<any> {
+  create(doc: ExistingDoc): Promise<any> {
     return this.dbService.create(this.returneeDB, doc);
   }
 
