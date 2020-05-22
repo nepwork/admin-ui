@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { first } from 'rxjs/operators';
-import { BasicAuth } from '../models/response.model';
+import { BasicAuth } from '../models/auth-response.model';
 import { AuthService } from '../services/auth/auth.service';
 
 @Component({
@@ -44,11 +43,12 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     if (this.loginForm.invalid) return;
     this.loading = true;
-    this.authService.login(this.f.username.value, this.f.password.value)
-      .pipe(first())
+    // TODO create role with edit privileges
+    this.authService.login(this.f.username.value, this.f.password.value, '_admin')
       .subscribe((response: BasicAuth.Response) => {
         if (BasicAuth.isSuccess(response)) {
-          this.router.navigateByUrl(this.returnUrl);
+          this.router.navigate([this.returnUrl]);
+          this.loading = false;
         } else {
           this.showMessages.error = response.error;
         }

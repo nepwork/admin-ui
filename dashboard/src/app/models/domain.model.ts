@@ -3,7 +3,8 @@ import { EventEmitter } from '@angular/core';
 export interface DBList {
   [dbId: string]: {
     name: string,
-    instance?: any,
+    instance?: PouchDB.Database,
+    remoteInstance?: PouchDB.Database,
     listener?: EventEmitter<any>,
   };
 }
