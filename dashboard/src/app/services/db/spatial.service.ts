@@ -1,5 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { DBService } from '../../models/db.service.interface';
+import { DBService } from './db.service.interface';
 import { Database } from '../../models/domain.model';
 import { PouchDBService } from './pouchdb.service';
 
@@ -10,11 +10,11 @@ import { PouchDBService } from './pouchdb.service';
 export class SpatialService implements DBService {
 
   constructor(private dbService: PouchDBService) {
-    this.instantiate();
+    this.instance();
   }
 
-  instantiate() {
-    this.dbService.instantiate(Database.spatial);
+  instance() {
+    this.dbService.instance(Database.spatial);
   }
 
   remoteSync(): EventEmitter<any> {

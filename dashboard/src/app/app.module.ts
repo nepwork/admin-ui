@@ -20,6 +20,7 @@ import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoginModule } from './auth/login.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { AppComponent } from './app.component';
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     ReactiveFormsModule,
+    LoginModule,
   ],
   bootstrap: [AppComponent],
   providers: [{ provide: AppConf, useValue: appConf }],

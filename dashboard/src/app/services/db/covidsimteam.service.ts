@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-
-import { DBService } from '../../models/db.service.interface';
-import { Database, Doc, ExistingDoc } from '../../models/domain.model';
-import { EventEmitter } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
+import { DBService } from './db.service.interface';
+import { Database, ExistingDoc } from '../../models/domain.model';
 import { PouchDBService } from './pouchdb.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +12,11 @@ export class CovidSimTeamService implements DBService {
   private teamDB = Database.covidsimteam;
 
   constructor(private dbService: PouchDBService) {
-    this.instantiate();
+    this.instance();
   }
 
-  instantiate() {
-    this.dbService.instantiate(this.teamDB);
+  instance() {
+    this.dbService.instance(this.teamDB);
   }
 
   remoteSync(): EventEmitter<any> {
@@ -32,7 +31,7 @@ export class CovidSimTeamService implements DBService {
     return this.dbService.get(this.teamDB, id);
   }
 
-  create(doc: Doc): Promise<any> {
+  create(doc: ExistingDoc): Promise<any> {
     return this.dbService.create(this.teamDB, doc);
   }
 

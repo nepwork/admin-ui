@@ -3,55 +3,106 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CurrentUser } from '../../models/domain.model';
-import { BasicAuth, DBAuthResponse } from '../../models/response.model';
+import { BasicAuth, DBAuthResponse } from '../../models/auth-response.model';
 import { EnvironmentService } from '../env/environment.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-
   private isAuthenticated_ = false;
   private user_: string;
   private pass_: string;
+  private role_: string;
 
   constructor(
     private http: HttpClient,
     private environment: EnvironmentService,
-    ) { }
+  ) {}
 
-  login(username: string, password: string): Observable<BasicAuth.Response> {
-    return this.basicAuthRequest(username, password, true);
+  /**
+   * @param username CouchDB username
+   * @param password CouchDB password
+   * @param role is not used for authorization request to CouchDB.
+   * It is used to decide whether to reuse the credentials
+   * given the Couch user has the role claimed in the login request.
+   */
+  login(
+    username: string,
+    password: string,
+    role: string = 'public',
+  ): Observable<BasicAuth.Response> {
+    return this.basicAuthRequest(username, password, role, true);
   }
 
-  basicAuthRequest(username: string, password: string, refreshCredentials: boolean) {
+  /**
+   * @param username CouchDB username
+   * @param password CouchDB password
+   * @param role is not used for authorization request to CouchDB.
+   * It is used to decide whether to reuse the credentials
+   * given the Couch user has the role claimed in the login request.
+   * @param refreshCredentials needs to be set to true to be able to reuse the credentials for future requests
+   */
+  basicAuthRequest(
+    username: string,
+    password: string,
+    role: string,
+    refreshCredentials: boolean = false,
+  ) {
     const base64AuthString = btoa(`${username}:${password}`);
-    return this.http.get<BasicAuth.Response>(this.environment.authUri, {
+    return this.http
+      .get<BasicAuth.Response>(this.environment.authUri, {
         headers: {
           Accept: 'application/json',
           Authorization: `Basic ${base64AuthString}`,
         },
-      }).pipe(tap(response => {
-        if (refreshCredentials) {
-          this.refreshCurrentUserCredentials(BasicAuth.isSuccess(response), username, password);
-        }
-      }));
+      })
+      .pipe(
+        tap((response) => {
+          if (BasicAuth.isSuccess(response)) {
+            const successResponse: BasicAuth.Success = response;
+            const roleIsMatching: boolean =
+              successResponse.userCtx.roles.indexOf(role) !== -1;
+            if (refreshCredentials && roleIsMatching) {
+              this.refreshCurrentUserCredentials(
+                true,
+                username,
+                password,
+                role,
+              );
+            }
+          }
+        }),
+      );
   }
 
-  private refreshCurrentUserCredentials(isAuthenticated: boolean, user: string, pass: string) {
+  private refreshCurrentUserCredentials(
+    isAuthenticated: boolean,
+    user: string,
+    pass: string,
+    role: string,
+  ) {
     if (isAuthenticated) {
-      this.setCredentials(user, pass);
+      this.setCredentials(user, pass, role);
     } else {
       this.removeCredentials();
     }
   }
 
-  private setCredentials(username: string, password: string): void {
+  private setCredentials(
+    username: string,
+    password: string,
+    role: string,
+  ): void {
     this.user_ = username;
     this.pass_ = password;
     this.isAuthenticated_ = true;
-    Object.entries({ username, password, isLoggedIn: 'true' })
-      .forEach(([key, val]) => localStorage.setItem(key, val));
+    this.role_ = role;
+    Object.entries({ username, password, role, isLoggedIn: 'true' }).forEach(
+      ([key, val]) => {
+        localStorage.setItem(key, val);
+      },
+    );
   }
 
   logout(): void {
@@ -63,6 +114,15 @@ export class AuthService {
     this.pass_ = null;
     this.isAuthenticated_ = false;
     Object.values(CurrentUser).forEach(localStorage.removeItem);
+  }
+
+  get role(): string {
+    if (this.role_) return this.role_;
+    return localStorage.getItem(CurrentUser.role);
+  }
+
+  get isPrivileged(): boolean {
+    return this.role && this.role !== 'public'; // TODO add whitelisted roles
   }
 
   get user(): string {
@@ -77,15 +137,14 @@ export class AuthService {
 
   get isAuthenticated(): boolean {
     if (this.isAuthenticated_) return this.isAuthenticated_;
-    return localStorage.getItem(CurrentUser.isLoggedIn) ? true : false ;
+    return localStorage.getItem(CurrentUser.isLoggedIn) ? true : false;
   }
 
   // TODO remove when jwt setup is fixed
   userAuthRequestCookieBased(username: string, password: string) {
-    this.http.post<DBAuthResponse>(this.environment.authUri,
-      { username,
-        password,
-      }).subscribe(response => {
+    this.http
+      .post<DBAuthResponse>(this.environment.authUri, { username, password })
+      .subscribe((response) => {
         // this.cookieService.create(response);
       });
   }

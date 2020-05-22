@@ -6,7 +6,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Core Panels',
     icon: 'home-outline',
-    link: '/pages/dashboard',
+    link: '/hub/home',
     home: true,
   },
   {
@@ -14,23 +14,31 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'map-outline',
     children: [
       {
+        title: 'Kathmandu: Returnees',
+        link: '/hub/maps/area/kathmandu',
+      },
+      {
+        title: 'Kathmandu: Tests',
+        link: '/hub/maps/area/kathmandu/tests',
+      },
+      {
         title: 'OSM Map Integration',
-        link: '/pages/maps/leaflet',
+        link: '/hub/maps/leaflet',
       },
       {
         title: 'Google Map Integration',
-        link: '/pages/maps/gmaps',
+        link: '/hub/maps/gmaps',
       },
       {
         title: 'Manual JSON Map',
-        link: '/pages/maps/bubble',
+        link: '/hub/maps/bubble',
       },
     ],
   },
   {
     title: 'Returnee Stats',
     icon: 'people-outline',
-    link: '/pages/charts/echarts',
+    link: '/hub/charts/echarts',
   },
   {
     title: 'COVID-19 Charts',
@@ -38,11 +46,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Preventive Measures',
-        link: '/pages/charts/chartjs',
+        link: '/hub/charts/chartjs',
       },
       {
         title: 'Medical Stats',
-        link: '/pages/charts/d3',
+        link: '/hub/charts/d3',
       },
     ],
   },
@@ -56,12 +64,20 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'grid-outline',
     children: [
       {
-        title: 'Spreadsheet Data',
-        link: '/pages/tables/smart-table',
+        title: 'Returnee Stats',
+        link: '/hub/secured/tables/returnee-table',
+      },
+      {
+        title: 'PCR Tests',
+        link: '/hub/secured/tables/pcr-table',
+      },
+      {
+        title: 'RDT Tests',
+        link: '/hub/secured/tables/rdt-table',
       },
       {
         title: 'Municipality Form',
-        link: '/pages/forms/municipality',
+        link: '/hub/secured/forms/municipality',
       },
       // {
       //   title: 'Laboratory Form',
