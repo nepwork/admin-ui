@@ -1,5 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { AllDocs, PCRTuple, PSchema } from '../../models/db-response.model';
+import { AllDocs, BulkAddResponse, PCRTupleRev, PSchema } from '../../models/db-response.model';
+import { Doc } from '../../models/domain.model';
 import { Database, ExistingDoc } from '../../models/domain.model';
 import { DBService } from './db.service.interface';
 import { PouchDBService } from './pouchdb.service';
@@ -39,19 +40,24 @@ export class PcrService implements DBService {
     return await this.dbService.getRemoteDBInstance(this.pcrDB).allDocs(requestQuery) as AllDocs.Root;
   }
 
-  async getAllDistricts(): Promise<Array<PCRTuple>> {
+  async addAll(docs: Doc[]): Promise<BulkAddResponse> {
+    return this.dbService.addAll(this.pcrDB, docs);
+  }
+
+  async getAllDistricts(): Promise<Array<PCRTupleRev>> {
     try {
       const response = await this.getAll();
-      return response.rows.map(row => row.doc.fields);
+      return response.rows.map(row => [...row.doc.fields, row.doc._rev] as PCRTupleRev);
     } catch (error) {
       throw Error('District-wise PCR test data could not be fetched');
     }
   }
 
   async getTableHeaders(current = 'pschema:pcrs:v8'): Promise<string[][]> {
+    // TODO put data from pschema:pcrs:v8.ts if not found on the remote db
     if (this.pcrHeaders_) return Promise.resolve(this.pcrHeaders_);
     try {
-      const response = await this.get(current) as PSchema; // TODO add to couchdb-bootstrap repo
+      const response = await this.get(current) as PSchema;
       return (this.pcrHeaders_ = response.fields);
     } catch (error) {
       throw Error('PCR tests table headers could not be fetched');

@@ -1,21 +1,11 @@
+import { DBErrorResponse } from './db-response.model';
+
 export interface DBAuthResponse {
   proxyCookie?: string;
   ok: boolean;
   name: string;
   roles: string[];
 }
-
-export interface DBPostResponse {
-  id: string;
-  ok: boolean;
-  rev: string;
-}
-
-export interface DBErrorResponse {
-    error: string;
-    reason: string;
-}
-
 
 export interface UserCtx {
   name: string;

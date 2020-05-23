@@ -5,6 +5,7 @@ import { Database, DBList, Doc, ExistingDoc } from '../../models/domain.model';
 import { AuthService } from '../auth/auth.service';
 import { EnvironmentService } from '../env/environment.service';
 import { LoggingService } from '../logging.service';
+import { BulkAddResponse } from '../../models/db-response.model';
 
 PouchDB.plugin(PouchAuth);
 
@@ -12,14 +13,14 @@ PouchDB.plugin(PouchAuth);
   providedIn: 'root',
 })
 export class PouchDBService {
-
   private databases: DBList = {};
 
   constructor(
     private environment: EnvironmentService,
     private logger: LoggingService,
-    private authService: AuthService) {
-    Object.values(Database).forEach(dbName => {
+    private authService: AuthService,
+  ) {
+    Object.values(Database).forEach((dbName) => {
       this.databases[dbName] = { name: dbName, listener: new EventEmitter() };
     });
   }
@@ -33,15 +34,15 @@ export class PouchDBService {
     return this.databases[dbName].instance;
   }
 
-  public getRemoteDBInstance(dbName: Database): PouchDB.Database {
+  getRemoteDBInstance(dbName: Database): PouchDB.Database {
     return this.databases[dbName].remoteInstance;
   }
 
-  public getChangeListener(dbName: Database): EventEmitter<any> {
+  getChangeListener(dbName: Database): EventEmitter<any> {
     return this.databases[dbName].listener;
   }
 
-  public async get(dbName: Database, id: string): Promise<any> {
+  async get(dbName: Database, id: string): Promise<any> {
     try {
       const localResponse = await this.getDBInstance(dbName).get(id);
       return localResponse;
@@ -51,7 +52,30 @@ export class PouchDBService {
     }
   }
 
-  public async createUsingPost(dbName: Database, doc: Doc): Promise<any> {
+  /**
+   * Unlike other create/update actions, bulk updates are tried first on the remote if available
+   * for fail fast response directly from the SSOT.
+   * TODO reverse this behavior for cases with very large payloads
+  */
+  async addAll(dbName: Database, docs: Doc[]): Promise<BulkAddResponse> {
+    const remoteDB = this.getRemoteDBInstance(dbName);
+    const localDB = this.instance(dbName);
+
+    if (!remoteDB) return localDB.bulkDocs(docs);
+
+    try {
+      await remoteDB.info(); // throws error with status: 404 if not available
+    } catch (error) {
+      return localDB.bulkDocs(docs);
+    }
+
+    return remoteDB.bulkDocs(docs);
+  }
+
+  /**
+   * Use only when the id of the doc is not relevant for its access patterns/queries
+  */
+  async createUsingPost(dbName: Database, doc: Doc): Promise<any> {
     const dbInstance = this.getDBInstance(dbName);
     try {
       return await dbInstance.post(doc);
@@ -60,7 +84,10 @@ export class PouchDBService {
     }
   }
 
-  public async create(dbName: Database, doc: ExistingDoc): Promise<any> {
+  /**
+   * Use this in most cases for creating a doc and make sure to assign a unique _id field yourself.
+  */
+  async create(dbName: Database, doc: ExistingDoc): Promise<any> {
     const dbInstance = this.getDBInstance(dbName);
     try {
       return await dbInstance.put(doc);
@@ -69,20 +96,22 @@ export class PouchDBService {
     }
   }
 
-  public async update(dbName: Database, doc: ExistingDoc): Promise<any> {
+  /**
+   * Use when updating a doc whose current revision string is not known yet or is likely to have changed.
+  */
+  async update(dbName: Database, doc: ExistingDoc): Promise<any> {
     const dbInstance = this.getDBInstance(dbName);
     try {
       const result = await this.get(dbName, doc._id);
       doc._rev = result._rev;
       return dbInstance.put(doc);
     } catch (error) {
-      if (error.status === '404')
-        return dbInstance.put(doc);
+      if (error.status === '404') return dbInstance.put(doc);
       return new Promise((_, reject) => reject(error));
     }
   }
 
-  public async delete(dbName: Database, doc: ExistingDoc): Promise<any> {
+  async delete(dbName: Database, doc: ExistingDoc): Promise<any> {
     try {
       const result = await this.get(dbName, doc._id);
       doc._rev = result._rev;
@@ -93,33 +122,35 @@ export class PouchDBService {
     }
   }
 
-    // tslint:disable: no-console
-    public remoteSync(dbName: Database): EventEmitter<any> {
+  // tslint:disable: no-console
+  remoteSync(dbName: Database): EventEmitter<any> {
+    if (this.getRemoteDBInstance(dbName)) return this.getChangeListener(dbName);
 
-      if (this.getRemoteDBInstance(dbName)) return this.getChangeListener(dbName);
+    const dbMeta = this.databases[dbName];
+    const remoteDB = new PouchDB(`${this.environment.dbUri}/${dbName}`, {
+      skip_setup: true,
+    });
 
-      const dbMeta = this.databases[dbName];
-      const remoteDB = new PouchDB(`${this.environment.dbUri}/${dbName}`, { skip_setup: true });
+    if (!this.authService.isAuthenticated) return;
 
-      if (!this.authService.isAuthenticated) return;
+    (async () =>
+      await remoteDB
+        .logIn(this.authService.user, this.authService.pass)
+        .then(function (res: any) {}))();
 
-      (async () => await remoteDB.logIn(this.authService.user, this.authService.pass).then(function(res: any) {
-      }))();
+    const localDB = dbMeta.instance ? dbMeta.instance : this.instance(dbName);
 
-      const localDB = dbMeta.instance ? dbMeta.instance : this.instance(dbName);
+    const emitOnChange = (change: any) => dbMeta.listener.emit(change);
 
-      const emitOnChange = (change: any) => dbMeta.listener.emit(change);
+    localDB
+      .sync(remoteDB, { live: true })
+      .on('change', emitOnChange)
+      .on('complete', emitOnChange)
+      .on('error', (err: any) => this.logger.error(err));
 
-      localDB.sync(remoteDB, { live: true })
-            .on('change', emitOnChange)
-            .on('complete', emitOnChange)
-            .on('error', (err: any) => this.logger.error(err));
+    this.databases[dbName].remoteInstance = remoteDB;
+    this.databases[dbName].listener = dbMeta.listener;
 
-      this.databases[dbName].remoteInstance = remoteDB;
-      this.databases[dbName].listener = dbMeta.listener;
-
-      return dbMeta.listener;
-    }
-
-
+    return dbMeta.listener;
+  }
 }

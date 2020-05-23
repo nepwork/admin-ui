@@ -4,16 +4,7 @@
       <nb-card-header>PCR Bulk Editor</nb-card-header>
       <nb-card-body>
         <form class="form-inline">
-          <button
-            type="submit"
-            nbButton
-            class="col-md-4"
-            status="primary"
-            *ngIf="!isFileLoaded"
-            (click)="saveAllListener($event)"
-          >
-            Save Table Edits to Database
-          </button>
+          <label for="csvFileUpload">Choose a CSV file to review before upload</label>
           <input
             type="file"
             accept=".csv"
@@ -40,7 +31,6 @@
             nbButton
             class="col-md-4"
             status="primary"
-            *ngIf="isFileLoaded"
             (click)="uploadConfirmListener($event)"
           >
             Confirm Upload
@@ -60,6 +50,8 @@
     <ng2-smart-table
       [settings]="settingsAndColumns"
       [source]="source"
+      (createConfirm)="onAddConfirm($event)"
+      (editConfirm)="onEditConfirm($event)"
       (deleteConfirm)="onDeleteConfirm($event)"
     >
     </ng2-smart-table>

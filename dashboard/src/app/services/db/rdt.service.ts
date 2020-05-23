@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-
+import { EventEmitter, Injectable } from '@angular/core';
+import { AllDocs, PSchema, RDTTupleRev } from '../../models/db-response.model';
+import { Database, ExistingDoc } from '../../models/domain.model';
 import { DBService } from './db.service.interface';
-import { Database, Doc, ExistingDoc } from '../../models/domain.model';
-import { EventEmitter } from '@angular/core';
 import { PouchDBService } from './pouchdb.service';
-import { PSchema, RDTTuple, AllDocs } from '../../models/db-response.model';
+
 
 @Injectable({
   providedIn: 'root',
@@ -40,12 +39,12 @@ export class RdtService implements DBService {
     return await this.dbService.getRemoteDBInstance(this.rdtDB).allDocs(requestQuery) as AllDocs.Root;
   }
 
-  async getAllDistricts(): Promise<Array<RDTTuple>> {
+  async getAllDistricts(): Promise<Array<RDTTupleRev>> {
     try {
       const response = await this.getAll();
-      return response.rows.map(row => row.doc.fields);
+      return response.rows.map(row => [...row.doc.fields, row.doc._rev] as RDTTupleRev);
     } catch (error) {
-      throw Error('District-wise RDTrdtHeaders_ test data could not be fetched');
+      throw Error('District-wise RDT test data could not be fetched');
     }
   }
 

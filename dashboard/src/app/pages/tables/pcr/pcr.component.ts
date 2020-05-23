@@ -4,6 +4,7 @@ import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 import { settings } from '../../../models/tabular/settings.values';
 import { PcrTableService } from '../../../services/components/pcr/pcr-table.service';
 import { PcrService } from '../../../services/db/pcr.service';
+import { PCRTuple } from '../../../models/db-response.model';
 
 
 @Component({
@@ -31,18 +32,68 @@ export class PcrComponent implements OnInit {
     ) {}
 
   ngOnInit() {
-    this.pcrTableService.getColumns().subscribe(cols => {
-      this.columns = cols;
-      delete cols['id'];
-      this.settingsAndColumns = { ...this.settingsAndColumns, columns: cols };
-    });
 
+    this.initializeHeadersAndSettings();
+
+    // table contents init
     this.pcrTableService.getRows().subscribe(rows => {
       this.source.load(rows);
     });
+
+    // TODO add autocomplete for province and district names
+    // https://akveo.github.io/ng2-smart-table/#/documentation editor.config.completer.data
+
+    this.enableDBToTableSync();
   }
 
-  private xTrim(str: string | number) { if (str && typeof str === 'string') return str.trim(); }
+  private initializeHeadersAndSettings() {
+    this.pcrTableService.getColumns().subscribe(cols => {
+      this.columns = cols;
+      const colsWithoutIdRev = { ...cols };
+      delete colsWithoutIdRev['_id'];
+      delete colsWithoutIdRev['_rev'];
+      this.settingsAndColumns = { ...this.settingsAndColumns, columns: colsWithoutIdRev };
+    });
+  }
+
+  private enableDBToTableSync() {
+    this.pcrService.getChangeListener().subscribe((emitted: any) => {
+      if (emitted && emitted.change && emitted.change.docs) {
+        emitted.change.docs.forEach((doc: any) => {
+          if (doc._deleted) {
+            this.findAndRemoveFromTable(doc._id);
+          } else {
+            const newRow = this.prepareNewTableRow(doc.fields, doc._rev);
+            this.findAndRemoveFromTable(doc._id);
+            this.source.prepend(newRow);
+          }
+        });
+      }
+    });
+  }
+
+  private prepareNewTableRow(fields: PCRTuple, docRev: string) {
+    const newDoc = {};
+    this.pcrService.headers
+      .map(headerAndTypeArr => headerAndTypeArr[0])
+      .forEach((header, index) => {
+        newDoc[header] = index < fields.length ? fields[index] : docRev;
+      });
+    return newDoc;
+  }
+
+  private findAndRemoveFromTable(docId: string) {
+    this.source.getAll().then((elems: []) => {
+      // FIXME this will not scale well for large table sizes, not expected for current use cases
+      const rowToDelete = elems.filter(row => row['_id'] === docId ||
+                                  this.pcrTableService.preparePCRSDocID(row['province'], row['district']) === docId)[0];
+      this.source.remove(rowToDelete);
+    })
+    .catch(err => {
+
+    });
+  }
+
 
   csvUploadListener(event: any) {
     const files = event.srcElement.files;
@@ -54,8 +105,8 @@ export class PcrComponent implements OnInit {
           this.pcrService.headers.forEach((header, index) => {
             rowObj[header[0]] =
               index !== 0 ?
-                this.xTrim(rowData[index]) :
-                `province:${this.xTrim(rowData[0])}:district:${this.xTrim(rowData[1])}`;
+                this.pcrTableService.xTrim(rowData[index]) :
+                this.pcrTableService.preparePCRSDocID(rowData[0], rowData[1]);
           });
           this.source.prepend(rowObj);
           return rowObj;
@@ -69,25 +120,41 @@ export class PcrComponent implements OnInit {
     $event.preventDefault();
     this.fileImportInput.nativeElement.value = '';
     this.isFileLoaded = false;
-    // TODO remove table rows added by the file upload
+    this.rowsFromCsvFile.forEach(row => { this.source.remove(row); });
   }
 
   uploadConfirmListener($event: any) {
     $event.preventDefault();
-    // TODO send the current uploaded file's rows to the db using this.rowsFromCsvFile
-    // It remains in sync with the changes in the table i.e. this.source
-    // because of passing of the of the copy of the same reference as value
+    try {
+      this.pcrService.addAll(this.rowsFromCsvFile);
+    } catch (error) {
+      // TODO report the docs that failed to insert as a list under the file upload card
+    }
   }
 
-  saveAllListener($event) {
-    $event.preventDefault();
-    // TODO send the entire table content i.e. this.source.getAll() as a bulk insert to remote directly
-    // TODO also enable the event listeners to update the data in the local db
-    // so that it syncs with remote in the background
+  onAddConfirm(event: any) {
+    try {
+      this.pcrTableService.saveTableRowAddition(event.newData);
+      event.confirm.resolve();
+    } catch (error) {
+      console.error('PcrComponent -> onAddConfirm -> error', error);
+      event.confirm.reject();
+    }
   }
 
-  onDeleteConfirm(event: any): void {
+  onEditConfirm(event: any) {
+    try {
+      this.pcrTableService.saveTableRowChanges(event.data, event.newData);
+      event.confirm.resolve();
+    } catch (error) {
+      console.error('PcrComponent -> onEditConfirm -> error', error);
+      event.confirm.reject();
+    }
+  }
+
+  onDeleteConfirm(event: any) {
     if (window.confirm('Confirm PCR test record deletion:')) {
+      this.pcrTableService.saveTableRowDeletion(event.data);
       event.confirm.resolve();
     } else {
       event.confirm.reject();

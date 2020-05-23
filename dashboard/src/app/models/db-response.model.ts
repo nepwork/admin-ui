@@ -1,5 +1,8 @@
-export type PCRTuple = [number | string, number | string, number, number];
+export type PCRTuple = [string, string, string, number, number];
 export type RDTTuple = PCRTuple;
+
+export type PCRTupleRev = [ string, string, string, number, number, string ];
+export type RDTTupleRev = PCRTupleRev;
 
 export module AllDocs {
 
@@ -12,7 +15,7 @@ export module AllDocs {
       _id: string;
       _rev: string;
       pschema: string;
-      fields: PCRTuple;
+      fields: PCRTupleRev;
   }
 
   export interface Row {
@@ -33,7 +36,43 @@ export module AllDocs {
 
 export interface PSchema {
   _id: string;
-  _rev: string;
+  _rev?: string;
   fields: string[][];
 }
 
+export interface PCRSPSchema {
+  _id: string;
+  _rev?: string;
+  pschema: 'pcrs/v8';
+  fields: string[];
+}
+
+export interface RDTSPSchema {
+  _id: string;
+  _rev?: string;
+  pschema: 'rdts/v8';
+  fields: string[];
+}
+
+export interface DBPostResponse {
+  id: string;
+  ok: boolean;
+  rev: string;
+}
+
+interface ErrorResponse {
+  status?: number;
+  name?: string;
+  message?: string;
+  reason?: string;
+  error?: string | boolean;
+  id?: string;
+  rev?: string;
+}
+
+export type BulkAddResponse = (DBPostResponse | ErrorResponse)[];
+
+export interface DBErrorResponse {
+    error: string;
+    reason: string;
+}

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable, from } from 'rxjs';
+import { from, Observable } from 'rxjs';
+import { RDTTupleRev } from '../../../models/db-response.model';
 import { RdtService } from '../../db/rdt.service';
 import { TabularService } from '../tabular/tabular.service';
-import { RDTTuple } from '../../../models/db-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class RdtTableService extends TabularService {
     try {
       const tableHeaders = await this.rdtService.getTableHeaders();
       const columnsData = await this.rdtService.getAllDistricts();
-      return columnsData.map((item: RDTTuple) => {
+      return columnsData.map((item: RDTTupleRev) => {
         const columnObj = {};
         tableHeaders.forEach((header, index) => {
           columnObj[header[0]] = item[index];
