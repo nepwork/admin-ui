@@ -29,11 +29,13 @@ import { EarningCardComponent } from './earning-card/earning-card.component';
 import { EarningCardFrontComponent } from './earning-card/front-side/earning-card-front.component';
 import { EarningLiveUpdateChartComponent } from './earning-card/front-side/earning-live-update-chart.component';
 import { ECommerceLegendChartComponent } from './legend-chart/legend-chart.component';
-import { PcrStatsAreaChartComponent } from './pcr-card/back-side/test-stats-area-chart.component';
-import { TestStatsCardBackComponent } from './pcr-card/back-side/test-stats-card-back.component';
-import { PcrStatsBarAnimationChartComponent } from './pcr-card/front-side/test-stats-bar-animation-chart.component';
-import { TestStatsCardFrontComponent } from './pcr-card/front-side/test-stats-card-front.component';
-import { TestCardComponent } from './pcr-card/test-card.component';
+import { TestStatsAreaChartComponent } from './covid-test-card/back-side/test-stats-area-chart.component';
+import { TestStatsCardBackComponent } from './covid-test-card/back-side/test-stats-card-back.component';
+import {
+  PcrStatsBarAnimationChartComponent,
+} from './covid-test-card/front-side/test-stats-bar-animation-chart.component';
+import { TestStatsCardFrontComponent } from './covid-test-card/front-side/test-stats-card-front.component';
+import { TestCardComponent } from './covid-test-card/test-card.component';
 import { ECommerceProgressSectionComponent } from './progress-section/progress-section.component';
 import { SlideOutComponent } from './slide-out/slide-out.component';
 import { TrafficBackCardComponent } from './traffic-reveal-card/back-side/traffic-back-card.component';
@@ -103,10 +105,9 @@ import {
     EarningPieChartComponent,
     EarningLiveUpdateChartComponent,
 
-// TODO consider using the same component with different inputs or using a higher order component for RDTs and PCRs
     TestCardComponent,
     TestStatsCardFrontComponent,
-    PcrStatsAreaChartComponent,
+    TestStatsAreaChartComponent,
     PcrStatsBarAnimationChartComponent,
   ],
   providers: [

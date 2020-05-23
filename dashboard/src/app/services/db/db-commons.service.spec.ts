@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DBCommonsService } from './db-commons.service';
 
-describe('TabularCommonsService', () => {
+describe('DBCommonsService', () => {
   let service: DBCommonsService;
 
   beforeEach(() => {

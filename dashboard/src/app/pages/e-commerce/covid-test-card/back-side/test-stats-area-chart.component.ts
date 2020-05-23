@@ -13,7 +13,7 @@ import { LayoutService } from '../../../../@core/utils';
     </div>
   `,
 })
-export class PcrStatsAreaChartComponent implements AfterViewInit, OnDestroy {
+export class TestStatsAreaChartComponent implements AfterViewInit, OnDestroy {
 
   private alive = true;
 
