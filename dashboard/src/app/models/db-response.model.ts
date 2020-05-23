@@ -1,4 +1,5 @@
 export type PCRTuple = [number | string, number | string, number, number];
+export type RDTTuple = PCRTuple;
 
 export module AllDocs {
 

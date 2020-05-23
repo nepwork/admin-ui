@@ -4,6 +4,7 @@ import { DBService } from './db.service.interface';
 import { Database, Doc, ExistingDoc } from '../../models/domain.model';
 import { EventEmitter } from '@angular/core';
 import { PouchDBService } from './pouchdb.service';
+import { PSchema, RDTTuple, AllDocs } from '../../models/db-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,13 +12,51 @@ import { PouchDBService } from './pouchdb.service';
 export class RdtService implements DBService {
 
   private rdtDB = Database.rdt_tests;
+  private rdtHeaders_: string[][];
 
   constructor(private dbService: PouchDBService) {
     this.instance();
+    this.remoteSync();
   }
 
   instance() {
     return this.dbService.instance(this.rdtDB);
+  }
+
+  get headers(): string[][] { return this.rdtHeaders_; }
+
+  async getAll(startkey = 'province:', endkey = 'province:\ufff0' ): Promise<AllDocs.Root> {
+    const requestQuery = {
+      include_docs: true,
+      startkey,
+      endkey,
+      limit: 80,
+    };
+
+    const locAllDocs = await this.instance().allDocs(requestQuery) as AllDocs.Root;
+
+    if (locAllDocs.rows.length !== 0) return locAllDocs;
+
+    return await this.dbService.getRemoteDBInstance(this.rdtDB).allDocs(requestQuery) as AllDocs.Root;
+  }
+
+  async getAllDistricts(): Promise<Array<RDTTuple>> {
+    try {
+      const response = await this.getAll();
+      return response.rows.map(row => row.doc.fields);
+    } catch (error) {
+      throw Error('District-wise RDTrdtHeaders_ test data could not be fetched');
+    }
+  }
+
+  async getTableHeaders(current = 'pschema:rdts:v8'): Promise<string[][]> {
+    if (this.rdtHeaders_) return Promise.resolve(this.rdtHeaders_);
+    try {
+      const response = await this.get(current) as PSchema; // TODO add headers to couchdb-bootstrap repo
+      return (this.rdtHeaders_ = response.fields);
+    } catch (error) {
+      throw Error('RDT tests table headers could not be fetched');
+    }
   }
 
   remoteSync(): EventEmitter<any> {
@@ -26,15 +65,6 @@ export class RdtService implements DBService {
 
   getChangeListener(): EventEmitter<any> {
     return this.dbService.getChangeListener(this.rdtDB);
-  }
-
-  getAll() {
-    this.instance().allDocs({
-      include_docs: true,
-      startkey: 'province:1:district:1',
-      endkey: 'province:7:district:77',
-      limit: 80,
-    });
   }
 
   get(id: string): Promise<any> {

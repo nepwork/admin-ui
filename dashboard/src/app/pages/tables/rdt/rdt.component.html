@@ -1,19 +1,9 @@
 <div class="row">
   <div class="col-md-12">
     <nb-card class="inline-form-card">
-      <nb-card-header>PCR Bulk Editor</nb-card-header>
+      <nb-card-header>RDT CSV Upload</nb-card-header>
       <nb-card-body>
         <form class="form-inline">
-          <button
-            type="submit"
-            nbButton
-            class="col-md-4"
-            status="primary"
-            *ngIf="!isFileLoaded"
-            (click)="saveAllListener($event)"
-          >
-            Save Table Edits to Database
-          </button>
           <input
             type="file"
             accept=".csv"
@@ -26,21 +16,10 @@
             (change)="csvUploadListener($event)"
           />
           <button
-            type="reset"
-            nbButton
-            class="col-md-4"
-            status="warning"
-            *ngIf="isFileLoaded"
-            (click)="resetHandler($event)"
-          >
-            Cancel Upload
-          </button>
-          <button
             type="submit"
             nbButton
             class="col-md-4"
             status="primary"
-            *ngIf="isFileLoaded"
             (click)="uploadConfirmListener($event)"
           >
             Confirm Upload
@@ -53,15 +32,11 @@
 
 <nb-card>
   <nb-card-header>
-    PCR Tests
+    RDT Tests
   </nb-card-header>
 
   <nb-card-body>
-    <ng2-smart-table
-      [settings]="settingsAndColumns"
-      [source]="source"
-      (deleteConfirm)="onDeleteConfirm($event)"
-    >
+    <ng2-smart-table [settings]="settingsAndColumns" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>

@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-
+import { EventEmitter, Injectable } from '@angular/core';
+import { AllDocs, PCRTuple, PSchema } from '../../models/db-response.model';
+import { Database, ExistingDoc } from '../../models/domain.model';
 import { DBService } from './db.service.interface';
-import { Database, Doc, ExistingDoc } from '../../models/domain.model';
-import { EventEmitter } from '@angular/core';
 import { PouchDBService } from './pouchdb.service';
-import { AllDocs, PSchema, PCRTuple } from '../../models/db-response.model';
+
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +11,8 @@ import { AllDocs, PSchema, PCRTuple } from '../../models/db-response.model';
 export class PcrService implements DBService {
 
   private pcrDB = Database.pcr_tests;
+
+  private pcrHeaders_: string[][];
 
   constructor(private dbService: PouchDBService) {
     this.instance();
@@ -22,7 +23,9 @@ export class PcrService implements DBService {
     return this.dbService.instance(this.pcrDB);
   }
 
-  async getAll(startkey = 'province:1:district:1', endkey = 'province:7:district:77' ): Promise<AllDocs.Root> {
+  get headers(): string[][] { return this.pcrHeaders_; }
+
+  async getAll(startkey = 'province:', endkey = 'province:\ufff0'): Promise<AllDocs.Root> {
     const requestQuery = {
       include_docs: true,
       startkey,
@@ -41,14 +44,15 @@ export class PcrService implements DBService {
       const response = await this.getAll();
       return response.rows.map(row => row.doc.fields);
     } catch (error) {
-      throw Error('District test data could not be fetched');
+      throw Error('District-wise PCR test data could not be fetched');
     }
   }
 
   async getTableHeaders(current = 'pschema:pcrs:v8'): Promise<string[][]> {
+    if (this.pcrHeaders_) return Promise.resolve(this.pcrHeaders_);
     try {
       const response = await this.get(current) as PSchema; // TODO add to couchdb-bootstrap repo
-      return response.fields;
+      return (this.pcrHeaders_ = response.fields);
     } catch (error) {
       throw Error('PCR tests table headers could not be fetched');
     }

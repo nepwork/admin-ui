@@ -62,7 +62,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'grid-outline',
     children: [
       {
-        title: 'Returnee Stats',
+        title: 'Returnees',
         link: '/hub/secured/tables/returnee-table',
       },
       {

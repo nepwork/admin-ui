@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
-import { TablesComponent } from './tables.component';
-import { SmartTableComponent } from './smart-table/smart-table.component';
-import { TreeGridComponent, FsIconComponent } from './tree-grid/tree-grid.component';
+import { RouterModule, Routes } from '@angular/router';
 import { PcrComponent } from './pcr/pcr.component';
+import { RdtComponent } from './rdt/rdt.component';
 import { ReturneeComponent } from './returnee/returnee.component';
+import { TablesComponent } from './tables.component';
+import { FsIconComponent, TreeGridComponent } from './tree-grid/tree-grid.component';
+
 
 const routes: Routes = [{
   path: '',
@@ -21,7 +21,7 @@ const routes: Routes = [{
     },
     {
       path: 'rdt-table',
-      component: SmartTableComponent,
+      component: RdtComponent,
     },
     {
       path: 'tree-grid',
@@ -41,6 +41,6 @@ export const routedComponents = [
   ReturneeComponent,
   PcrComponent,
   TablesComponent,
-  SmartTableComponent,
+  RdtComponent,
   TreeGridComponent,
 ];

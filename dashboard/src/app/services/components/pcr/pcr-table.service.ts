@@ -4,45 +4,22 @@ import { map } from 'rxjs/operators';
 import { PCRTuple } from '../../../models/db-response.model';
 import { Column, ColumnDetails } from '../../../models/tabular/column.model';
 import { PcrService } from '../../db/pcr.service';
+import { TabularService } from '../tabular/tabular.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class PcrTableService {
-  constructor(private pcrService: PcrService) {}
+export class PcrTableService extends TabularService {
 
-  getRows(): Observable<{}[]> {
-    return from(this.getJsonData());
+  constructor(private pcrService: PcrService) {
+    super();
   }
 
-  getColumns(): Observable<{}> {
-    return this.getTableHeaders().pipe(
-      map((headers: string[][]) => {
-        return headers.map((header: string[]) => {
-          const tableHeaderDetails: ColumnDetails = {
-            type: header[1],
-            title: header[0].toUpperCase(),
-          };
-          return { [header[0]]: tableHeaderDetails };
-        });
-      }),
-      map((headerObjArr: Column[]) => {
-        const tempCols = {};
-        headerObjArr.forEach((col) => {
-          const key = Object.keys(col)[0];
-          const val = Object.values(col)[0];
-          tempCols[key] = val;
-        });
-        return tempCols;
-      }),
-    );
-  }
-
-  private getTableHeaders(): Observable<string[][]> {
+  protected getTableHeaders(): Observable<string[][]> {
     return from(this.pcrService.getTableHeaders());
   }
 
-  private async getJsonData(): Promise<{}[]> {
+  protected async getJsonData(): Promise<{}[]> {
     try {
       const tableHeaders = await this.pcrService.getTableHeaders();
       const columnsData = await this.pcrService.getAllDistricts();
