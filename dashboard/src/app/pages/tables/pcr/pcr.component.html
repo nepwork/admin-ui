@@ -31,9 +31,9 @@
             nbButton
             class="col-md-4"
             status="primary"
-            (click)="uploadConfirmListener($event)"
+            (click)="uploadDownloadHandler($event)"
           >
-            Confirm Upload
+            {{ isFileLoaded ? "Confirm CSV Upload" : "Download Current CSV" }}
           </button>
         </form>
       </nb-card-body>

@@ -67,8 +67,11 @@ export abstract class TabularService {
     return newDoc;
   }
 
-  xTrim(str: string | number) {
-    if (str && typeof str === 'string') return str.trim().toLowerCase().replace(/ /g, '_');
+  xTrim(str: string | number, toLowerCase = true) {
+    if (str && typeof str === 'string') {
+      const trimmed = str.trim().replace(/ /g, '_');
+      return toLowerCase ? trimmed.toLowerCase() : trimmed;
+    }
   }
 
   protected prepareDocTabular(newRow: any, schemaVersion: string, service: PcrService | RdtService, removeRev = false) {
@@ -117,10 +120,10 @@ export abstract class TabularService {
 
   protected findAndRemoveFromTable(docId: string, source: LocalDataSource) {
     source.getAll().then((elems: []) => {
-      // FIXME this will not scale well for large table sizes. Large size are not expected for current use cases.
-      const rowToDelete = elems.filter(row => row['_id'] === docId ||
-                                  this.prepareDocID(row['province'], row['district']) === docId)[0];
-      source.remove(rowToDelete);
+      // FIXME this will not scale well for large table sizes. Large size is not expected for current use cases.
+      const rowsToDelete = elems.filter(row => row['_id'] === docId ||
+                                  this.prepareDocID(row['province'], row['district']) === docId);
+      rowsToDelete.forEach(rowToDelete => source.remove(rowToDelete));
     })
     .catch(err => {
 

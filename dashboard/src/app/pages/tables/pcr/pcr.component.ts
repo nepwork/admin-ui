@@ -20,6 +20,7 @@ export class PcrComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   rowsFromCsvFile: {}[] = [];
+  rowsReplacedByCsvFile: {}[] = [];
 
   @ViewChild('fileImportInput') fileImportInput: ElementRef;
 
@@ -60,32 +61,53 @@ export class PcrComponent implements OnInit {
     this.ngxCsvParser.parse(files[0], { header: false, delimiter: ',' })
       .subscribe((result: Array<any>) => {
         this.rowsFromCsvFile = result.slice(1).map(rowData => {
+          // db headers contain _id and _rev fields as well
+          if (rowData.length !== this.pcrService.headers.length - 2) throw Error('Invalid number of columns');
           const rowObj = {};
           this.pcrService.headers.forEach((header, index) => {
             rowObj[header[0]] =
               index !== 0 ?
-                this.pcrTableService.xTrim(rowData[index]) :
+                this.pcrTableService.xTrim(rowData[index - 1], false) :
                 this.pcrTableService.prepareDocID(rowData[0], rowData[1]);
           });
-          this.source.prepend(rowObj);
+          this.csvRowAndExistingRowMerger(rowObj);
           return rowObj;
         });
       }, (_: NgxCSVParserError) => {
-        window.alert('Your CSV file could not be parsed, please upload a valid file');
+        window.alert('Please upload a valid comma separated file with ');
       });
+  }
+
+  csvRowAndExistingRowMerger(rowObj: {}) {
+    this.source.getAll().then((elements: []) => {
+      const rowsToDelete = elements.filter(row =>
+                            row['_id'] === rowObj['_id'] ||
+                            this.pcrTableService
+                              .prepareDocID(row['province'], row['district']) === rowObj['_id']);
+      this.rowsReplacedByCsvFile = [...this.rowsReplacedByCsvFile, ...rowsToDelete];
+      rowsToDelete.forEach(rowToDelete => this.source.remove(rowToDelete));
+      this.source.prepend(rowObj);
+    });
   }
 
   resetHandler($event: any) {
     $event.preventDefault();
     this.fileImportInput.nativeElement.value = '';
     this.isFileLoaded = false;
-    this.rowsFromCsvFile.forEach(row => { this.source.remove(row); });
+    this.rowsFromCsvFile.forEach(row => this.source.remove(row));
+    this.rowsReplacedByCsvFile.forEach(row => this.source.prepend(row));
   }
 
-  uploadConfirmListener($event: any) {
+  uploadDownloadHandler($event: any) {
     $event.preventDefault();
     try {
-      this.pcrService.addAll(this.rowsFromCsvFile);
+      if (!this.isFileLoaded) {
+        this.pcrTableService.getCsvDataFile();
+        return;
+      }
+      this.pcrService.addAll(this.rowsFromCsvFile.map(row => this.pcrTableService.prepareDoc(row)));
+      this.isFileLoaded = false;
+      this.fileImportInput.nativeElement.value = '';
     } catch (error) {
       // TODO report the docs that failed to insert as a list under the file upload card
     }
@@ -112,7 +134,6 @@ export class PcrComponent implements OnInit {
   // Potential use for floating map component showing district preview
   // (userRowSelect)="onUserRowSelect($event)"
   // onUserRowSelect(event: any) {
-  //   console.log('user row select', event);
   // }
 
   onDeleteConfirm(event: any) {
