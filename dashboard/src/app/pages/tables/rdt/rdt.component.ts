@@ -20,6 +20,7 @@ export class RdtComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   rowsFromCsvFile: {}[] = [];
+  rowsReplacedByCsvFile: {}[] = [];
 
   @ViewChild('fileImportInput') fileImportInput: ElementRef;
 
@@ -59,14 +60,16 @@ export class RdtComponent implements OnInit {
     this.ngxCsvParser.parse(files[0], { header: false, delimiter: ',' })
       .subscribe((result: Array<any>) => {
         this.rowsFromCsvFile = result.slice(1).map(rowData => {
+          // db headers contain _id and _rev fields as well
+          if (rowData.length !== this.rdtService.headers.length - 2) throw Error('Invalid number of columns');
           const rowObj = {};
           this.rdtService.headers.forEach((header, index) => {
             rowObj[header[0]] =
               index !== 0 ?
-                this.rdtTableService.xTrim(rowData[index]) :
+                this.rdtTableService.xTrim(rowData[index - 1], false) :
                 this.rdtTableService.prepareDocID(rowData[0], rowData[1]);
           });
-          this.source.prepend(rowObj);
+          this.csvRowAndExistingRowMerger(rowObj);
           return rowObj;
         });
       }, (_: NgxCSVParserError) => {
@@ -74,17 +77,36 @@ export class RdtComponent implements OnInit {
       });
   }
 
+  csvRowAndExistingRowMerger(rowObj: {}) {
+    this.source.getAll().then((elements: []) => {
+      const rowsToDelete = elements.filter(row =>
+                            row['_id'] === rowObj['_id'] ||
+                            this.rdtTableService
+                              .prepareDocID(row['province'], row['district']) === rowObj['_id']);
+      this.rowsReplacedByCsvFile = [...this.rowsReplacedByCsvFile, ...rowsToDelete];
+      rowsToDelete.forEach(rowToDelete => this.source.remove(rowToDelete));
+      this.source.prepend(rowObj);
+    });
+  }
+
   resetHandler($event: any) {
     $event.preventDefault();
     this.fileImportInput.nativeElement.value = '';
     this.isFileLoaded = false;
-    this.rowsFromCsvFile.forEach(row => { this.source.remove(row); });
+    this.rowsFromCsvFile.forEach(row => this.source.remove(row));
+    this.rowsReplacedByCsvFile.forEach(row => this.source.prepend(row));
   }
 
-  uploadConfirmListener($event: any) {
+  uploadDownloadHandler($event: any) {
     $event.preventDefault();
     try {
-      this.rdtService.addAll(this.rowsFromCsvFile);
+      if (!this.isFileLoaded) {
+        this.rdtTableService.getCsvDataFile();
+        return;
+      }
+      this.rdtService.addAll(this.rowsFromCsvFile.map(row => this.rdtTableService.prepareDoc(row)));
+      this.isFileLoaded = false;
+      this.fileImportInput.nativeElement.value = '';
     } catch (error) {
       // TODO report the docs that failed to insert as a list under the file upload card
     }

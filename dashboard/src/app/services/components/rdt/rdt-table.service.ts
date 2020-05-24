@@ -23,8 +23,8 @@ export class RdtTableService extends TabularService {
   protected async getJsonData(): Promise<{}[]> {
     try {
       const tableHeaders = await this.rdtService.getTableHeaders();
-      const columnsData = await this.rdtService.getAllDistricts();
-      return columnsData.map((item: RDTTupleRev) => {
+      const rowsData = await this.rdtService.getAllDistricts();
+      return rowsData.map((item: RDTTupleRev) => {
         const columnObj = {};
         tableHeaders.forEach((header, index) => {
           columnObj[header[0]] = item[index];
@@ -35,6 +35,46 @@ export class RdtTableService extends TabularService {
       throw Error('Unable to fetch RDT tests data');
     }
   }
+
+  protected async getCsvData(): Promise<string> {
+    try {
+      const tableHeaders = await this.rdtService.getTableHeaders();
+      const rowsData = await this.rdtService.getAllDistricts();
+
+      const csvFileContent = [];
+      // add header
+      csvFileContent.push(
+        tableHeaders
+          .map(headerAndType => headerAndType[0])
+          .slice(1, tableHeaders.length - 1)
+          .join(','));
+
+      // add rows
+      rowsData.forEach((rowItem: RDTTupleRev) => {
+        csvFileContent.push(
+          rowItem
+            .slice(1, tableHeaders.length - 1)
+            .join(','));
+      });
+
+      return csvFileContent.join('\n');
+    } catch (error) {
+      throw Error('Unable to fetch RDT tests data');
+    }
+  }
+
+  async getCsvDataFile() {
+    const data = await this.getCsvData();
+    const blob = new Blob([data], { type: 'text/csv' });
+
+    const tempAnchor = document.createElement('a');
+    tempAnchor.href = window.URL.createObjectURL(blob);
+    tempAnchor.download = 'rdt-test-cov-data-hub.csv';
+    document.body.appendChild(tempAnchor);
+    tempAnchor.click();
+    document.body.removeChild(tempAnchor);
+  }
+
 
   enableDBToTableSync(source: LocalDataSource) {
     super.enableDBToTableSyncTabular(source, this.rdtService);
