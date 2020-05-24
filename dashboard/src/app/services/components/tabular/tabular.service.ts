@@ -1,11 +1,11 @@
 import { LocalDataSource } from 'ng2-smart-table';
 import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PCRTuple, PSchemaDoc, RDTTuple } from '../../../models/db-response.model';
+import { PCRTuple, PSchemaDoc, RDTTuple, TABTuple } from '../../../models/db-response.model';
 import { Column, ColumnDetails } from '../../../models/tabular/column.model';
 import { PcrService } from '../../db/pcr.service';
 import { RdtService } from '../../db/rdt.service';
-import { ExistingDoc } from '../../../models/domain.model';
+import { ExistingDoc, DataTableService, isReturneeService } from '../../../models/domain.model';
 
 export abstract class TabularService {
 
@@ -41,7 +41,7 @@ export abstract class TabularService {
     );
   }
 
-  protected enableDBToTableSyncTabular(source: LocalDataSource, service: PcrService | RdtService) {
+  protected enableDBToTableSyncTabular(source: LocalDataSource, service: DataTableService) {
     service.getChangeListener().subscribe((emitted: any) => {
       if (emitted && emitted.change && emitted.change.docs) {
         emitted.change.docs.forEach((doc: any) => {
@@ -57,7 +57,7 @@ export abstract class TabularService {
     });
   }
 
-  protected prepareNewTableRowTabular(fields: PCRTuple | RDTTuple, docRev: string, service: PcrService | RdtService) {
+  protected prepareNewTableRowTabular(fields: TABTuple, docRev: string, service: DataTableService) {
     const newDoc = {};
     service.headers
       .map(headerAndTypeArr => headerAndTypeArr[0])
@@ -74,7 +74,7 @@ export abstract class TabularService {
     }
   }
 
-  protected prepareDocTabular(newRow: any, schemaVersion: string, service: PcrService | RdtService, removeRev = false) {
+  protected prepareDocTabular(newRow: any, schemaVersion: string, service: DataTableService, removeRev = false) {
     const pcrsDoc: PSchemaDoc = {
       _id: newRow._id,
       _rev: newRow._rev,
@@ -89,18 +89,22 @@ export abstract class TabularService {
     });
 
     // TODO update this iif schema changes to not having province and district first in the row
-    pcrsDoc._id = pcrsDoc.fields[0] = this.prepareDocID(pcrsDoc.fields[1], pcrsDoc.fields[2]);
+    pcrsDoc._id = pcrsDoc.fields[0] = isReturneeService(service) ?
+      this.prepareDocID(pcrsDoc.fields[1], pcrsDoc.fields[2], [pcrsDoc.fields[3], pcrsDoc.fields[4]]) :
+      this.prepareDocID(pcrsDoc.fields[1], pcrsDoc.fields[2]);
 
     if (!pcrsDoc._rev || removeRev) delete pcrsDoc._rev;
 
     return pcrsDoc;
   }
 
-  prepareDocID(province: string, district: string) {
-    return `province:${this.xTrim(province)}:district:${this.xTrim(district)}`;
+  prepareDocID(province: string, district: string, more: string[] = null) {
+    return more ?
+      `province:${this.xTrim(province)}:district:${this.xTrim(district)}:municipality:${more[0]}:ward:${more[1]}` :
+      `province:${this.xTrim(province)}:district:${this.xTrim(district)}`;
   }
 
-  protected saveTableRowChangesTabular(oldRow: any, newRow: any, schemaVer: string, service: PcrService | RdtService) {
+  protected saveTableRowChangesTabular(oldRow: any, newRow: any, schemaVer: string, service: DataTableService) {
     if (oldRow.province !== newRow.province || oldRow.district !== newRow.district) {
       // delete old row data as _id is compounded using district and province
       service.delete(this.prepareDocTabular(oldRow, schemaVer, service) as ExistingDoc);
@@ -110,19 +114,24 @@ export abstract class TabularService {
     service.update(this.prepareDocTabular(newRow, schemaVer, service) as ExistingDoc);
   }
 
-  protected saveTableRowAdditionTabular(newRow: any, schemaVer: string, service: PcrService | RdtService) {
+  protected saveTableRowAdditionTabular(newRow: any, schemaVer: string, service: DataTableService) {
     service.create(this.prepareDocTabular(newRow, schemaVer, service) as ExistingDoc);
   }
 
-  protected saveTableRowDeletionTabular(deletedRow: any, schemaVer: string, service: PcrService | RdtService) {
+  protected saveTableRowDeletionTabular(deletedRow: any, schemaVer: string, service: DataTableService) {
     service.delete(this.prepareDocTabular(deletedRow, schemaVer, service) as ExistingDoc);
   }
 
   protected findAndRemoveFromTable(docId: string, source: LocalDataSource) {
-    source.getAll().then((elems: []) => {
+    source.getAll().then((elements: []) => {
       // FIXME this will not scale well for large table sizes. Large size is not expected for current use cases.
-      const rowsToDelete = elems.filter(row => row['_id'] === docId ||
-                                  this.prepareDocID(row['province'], row['district']) === docId);
+      const rowsToDelete = elements.filter(row => {
+        const id =  docId.split(':').length > 4 ?
+          this.prepareDocID(row['province'], row['district'], [row['municipality'], row['ward']]) :
+          this.prepareDocID(row['province'], row['district']);
+
+        return row['_id'] === docId || id === docId;
+      });
       rowsToDelete.forEach(rowToDelete => source.remove(rowToDelete));
     })
     .catch(err => {

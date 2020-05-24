@@ -16,7 +16,7 @@ export const settings = {
     confirmDelete: true,
   },
   actions: {
-    columnTitle: 'UPDATE | DELETE',
+    columnTitle: 'EDIT | DELETE',
   },
   columns: null,
 };

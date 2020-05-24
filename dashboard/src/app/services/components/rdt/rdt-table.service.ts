@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NgxCsvParser } from 'ngx-csv-parser';
 import { from, Observable } from 'rxjs';
 import { SCHEMA_VER } from '../../../@core/data/pschema:rdts:v8';
 import { PSchemaDoc, RDTTuple, RDTTupleRev } from '../../../models/db-response.model';
@@ -12,7 +11,7 @@ import { TabularService } from '../tabular/tabular.service';
 })
 export class RdtTableService extends TabularService {
 
-  constructor(private rdtService: RdtService, private ngxCsvParser: NgxCsvParser) {
+  constructor(private rdtService: RdtService) {
     super();
   }
 

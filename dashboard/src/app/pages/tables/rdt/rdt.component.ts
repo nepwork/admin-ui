@@ -72,7 +72,7 @@ export class RdtComponent implements OnInit {
           this.csvRowAndExistingRowMerger(rowObj);
           return rowObj;
         });
-      }, (_: NgxCSVParserError) => {
+      }, (_: NgxCSVParserError | Error) => {
         window.alert('Your CSV file could not be parsed, please upload a valid file');
       });
   }

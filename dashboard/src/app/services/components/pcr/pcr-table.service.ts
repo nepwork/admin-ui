@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-import { NgxCsvParser } from 'ngx-csv-parser';
 import { from, Observable } from 'rxjs';
 import { SCHEMA_VER } from '../../../@core/data/pschema:pcrs:v8';
 import { PCRTuple, PCRTupleRev, PSchemaDoc } from '../../../models/db-response.model';
@@ -12,7 +11,7 @@ import { TabularService } from '../tabular/tabular.service';
 })
 export class PcrTableService extends TabularService {
 
-  constructor(private pcrService: PcrService, private ngxCsvParser: NgxCsvParser) {
+  constructor(private pcrService: PcrService) {
     super();
   }
 

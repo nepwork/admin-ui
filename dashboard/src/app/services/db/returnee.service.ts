@@ -1,7 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Database, ExistingDoc } from '../../models/domain.model';
+import { Database, ExistingDoc, Doc } from '../../models/domain.model';
 import { DBService } from './db.service.interface';
 import { PouchDBService } from './pouchdb.service';
+import { AllDocs, PSchema, BulkAddResponse, RETTupleRev } from '../../models/db-response.model';
 
 
 @Injectable({
@@ -11,13 +12,57 @@ export class ReturneeService implements DBService {
 
   private returneeDB = Database.returnees;
 
+  private returneeHeaders_: string[][];
+
   constructor(private dbService: PouchDBService) {
     this.instance();
+    this.remoteSync();
   }
 
   instance() {
-    this.dbService.instance(this.returneeDB);
+    return this.dbService.instance(this.returneeDB);
   }
+
+  get headers(): string[][] { return this.returneeHeaders_; }
+
+  async getAll(startkey = 'province:', endkey = 'province:\ufff0'): Promise<AllDocs.Root> {
+    const requestQuery = {
+      include_docs: true,
+      startkey,
+      endkey,
+      limit: 800,
+    };
+    const locAllDocs = await this.instance().allDocs(requestQuery) as AllDocs.Root;
+
+    if (locAllDocs.rows.length !== 0) return locAllDocs;
+
+    return await this.dbService.getRemoteDBInstance(this.returneeDB).allDocs(requestQuery) as AllDocs.Root;
+  }
+
+  async addAll(docs: Doc[]): Promise<BulkAddResponse> {
+    return this.dbService.addAll(this.returneeDB, docs);
+  }
+
+  async getAllWards(): Promise<Array<RETTupleRev>> {
+    try {
+      const response = await this.getAll();
+      return response.rows.map(row => [...row.doc.fields, row.doc._rev] as RETTupleRev);
+    } catch (error) {
+      throw Error('District-wise PCR test data could not be fetched');
+    }
+  }
+
+  async getTableHeaders(current = 'pschema:returnees:v8'): Promise<string[][]> {
+    // TODO put data from pschema:pcrs:v8.ts if not found on the remote db
+    if (this.returneeHeaders_) return Promise.resolve(this.returneeHeaders_);
+    try {
+      const response = await this.get(current) as PSchema;
+      return (this.returneeHeaders_ = response.fields);
+    } catch (error) {
+      throw Error('Returnee data table headers could not be fetched');
+    }
+  }
+
 
   remoteSync(): EventEmitter<any> {
     return this.dbService.remoteSync(this.returneeDB);

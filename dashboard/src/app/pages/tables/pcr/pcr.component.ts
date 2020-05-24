@@ -73,7 +73,7 @@ export class PcrComponent implements OnInit {
           this.csvRowAndExistingRowMerger(rowObj);
           return rowObj;
         });
-      }, (_: NgxCSVParserError) => {
+      }, (_: NgxCSVParserError | Error) => {
         window.alert('Please upload a valid comma separated file with ');
       });
   }
