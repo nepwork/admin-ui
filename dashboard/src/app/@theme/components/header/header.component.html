@@ -3,7 +3,7 @@
     <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
       <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
-    <a class="logo" href="#" (click)="navigateHome()">CovSim-<span>Dashboard</span></a>
+    <a class="logo" href="#" (click)="navigateHome()">CovData<strong>Hub</strong></a>
   </div>
 
 </div>
@@ -24,7 +24,24 @@
       </nb-user>
     </nb-action> -->
     <nb-action>
-      <button nbButton outline (click)="changeTheme(currentTheme == 'dark' ? 'default' : 'dark')"><nb-icon [icon]="currentTheme == 'dark' ? 'bulb-outline' : 'moon-outline'"></nb-icon></button>
+      <button
+        nbButton
+        outline
+        nbPopover="Toggle light/dark"
+        nbPopoverPlacement="bottom"
+        (click)="changeTheme(currentTheme == 'dark' ? 'default' : 'dark')">
+          <nb-icon [icon]="currentTheme == 'dark' ? 'bulb-outline' : 'moon-outline'"></nb-icon>
+      </button>
+    </nb-action>
+    <nb-action *ngIf="isPrivilegedUser">
+      <button
+        nbButton
+        outline (click)="logout()"
+        nbPopover="Log out"
+        nbPopoverPlacement="bottom"
+      >
+        <nb-icon icon="log-out-outline"></nb-icon>
+      </button>
     </nb-action>
     <!-- <nb-action>
       <nb-select [selected]="currentTheme" (selectedChange)="changeTheme($event)" status="primary">

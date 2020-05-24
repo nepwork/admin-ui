@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { CurrentUser } from '../../models/domain.model';
 import { BasicAuth, DBAuthResponse } from '../../models/auth-response.model';
 import { EnvironmentService } from '../env/environment.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,12 @@ export class AuthService {
   private pass_: string;
   private role_: string;
 
+  isPrivilegedUser: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
   constructor(
     private http: HttpClient,
     private environment: EnvironmentService,
+    private router: Router,
   ) {}
 
   /**
@@ -82,6 +86,7 @@ export class AuthService {
     pass: string,
     role: string,
   ) {
+    this.isPrivilegedUser.next(role !== 'public'); // TODO add whitelisted roles
     if (isAuthenticated) {
       this.setCredentials(user, pass, role);
     } else {
@@ -107,13 +112,27 @@ export class AuthService {
 
   logout(): void {
     this.removeCredentials();
+    this.router.navigate(['']);
+    this.publicLogin();
+  }
+
+  publicLogin() {
+    if (this.isPrivileged) {
+      this.isPrivilegedUser.next(true); // isPrivilegedUser does not survive browser refresh but isPrivileged does
+      return;
+    }
+    this.login(this.environment.dbPublicUser, this.environment.dbPublicPass).subscribe();
   }
 
   private removeCredentials(): void {
     this.user_ = null;
     this.pass_ = null;
     this.isAuthenticated_ = false;
-    Object.values(CurrentUser).forEach(localStorage.removeItem);
+    this.role_ = 'public';
+    Object.values(CurrentUser).forEach(key => {
+      localStorage.removeItem(key);
+    });
+    this.isPrivilegedUser.next(false);
   }
 
   get role(): string {
