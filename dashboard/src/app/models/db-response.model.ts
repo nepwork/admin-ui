@@ -40,17 +40,10 @@ export interface PSchema {
   fields: string[][];
 }
 
-export interface PCRSPSchema {
+export interface PSchemaDoc {
   _id: string;
   _rev?: string;
-  pschema: 'pcrs/v8';
-  fields: string[];
-}
-
-export interface RDTSPSchema {
-  _id: string;
-  _rev?: string;
-  pschema: 'rdts/v8';
+  pschema: string;
   fields: string[];
 }
 

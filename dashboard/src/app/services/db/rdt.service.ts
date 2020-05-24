@@ -1,6 +1,6 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { AllDocs, PSchema, RDTTupleRev } from '../../models/db-response.model';
-import { Database, ExistingDoc } from '../../models/domain.model';
+import { AllDocs, PSchema, RDTTupleRev, BulkAddResponse } from '../../models/db-response.model';
+import { Database, ExistingDoc, Doc } from '../../models/domain.model';
 import { DBService } from './db.service.interface';
 import { PouchDBService } from './pouchdb.service';
 
@@ -37,6 +37,10 @@ export class RdtService implements DBService {
     if (locAllDocs.rows.length !== 0) return locAllDocs;
 
     return await this.dbService.getRemoteDBInstance(this.rdtDB).allDocs(requestQuery) as AllDocs.Root;
+  }
+
+  async addAll(docs: Doc[]): Promise<BulkAddResponse> {
+    return this.dbService.addAll(this.rdtDB, docs);
   }
 
   async getAllDistricts(): Promise<Array<RDTTupleRev>> {

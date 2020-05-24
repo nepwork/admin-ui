@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
+import { LocalDataSource } from 'ng2-smart-table';
+import { NgxCsvParser } from 'ngx-csv-parser';
 import { from, Observable } from 'rxjs';
-import { PCRTupleRev, PCRSPSchema } from '../../../models/db-response.model';
+import { SCHEMA_VER } from '../../../@core/data/pschema:pcrs:v8';
+import { PCRTuple, PCRTupleRev, PSchemaDoc } from '../../../models/db-response.model';
 import { PcrService } from '../../db/pcr.service';
 import { TabularService } from '../tabular/tabular.service';
-import { PCRS_SCHEMA_VER } from '../../../@core/data/pschema:pcrs:v8';
-import { ExistingDoc } from '../../../models/domain.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PcrTableService extends TabularService {
 
-  constructor(private pcrService: PcrService) {
+  constructor(private pcrService: PcrService, private ngxCsvParser: NgxCsvParser) {
     super();
   }
 
@@ -35,49 +36,28 @@ export class PcrTableService extends TabularService {
     }
   }
 
-
-  xTrim(str: string | number) { if (str && typeof str === 'string') return str.trim().replace(/ /g, '_'); }
-
-  preparePCRSDoc(newRow: any) {
-    const pcrsDoc: PCRSPSchema = {
-      _id: newRow._id,
-      _rev: newRow._rev,
-      pschema: PCRS_SCHEMA_VER,
-      fields: [],
-    };
-    // newest _rev is fetched again before updating db if using PouchDBServce->update or delete method
-    // but not when using PouchDBServce->create or addAll method.
-
-    this.pcrService.headers.map(headerAndType => headerAndType[0]).forEach((header) => {
-      pcrsDoc.fields.push(newRow[header]);
-    });
-
-    // TODO update this iif schema changes to not having province and district first in the row
-    pcrsDoc._id = pcrsDoc.fields[0] = pcrsDoc._id
-                || this.preparePCRSDocID(pcrsDoc.fields[1], pcrsDoc.fields[2]);
-
-    if (!pcrsDoc._rev) delete pcrsDoc._rev;
-
-    return pcrsDoc;
+  enableDBToTableSync(source: LocalDataSource) {
+    super.enableDBToTableSyncTabular(source, this.pcrService);
   }
 
-  preparePCRSDocID(province: string, district: string) {
-    return `province:${this.xTrim(province)}:district:${this.xTrim(district)}`;
+  prepareNewTableRow(fields: PCRTuple, docRev: string) {
+    return super.prepareNewTableRowTabular(fields, docRev, this.pcrService);
+  }
+
+  prepareDoc(newRow: any, removeRev = false): PSchemaDoc {
+    return super.prepareDocTabular(newRow, SCHEMA_VER, this.pcrService, removeRev);
   }
 
   saveTableRowChanges(oldRow: any, newRow: any) {
-    if (oldRow.province !== newRow.province || oldRow.district !== newRow.district) {
-      // delete old row data as _id is compounded using district and province
-      this.pcrService.delete(this.preparePCRSDoc(oldRow) as ExistingDoc);
-    }
-    this.pcrService.update(this.preparePCRSDoc(newRow) as ExistingDoc);
+    super.saveTableRowChangesTabular(oldRow, newRow, SCHEMA_VER, this.pcrService);
   }
 
   saveTableRowAddition(newRow: any) {
-    this.pcrService.create(this.preparePCRSDoc(newRow) as ExistingDoc);
+    super.saveTableRowAdditionTabular(newRow, SCHEMA_VER, this.pcrService);
   }
 
   saveTableRowDeletion(deletedRow: any) {
-    this.pcrService.delete(this.preparePCRSDoc(deletedRow) as ExistingDoc);
+    super.saveTableRowDeletionTabular(deletedRow, SCHEMA_VER, this.pcrService);
   }
+
 }

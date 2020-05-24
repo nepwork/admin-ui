@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
+import { LocalDataSource } from 'ng2-smart-table';
+import { NgxCsvParser } from 'ngx-csv-parser';
 import { from, Observable } from 'rxjs';
-import { RDTTupleRev } from '../../../models/db-response.model';
+import { SCHEMA_VER } from '../../../@core/data/pschema:rdts:v8';
+import { PSchemaDoc, RDTTuple, RDTTupleRev } from '../../../models/db-response.model';
 import { RdtService } from '../../db/rdt.service';
 import { TabularService } from '../tabular/tabular.service';
 
@@ -9,7 +12,7 @@ import { TabularService } from '../tabular/tabular.service';
 })
 export class RdtTableService extends TabularService {
 
-  constructor(private rdtService: RdtService) {
+  constructor(private rdtService: RdtService, private ngxCsvParser: NgxCsvParser) {
     super();
   }
 
@@ -31,5 +34,29 @@ export class RdtTableService extends TabularService {
     } catch (error) {
       throw Error('Unable to fetch RDT tests data');
     }
+  }
+
+  enableDBToTableSync(source: LocalDataSource) {
+    super.enableDBToTableSyncTabular(source, this.rdtService);
+  }
+
+  prepareNewTableRow(fields: RDTTuple, docRev: string) {
+    return super.prepareNewTableRowTabular(fields, docRev, this.rdtService);
+  }
+
+  prepareDoc(newRow: any, removeRev = false): PSchemaDoc {
+    return super.prepareDocTabular(newRow, SCHEMA_VER, this.rdtService, removeRev);
+  }
+
+  saveTableRowChanges(oldRow: any, newRow: any) {
+    super.saveTableRowChangesTabular(oldRow, newRow, SCHEMA_VER, this.rdtService);
+  }
+
+  saveTableRowAddition(newRow: any) {
+    super.saveTableRowAdditionTabular(newRow, SCHEMA_VER, this.rdtService);
+  }
+
+  saveTableRowDeletion(deletedRow: any) {
+    super.saveTableRowDeletionTabular(deletedRow, SCHEMA_VER, this.rdtService);
   }
 }

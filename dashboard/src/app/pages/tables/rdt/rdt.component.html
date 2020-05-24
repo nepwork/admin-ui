@@ -1,9 +1,10 @@
 <div class="row">
   <div class="col-md-12">
     <nb-card class="inline-form-card">
-      <nb-card-header>RDT CSV Upload</nb-card-header>
+      <nb-card-header>RDT Bulk Editor</nb-card-header>
       <nb-card-body>
         <form class="form-inline">
+          <label for="csvFileUpload">Choose a CSV file to review before upload</label>
           <input
             type="file"
             accept=".csv"
@@ -15,6 +16,16 @@
             placeholder="CSV File"
             (change)="csvUploadListener($event)"
           />
+          <button
+            type="reset"
+            nbButton
+            class="col-md-4"
+            status="warning"
+            *ngIf="isFileLoaded"
+            (click)="resetHandler($event)"
+          >
+            Cancel Upload
+          </button>
           <button
             type="submit"
             nbButton
@@ -36,7 +47,13 @@
   </nb-card-header>
 
   <nb-card-body>
-    <ng2-smart-table [settings]="settingsAndColumns" [source]="source" (deleteConfirm)="onDeleteConfirm($event)">
+    <ng2-smart-table
+      [settings]="settingsAndColumns"
+      [source]="source"
+      (createConfirm)="onAddConfirm($event)"
+      (editConfirm)="onEditConfirm($event)"
+      (deleteConfirm)="onDeleteConfirm($event)"
+    >
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>

@@ -1,6 +1,11 @@
-import { Observable, from } from 'rxjs';
+import { LocalDataSource } from 'ng2-smart-table';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ColumnDetails, Column } from '../../../models/tabular/column.model';
+import { PCRTuple, PSchemaDoc, RDTTuple } from '../../../models/db-response.model';
+import { Column, ColumnDetails } from '../../../models/tabular/column.model';
+import { PcrService } from '../../db/pcr.service';
+import { RdtService } from '../../db/rdt.service';
+import { ExistingDoc } from '../../../models/domain.model';
 
 export abstract class TabularService {
 
@@ -34,5 +39,202 @@ export abstract class TabularService {
         return tempCols;
       }),
     );
+  }
+
+  protected enableDBToTableSyncTabular(source: LocalDataSource, service: PcrService | RdtService) {
+    service.getChangeListener().subscribe((emitted: any) => {
+      if (emitted && emitted.change && emitted.change.docs) {
+        emitted.change.docs.forEach((doc: any) => {
+          if (doc._deleted) {
+            this.findAndRemoveFromTable(doc._id, source);
+          } else {
+            const newRow = this.prepareNewTableRowTabular(doc.fields, doc._rev, service);
+            this.findAndRemoveFromTable(doc._id, source);
+            source.prepend(newRow);
+          }
+        });
+      }
+    });
+  }
+
+  protected prepareNewTableRowTabular(fields: PCRTuple | RDTTuple, docRev: string, service: PcrService | RdtService) {
+    const newDoc = {};
+    service.headers
+      .map(headerAndTypeArr => headerAndTypeArr[0])
+      .forEach((header, index) => {
+        newDoc[header] = index < fields.length ? fields[index] : docRev;
+      });
+    return newDoc;
+  }
+
+  xTrim(str: string | number) {
+    if (str && typeof str === 'string') return str.trim().toLowerCase().replace(/ /g, '_');
+  }
+
+  protected prepareDocTabular(newRow: any, schemaVersion: string, service: PcrService | RdtService, removeRev = false) {
+    const pcrsDoc: PSchemaDoc = {
+      _id: newRow._id,
+      _rev: newRow._rev,
+      pschema: schemaVersion,
+      fields: [],
+    };
+    // newest _rev is fetched again before updating db if using PouchDBServce->update or delete method
+    // but not when using PouchDBServce->create or addAll method.
+
+    service.headers.map(headerAndType => headerAndType[0]).forEach((header) => {
+      pcrsDoc.fields.push(newRow[header]);
+    });
+
+    // TODO update this iif schema changes to not having province and district first in the row
+    pcrsDoc._id = pcrsDoc.fields[0] = this.prepareDocID(pcrsDoc.fields[1], pcrsDoc.fields[2]);
+
+    if (!pcrsDoc._rev || removeRev) delete pcrsDoc._rev;
+
+    return pcrsDoc;
+  }
+
+  prepareDocID(province: string, district: string) {
+    return `province:${this.xTrim(province)}:district:${this.xTrim(district)}`;
+  }
+
+  protected saveTableRowChangesTabular(oldRow: any, newRow: any, schemaVer: string, service: PcrService | RdtService) {
+    if (oldRow.province !== newRow.province || oldRow.district !== newRow.district) {
+      // delete old row data as _id is compounded using district and province
+      service.delete(this.prepareDocTabular(oldRow, schemaVer, service) as ExistingDoc);
+      service.create(this.prepareDocTabular(newRow, schemaVer, service, true) as ExistingDoc);
+      return;
+    }
+    service.update(this.prepareDocTabular(newRow, schemaVer, service) as ExistingDoc);
+  }
+
+  protected saveTableRowAdditionTabular(newRow: any, schemaVer: string, service: PcrService | RdtService) {
+    service.create(this.prepareDocTabular(newRow, schemaVer, service) as ExistingDoc);
+  }
+
+  protected saveTableRowDeletionTabular(deletedRow: any, schemaVer: string, service: PcrService | RdtService) {
+    service.delete(this.prepareDocTabular(deletedRow, schemaVer, service) as ExistingDoc);
+  }
+
+  protected findAndRemoveFromTable(docId: string, source: LocalDataSource) {
+    source.getAll().then((elems: []) => {
+      // FIXME this will not scale well for large table sizes. Large size are not expected for current use cases.
+      const rowToDelete = elems.filter(row => row['_id'] === docId ||
+                                  this.prepareDocID(row['province'], row['district']) === docId)[0];
+      source.remove(rowToDelete);
+    })
+    .catch(err => {
+
+    });
+  }
+
+  prepareProvinceDropdown() {
+    const dropdown = {
+      type: 'list',
+      config: {
+        selectText: 'Select Province',
+        list: [
+          { value: 'Province 1', title: 'Province 1'},
+          { value: 'Province 2', title: 'Province 2'},
+          { value: 'Bagmati', title: 'Bagmati'},
+          { value: 'Gandaki', title: 'Gandaki'},
+          { value: 'Province 5', title: 'Province 5'},
+          { value: 'Karnali', title: 'Karnali'},
+          { value: 'Sudurpashchim', title: 'Sudurpashchim'},
+        ],
+      },
+    };
+    return dropdown;
+  }
+
+
+  // TODO add class to columns province and district, listen to changes on province and populate districts based on that
+  prepareDistrictAutocomplete() {
+    const completer = {
+      type: 'completer',
+      config: {
+        completer: {
+          data: [
+            'Kanchanpur',
+            'Kailali',
+            'Darchula',
+            'Doti',
+            'Dadeldhura',
+            'Bajhang',
+            'Bajura',
+            'Baitadi',
+            'Achham',
+            'Rukum_w',
+            'Salyan',
+            'Mugu',
+            'Kalikot',
+            'Jumla',
+            'Jajarkot',
+            'Humla',
+            'Dolpa',
+            'Dailekh',
+            'Surkhet',
+            'Pyuthan',
+            'Palpa',
+            'Nawalparasi_w',
+            'Kapilbastu',
+            'Gulmi',
+            'Dang',
+            'Bardiya',
+            'Rupandehi',
+            'Banke',
+            'Rukum_e',
+            'Arghakhanchi',
+            'Rolpa',
+            'Parbat',
+            'Nawalparasi_e',
+            'Myagdi',
+            'Mustang',
+            'Manang',
+            'Lamjung',
+            'Kaski',
+            'Gorkha',
+            'Tanahu',
+            'Baglung',
+            'Syangja',
+            'Nuwakot',
+            'Makawanpur',
+            'Lalitpur',
+            'Kabhrepalanchok',
+            'Kathmandu',
+            'Dolakha',
+            'Dhading',
+            'Chitawan',
+            'Bhaktapur',
+            'Ramechhap',
+            'Rasuwa',
+            'Sindhuli',
+            'Sindhupalchok',
+            'Siraha',
+            'Sarlahi',
+            'Saptari',
+            'Rautahat',
+            'Parsa',
+            'Mahottari',
+            'Dhanusha',
+            'Bara',
+            'Sankhuwasabha',
+            'Panchthar',
+            'Morang',
+            'Okhaldhunga',
+            'Khotang',
+            'Jhapa',
+            'Terhathum',
+            'Udayapur',
+            'Ilam',
+            'Taplejung',
+            'Dhankuta',
+            'Sunsari',
+            'Bhojpur',
+            'Solukhumbu',
+          ],
+        },
+      },
+    };
+    return completer;
   }
 }

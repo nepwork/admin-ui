@@ -4,8 +4,6 @@ import { NgxCsvParser, NgxCSVParserError } from 'ngx-csv-parser';
 import { settings } from '../../../models/tabular/settings.values';
 import { PcrTableService } from '../../../services/components/pcr/pcr-table.service';
 import { PcrService } from '../../../services/db/pcr.service';
-import { PCRTuple } from '../../../models/db-response.model';
-
 
 @Component({
   selector: 'ngx-pcr',
@@ -40,10 +38,7 @@ export class PcrComponent implements OnInit {
       this.source.load(rows);
     });
 
-    // TODO add autocomplete for province and district names
-    // https://akveo.github.io/ng2-smart-table/#/documentation editor.config.completer.data
-
-    this.enableDBToTableSync();
+    this.pcrTableService.enableDBToTableSync(this.source);
   }
 
   private initializeHeadersAndSettings() {
@@ -52,48 +47,12 @@ export class PcrComponent implements OnInit {
       const colsWithoutIdRev = { ...cols };
       delete colsWithoutIdRev['_id'];
       delete colsWithoutIdRev['_rev'];
+      if (cols['province']) {
+        cols['province']['editor'] = cols['province']['filter'] = this.pcrTableService.prepareProvinceDropdown();
+      }
       this.settingsAndColumns = { ...this.settingsAndColumns, columns: colsWithoutIdRev };
     });
   }
-
-  private enableDBToTableSync() {
-    this.pcrService.getChangeListener().subscribe((emitted: any) => {
-      if (emitted && emitted.change && emitted.change.docs) {
-        emitted.change.docs.forEach((doc: any) => {
-          if (doc._deleted) {
-            this.findAndRemoveFromTable(doc._id);
-          } else {
-            const newRow = this.prepareNewTableRow(doc.fields, doc._rev);
-            this.findAndRemoveFromTable(doc._id);
-            this.source.prepend(newRow);
-          }
-        });
-      }
-    });
-  }
-
-  private prepareNewTableRow(fields: PCRTuple, docRev: string) {
-    const newDoc = {};
-    this.pcrService.headers
-      .map(headerAndTypeArr => headerAndTypeArr[0])
-      .forEach((header, index) => {
-        newDoc[header] = index < fields.length ? fields[index] : docRev;
-      });
-    return newDoc;
-  }
-
-  private findAndRemoveFromTable(docId: string) {
-    this.source.getAll().then((elems: []) => {
-      // FIXME this will not scale well for large table sizes, not expected for current use cases
-      const rowToDelete = elems.filter(row => row['_id'] === docId ||
-                                  this.pcrTableService.preparePCRSDocID(row['province'], row['district']) === docId)[0];
-      this.source.remove(rowToDelete);
-    })
-    .catch(err => {
-
-    });
-  }
-
 
   csvUploadListener(event: any) {
     const files = event.srcElement.files;
@@ -106,7 +65,7 @@ export class PcrComponent implements OnInit {
             rowObj[header[0]] =
               index !== 0 ?
                 this.pcrTableService.xTrim(rowData[index]) :
-                this.pcrTableService.preparePCRSDocID(rowData[0], rowData[1]);
+                this.pcrTableService.prepareDocID(rowData[0], rowData[1]);
           });
           this.source.prepend(rowObj);
           return rowObj;
@@ -137,7 +96,6 @@ export class PcrComponent implements OnInit {
       this.pcrTableService.saveTableRowAddition(event.newData);
       event.confirm.resolve();
     } catch (error) {
-      console.error('PcrComponent -> onAddConfirm -> error', error);
       event.confirm.reject();
     }
   }
@@ -147,10 +105,15 @@ export class PcrComponent implements OnInit {
       this.pcrTableService.saveTableRowChanges(event.data, event.newData);
       event.confirm.resolve();
     } catch (error) {
-      console.error('PcrComponent -> onEditConfirm -> error', error);
       event.confirm.reject();
     }
   }
+
+  // Potential use for floating map component showing district preview
+  // (userRowSelect)="onUserRowSelect($event)"
+  // onUserRowSelect(event: any) {
+  //   console.log('user row select', event);
+  // }
 
   onDeleteConfirm(event: any) {
     if (window.confirm('Confirm PCR test record deletion:')) {

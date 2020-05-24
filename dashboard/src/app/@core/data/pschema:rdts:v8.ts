@@ -28,4 +28,4 @@ export const pschema_rdts_v8 = {
   ],
 };
 
-export const RDTS_SCHEMA_VER = 'rdts/v8';
+export const SCHEMA_VER = 'rdts/v8';

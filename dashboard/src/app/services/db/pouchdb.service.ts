@@ -106,7 +106,6 @@ export class PouchDBService {
       doc._rev = result._rev;
       return dbInstance.put(doc);
     } catch (error) {
-      if (error.status === '404') return dbInstance.put(doc);
       return new Promise((_, reject) => reject(error));
     }
   }

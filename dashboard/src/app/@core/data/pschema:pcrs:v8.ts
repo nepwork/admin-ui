@@ -28,4 +28,4 @@ export const pschema_pcrs_v8 = {
   ],
 };
 
-export const PCRS_SCHEMA_VER = 'pcrs/v8';
+export const SCHEMA_VER = 'pcrs/v8';
