@@ -27,6 +27,13 @@ export interface ExistingDoc {
   [key: string]: any;
 }
 
+export interface FeatureCollection {
+  _id: string;
+  _rev: string;
+  type: string;
+  features: {}[];
+}
+
 export type Doc = Partial<ExistingDoc>;
 
 export enum CurrentUser {

@@ -22,6 +22,7 @@ const routes: Routes = [{
     },
     {
       path: 'maps',
+      canActivate: [AuthGuard],
       loadChildren: () => import('./maps/maps.module')
         .then(m => m.MapsModule),
     },

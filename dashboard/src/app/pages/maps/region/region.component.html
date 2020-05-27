@@ -4,11 +4,7 @@
     <div leaflet
       [leafletOptions]="options"
       (leafletMapReady)="onMapReady($event)"
-      leafletFullscreen
-      (leafletFullscreenEntered)="fullscreenEntered()"
-      (leafletFullscreenExited)="fullscreenExited()"
-      (leafletFullscreenReady)="fullscreenControlReady()"
-    >
+      [leafletLayersControl]="layersControl"    >
     </div>
   </nb-card-body>
 </nb-card>

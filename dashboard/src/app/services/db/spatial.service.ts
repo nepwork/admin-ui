@@ -9,24 +9,31 @@ import { PouchDBService } from './pouchdb.service';
 })
 export class SpatialService implements DBService {
 
+  spatialDB = Database.spatial;
+
   constructor(private dbService: PouchDBService) {
     this.instance();
+    this.remoteLogin();
   }
 
   instance() {
-    this.dbService.instance(Database.spatial);
+    this.dbService.instance(this.spatialDB);
   }
 
   remoteSync(): EventEmitter<any> {
-    return this.dbService.remoteSync(Database.spatial);
+    return this.dbService.remoteSync(this.spatialDB);
+  }
+
+  remoteLogin(): PouchDB.Database {
+    return this.dbService.remoteLogin(this.spatialDB);
   }
 
   getChangeListener(): EventEmitter<any> {
-    return this.dbService.getChangeListener(Database.spatial);
+    return this.dbService.getChangeListener(this.spatialDB);
   }
 
   get(id: string): Promise<any> {
-    return this.dbService.get(Database.spatial, id);
+    return this.dbService.get(this.spatialDB, id);
   }
 
 }

@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { EnvironmentService } from '../env/environment.service';
 import { LoggingService } from '../logging.service';
 import { BulkAddResponse } from '../../models/db-response.model';
+import { from } from 'rxjs';
 
 PouchDB.plugin(PouchAuth);
 
@@ -47,8 +48,8 @@ export class PouchDBService {
       const localResponse = await this.getDBInstance(dbName).get(id);
       return localResponse;
     } catch (error) {
-      const remoteResponse = this.getRemoteDBInstance(dbName).get(id);
-      return remoteResponse;
+        const remoteResponse = this.getRemoteDBInstance(dbName).get(id);
+        return remoteResponse;
     }
   }
 
@@ -121,7 +122,22 @@ export class PouchDBService {
     }
   }
 
-  // tslint:disable: no-console
+  remoteLogin(dbName: Database): PouchDB.Database {
+    if (this.getRemoteDBInstance(dbName)) return this.getRemoteDBInstance(dbName);
+
+    const remoteDB = new PouchDB(`${this.environment.dbUri}/${dbName}`, {
+      skip_setup: true,
+    });
+
+    if (!this.authService.isAuthenticated) return;
+
+    from(remoteDB.logIn(this.authService.user, this.authService.pass)).subscribe(_ => {
+      this.databases[dbName].remoteInstance = remoteDB;
+    });
+
+    return this.getRemoteDBInstance(dbName);
+  }
+
   remoteSync(dbName: Database): EventEmitter<any> {
     if (this.getRemoteDBInstance(dbName)) return this.getChangeListener(dbName);
 
@@ -132,23 +148,22 @@ export class PouchDBService {
 
     if (!this.authService.isAuthenticated) return;
 
-    (async () =>
-      await remoteDB
-        .logIn(this.authService.user, this.authService.pass)
-        .then(function (res: any) {}))();
-
     const localDB = dbMeta.instance ? dbMeta.instance : this.instance(dbName);
 
     const emitOnChange = (change: any) => dbMeta.listener.emit(change);
 
-    localDB
-      .sync(remoteDB, { live: true })
-      .on('change', emitOnChange)
-      .on('complete', emitOnChange)
-      .on('error', (err: any) => this.logger.error(err));
+    from(remoteDB.logIn(this.authService.user, this.authService.pass))
+        .subscribe(_ => {
 
-    this.databases[dbName].remoteInstance = remoteDB;
-    this.databases[dbName].listener = dbMeta.listener;
+          this.databases[dbName].remoteInstance = remoteDB;
+
+          localDB.sync(remoteDB, { live: true })
+            .on('change', emitOnChange)
+            .on('complete', emitOnChange)
+            .on('error', (err: any) => this.logger.error(err));
+
+          this.databases[dbName].listener = dbMeta.listener;
+        });
 
     return dbMeta.listener;
   }
