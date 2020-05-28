@@ -14,4 +14,8 @@
     width: 100wh;
     height: 75vh;
   }
+
+  ::ng-deep .leaflet-popup-content-wrapper {
+    width: 320px;
+  }
 }

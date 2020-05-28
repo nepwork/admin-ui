@@ -45,11 +45,9 @@ export class PouchDBService {
 
   async get(dbName: Database, id: string): Promise<any> {
     try {
-      const localResponse = await this.getDBInstance(dbName).get(id);
-      return localResponse;
+      return await this.getDBInstance(dbName).get(id);
     } catch (error) {
-        const remoteResponse = this.getRemoteDBInstance(dbName).get(id);
-        return remoteResponse;
+      return this.getRemoteDBInstance(dbName).get(id);
     }
   }
 

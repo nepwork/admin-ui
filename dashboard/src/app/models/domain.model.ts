@@ -27,11 +27,76 @@ export interface ExistingDoc {
   [key: string]: any;
 }
 
-export interface FeatureCollection {
+export interface FeatureCollection<T> {
   _id: string;
   _rev: string;
+  type: 'FeatureCollection';
+  features: Feature<T>[];
+}
+
+export interface Geometry {
   type: string;
-  features: {}[];
+  coordinates: number[][][];
+}
+
+export interface Feature<P extends Properties> {
+  type: 'Feature';
+  geometry: Geometry;
+  properties: P;
+}
+
+export interface Properties {
+  [key: string]: any;
+}
+
+export interface WardProperties extends Properties {
+  OBJECTID: number;
+  DCODE: number;
+  DISTRICT: string;
+  DAN: string;
+  DAS: number;
+  GaPa_NaPa: string;
+  Type_GN: string;
+  GN_CODE: number;
+  NEW_WARD_N: number;
+  DDGNWW: number;
+  CENTER: string;
+  STATE_CODE: number;
+  DDGN: number;
+  Area_SQKM: number;
+  Shape_Leng: number;
+  Shape_Area: number;
+}
+
+export module Area {
+
+  export interface PCR {
+      Positive: number;
+      Negative: number;
+  }
+
+  export interface RDT {
+      Positive: number;
+      Negative: number;
+  }
+
+  export interface Returnee {
+      Quarantined: number;
+      Not_Quarantined: number;
+  }
+
+  export interface Datum {
+      DDGNWW: number;
+      PCR: PCR;
+      RDT: RDT;
+      Returnee: Returnee;
+  }
+
+  export interface Stats {
+      _id: string;
+      _rev: string;
+      data: Datum[];
+  }
 }
 
 export type Doc = Partial<ExistingDoc>;

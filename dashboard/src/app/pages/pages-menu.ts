@@ -12,15 +12,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'map-outline',
     children: [
       {
-        title: 'Kathmandu: Returnees',
-        link: '/hub/maps/area/kathmandu',
+        title: 'Kathmandu Valley',
+        link: '/hub/maps/area/kathmandu_valley',
       },
       {
-        title: 'Kathmandu: Tests',
-        link: '/hub/maps/area/kathmandu/tests',
-      },
-      {
-        title: 'OSM Map Integration',
+        title: 'Nepal',
         link: '/hub/maps/leaflet',
       },
       {

@@ -17,7 +17,7 @@ export class SpatialService implements DBService {
   }
 
   instance() {
-    this.dbService.instance(this.spatialDB);
+    return this.dbService.instance(this.spatialDB);
   }
 
   remoteSync(): EventEmitter<any> {
