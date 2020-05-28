@@ -11,7 +11,11 @@
   }
 
   ::ng-deep .leaflet-container {
-    width: 100%;
-    height: nb-theme(card-height-large);
+    width: 100wh;
+    height: 75vh;
+  }
+
+  ::ng-deep .leaflet-popup-content-wrapper {
+    width: 315px;
   }
 }

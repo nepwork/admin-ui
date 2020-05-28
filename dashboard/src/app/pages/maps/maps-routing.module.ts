@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { MapsComponent } from './maps.component';
 import { GmapsComponent } from './gmaps/gmaps.component';
-import { LeafletComponent } from './leaflet/leaflet.component';
+import { NationComponent } from './nation/nation.component';
 import { BubbleMapComponent } from './bubble/bubble-map.component';
 import { SearchMapComponent } from './search-map/search-map.component';
 import { MapComponent } from './search-map/map/map.component';
@@ -24,13 +24,16 @@ const routes: Routes = [{
   {
     path: 'gmaps',
     component: GmapsComponent,
-  }, {
-    path: 'leaflet',
-    component: LeafletComponent,
-  }, {
+  },
+  {
+    path: 'nepal',
+    component: NationComponent,
+  },
+  {
     path: 'bubble',
     component: BubbleMapComponent,
-  }, {
+  },
+  {
     path: 'searchmap',
     component: SearchMapComponent,
   }],
@@ -45,7 +48,7 @@ export class MapsRoutingModule { }
 export const routedComponents = [
   MapsComponent,
   GmapsComponent,
-  LeafletComponent,
+  NationComponent,
   BubbleMapComponent,
   SearchMapComponent,
   MapComponent,

@@ -49,6 +49,69 @@ export interface Properties {
   [key: string]: any;
 }
 
+export interface GovProvinceProperties extends Properties {
+  DDGN: number;
+  FIRST_DCOD: number;
+  FIRST_DIST: string;
+  FIRST_GN_C: number;
+  FIRST_STAT: number;
+  SHAPE_LENG: number;
+  SHAPE_AREA: number;
+  Area: number;
+}
+
+export interface RoadAllProperties extends Properties {
+  FNODE: number;
+  TNODE: number;
+  ROAD_CODE: string;
+  TYPE: string;
+  Shape_len: number;
+}
+
+export interface RoadMajorProperties extends Properties {
+  MED_DESCRI: string;
+  RTT_DESCRI: string;
+  F_CODE_DES: string;
+  ISO: string;
+  ISOCOUNTRY: string;
+}
+
+export interface DryPortProperties extends Properties {
+  Id: number;
+  Name: string;
+}
+
+export interface SettlementProperties extends Properties {
+  AREA: number;
+  PERIMETER: number;
+  SETTLEMENT: number;
+  SETTLEME_1: number;
+  VDCNAME: string;
+  TOTALHOUSE: number;
+  TOTALPOPLN: number;
+  POLYGONID: number;
+  SCALE: number;
+  ANGLE: number;
+  Longitude: number;
+  Latitude: number;
+}
+
+export interface GovDistrictProperties extends Properties {
+  DDGN: number;
+  FIRST_DCOD: number;
+  FIRST_DIST: string;
+  FIRST_GN_C: number;
+  FIRST_STAT: number;
+  SHAPE_LENG: number;
+  SHAPE_AREA: number;
+  Area: number;
+  Centroid_X: number;
+  Centroid_Y: number;
+  Geom?: any;
+}
+
+
+
 export interface WardProperties extends Properties {
   OBJECTID: number;
   DCODE: number;

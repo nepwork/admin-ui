@@ -1,29 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
-import { Subject, Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { RegionService } from '../../../services/components/map/region.service';
-import { FeatureCollection, Area, Feature, WardProperties } from '../../../models/domain.model';
-import { takeWhile } from 'rxjs/operators';
 import polylabel from 'polylabel';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
+import { Area, Feature, FeatureCollection, WardProperties } from '../../../models/domain.model';
+import { RegionService } from '../../../services/components/map/region.service';
+import { MapUtilsService } from '../../../services/components/map/map-utils.service';
 
-const attribution = '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-const attributionWM = '© <a href="https://www.openstreetmap.org/copyright">Wikimedia Map</a> contributors';
-const tileLayerPng = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-const tileLayerWMPng = 'http://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png';
-
-const tileLayerOptions = {
-  attribution,
-  detectRetina: false,
-  maxNativeZoom: 18,
-  maxZoom: 18,
-  minZoom: 0,
-  noWrap: false,
-  opacity: 1,
-  subdomains: 'abc',
-  tms: false,
-};
 
 const defaultAreaKey = 'kathmandu_valley';
 
@@ -43,9 +28,16 @@ export class RegionComponent implements OnInit, OnDestroy {
   private map: L.Map;
   private mapReady: BehaviorSubject<Boolean> = new BehaviorSubject(false);
 
-  // TODO move to map-utils
-  openStreetMaps = L.tileLayer(tileLayerPng, tileLayerOptions);
-  wikimediaMaps = L.tileLayer(tileLayerWMPng, { ...tileLayerOptions, attribution: attributionWM});
+  layersControl: any;
+
+  options = {
+    layers: [this.mapUtilsService.openStreetMaps],
+    zoom: 12,
+    crs: L.CRS.EPSG3857,
+    center: L.latLng({ lat: 27.700769, lng: 85.33014 }),
+    zoomControl: true,
+    preferCanvas: false,
+  };
 
   private geoJsonLayerOptions = {
     onEachFeature: (_: any, layer: L.Layer) => {
@@ -58,38 +50,6 @@ export class RegionComponent implements OnInit, OnDestroy {
     },
   };
 
-  // TODO move to map-utils
-  private fullscreenControl = L.control.fullscreen({
-    position: 'topleft',
-    title: 'Enter Fullscreen',
-    titleCancel: 'Exit Fullscreen',
-    content: null,
-    forceSeparateButton: true,
-    forcePseudoFullscreen: true,
-    fullscreenElement: false,
-  });
-
-
-  // TODO move to map-utils
-  private defaultCircle = L.circle(
-    [27.590690928375974, 85.35012329910953],
-    {
-      bubblingMouseEvents : true,
-      color :  'green',
-      dashArray : null,
-      dashOffset : null,
-      fill : true,
-      fillColor : 'green',
-      fillOpacity: 0.2,
-      fillRule: 'evenodd',
-      lineCap: 'round',
-      lineJoin: 'round',
-      opacity: 1.0,
-      radius: 50,
-      stroke: true,
-      weight: 3,
-    });
-
   private stats: Area.Stats;
   private wards: FeatureCollection<WardProperties>;
   private wardDataReceived: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -101,15 +61,15 @@ export class RegionComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private regionService: RegionService,
+    private mapUtilsService: MapUtilsService,
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.pipe(takeWhile(this.isAlive)).subscribe((params: ParamMap) => {
       this.region = params.get('name') ? params.get('name').replace(/_/g, ' ') : 'Kathmandu Valley';
       this.type = params.get('type') || 'returnees';
-      this.onRouteUpdate();
     });
-
+    this.layersControl = {...this.mapUtilsService.baseLayers, overlays: {}};
     this.receiveAndSetWards();
     this.receiveAndSetStats();
   }
@@ -171,36 +131,19 @@ export class RegionComponent implements OnInit, OnDestroy {
     return this.regionService.getCacheAreaStats(this.regionKey || defaultAreaKey);
   }
 
-  private onRouteUpdate() {
-    this.componentAlive = true;
-  }
-
   ngOnDestroy(): void {
     this.componentAlive = false;
+    this.map.remove();
   }
-
-  layersControl = {
-    baseLayers: {
-      'OpenStreet Maps': this.openStreetMaps,
-      'Wikimedia Maps': this.wikimediaMaps,
-    },
-    overlays: {},
-  };
-
-  options = {
-    layers: [this.openStreetMaps],
-    zoom: 12,
-    crs: L.CRS.EPSG3857,
-    timeDimension: true,
-    center: L.latLng({ lat: 27.700769, lng: 85.33014 }),
-    zoomControl: true,
-    preferCanvas: false,
-  };
 
   onMapReady(currentMap: L.Map) {
     this.map = currentMap;
-    this.fullscreenControl.addTo(this.map);
+    this.mapUtilsService.fullScreenControl.addTo(this.map);
     this.mapReady.next(true);
+
+    setTimeout(() => {
+      this.map.invalidateSize();
+    }, 0);
   }
 
   // Do not use angular component to replace this
@@ -211,7 +154,7 @@ export class RegionComponent implements OnInit, OnDestroy {
     const rdtTotal = datum.RDT.Positive + datum.RDT.Negative;
 
     const popupHtml = `
-      <div style="width: 4vw; height: 100.0%;">
+      <div>
       <style type="text/css">
         .tg  {border-collapse:collapse;border-spacing:0;}
         .tg td {
@@ -260,15 +203,15 @@ export class RegionComponent implements OnInit, OnDestroy {
             <td class="tg-266k">RDT</td>
           </tr>
           <tr>
-            <td class="tg-pidv">Self-Isolated</td>
+            <td class="tg-pidv">Isolated</td>
             <td class="tg-pidv">${datum.Returnee.Not_Quarantined}</td>
             <td class="tg-x5oc">Positive</td>
             <td class="tg-x5oc">${datum.PCR.Positive}</td>
             <td class="tg-x5oc">${datum.RDT.Positive}</td>
           </tr>
           <tr>
-            <td class="tg-7od5">Quarantined</td>
-            <td class="tg-7od5">${datum.Returnee.Quarantined}</td>
+            <td class="tg-pidv">Quarantined</td>
+            <td class="tg-pidv">${datum.Returnee.Quarantined}</td>
             <td class="tg-0cjc">Negative</td>
             <td class="tg-0cjc">${datum.PCR.Negative}</td>
             <td class="tg-0cjc">${datum.RDT.Negative}</td>

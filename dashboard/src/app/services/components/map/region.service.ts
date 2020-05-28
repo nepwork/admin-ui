@@ -12,7 +12,7 @@ export class RegionService {
     private spatialService: SpatialService,
   ) {}
 
-  private getAndCache<T>(key: string): Observable<T> {
+  getAndCache<T>(key: string): Observable<T> {
     return from<ObservableInput<T>>(this.spatialService.get(key)).pipe(tap(async (res) => {
         try {
           await this.spatialService.instance().get(res['_id']);

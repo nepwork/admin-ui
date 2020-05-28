@@ -17,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Nepal',
-        link: '/hub/maps/leaflet',
+        link: '/hub/maps/nepal',
       },
       {
         title: 'Google Map Integration',
