@@ -8,7 +8,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'Map Visuals',
+    title: 'Covid Maps',
     icon: 'map-outline',
     children: [
       {
@@ -20,11 +20,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/hub/maps/nepal',
       },
       {
-        title: 'Google Map Integration',
-        link: '/hub/maps/gmaps',
-      },
-      {
-        title: 'Manual JSON Map',
+        title: 'Custom Map (Sample)',
         link: '/hub/maps/bubble',
       },
     ],
