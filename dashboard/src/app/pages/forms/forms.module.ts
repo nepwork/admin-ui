@@ -4,7 +4,8 @@ import {
   NbButtonModule,
   NbCardModule,
   NbCheckboxModule,
-  NbDatepickerModule, NbIconModule,
+  NbDatepickerModule,
+  NbIconModule,
   NbInputModule,
   NbRadioModule,
   NbSelectModule,
@@ -14,12 +15,7 @@ import {
 import { ThemeModule } from '../../@theme/theme.module';
 import { FormsRoutingModule } from './forms-routing.module';
 import { FormsComponent } from './forms.component';
-import { FormInputsComponent } from './form-inputs/form-inputs.component';
-import { FormLayoutsComponent } from './form-layouts/form-layouts.component';
-import { DatepickerComponent } from './datepicker/datepicker.component';
-import { ButtonsComponent } from './buttons/buttons.component';
 import { FormsModule as ngFormsModule } from '@angular/forms';
-import { FormLaboratoriesComponent } from './form-laboratories/form-laboratories.component';
 import { FormMunicipalityComponent } from './form-municipality/form-municipality.component';
 
 @NgModule({
@@ -40,12 +36,7 @@ import { FormMunicipalityComponent } from './form-municipality/form-municipality
   ],
   declarations: [
     FormsComponent,
-    ButtonsComponent,
-    FormInputsComponent,
-    FormLayoutsComponent,
-    FormLaboratoriesComponent,
     FormMunicipalityComponent,
-    DatepickerComponent,
   ],
 })
 export class FormsModule { }
