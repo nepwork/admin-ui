@@ -46,8 +46,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
   {
-    title: 'Regional Totals',
-    icon: 'pie-chart-outline',
+    title: 'Aggregates',
+    icon: 'bar-chart-2-outline',
     children: [
       {
         title: 'PCR Tests',
@@ -68,7 +68,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     group: true,
   },
   {
-    title: 'Covid Maps',
+    title: 'COVID-19 Maps',
     icon: 'map-outline',
     children: [
       {
@@ -86,8 +86,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
     ],
   },
   {
-    title: 'Returnee Stats',
-    icon: 'people-outline',
+    title: 'COVID-19 Stats',
+    icon: 'pie-chart-outline',
     link: '/hub/charts/echarts',
   },
   {
