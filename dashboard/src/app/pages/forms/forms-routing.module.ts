@@ -7,6 +7,8 @@ import { FormPOEComponent } from './form-poe/form-poe.component';
 import { FormQFComponent } from './form-quarantine-facility/form-qf.component';
 import { FormRDTComponent } from './form-rdt-lab/form-rdt.component';
 import { FormPCRComponent } from './form-pcr-lab/form-pcr.component';
+import { FormIsolationComponent } from './form-isolation/form-isolation.component';
+import { FormHospitalComponent } from './form-hospital/form-hospital.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,14 @@ const routes: Routes = [
       {
         path: 'pcr-lab',
         component: FormPCRComponent,
+      },
+      {
+        path: 'isolation',
+        component: FormIsolationComponent,
+      },
+      {
+        path: 'hospital',
+        component: FormHospitalComponent,
       },
       {
         path: 'municipality',

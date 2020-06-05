@@ -1,66 +1,98 @@
 <div class="row">
   <div class="col-md-12">
     <nb-card>
-      <nb-card-header>PCR Lab Reporting</nb-card-header>
+      <nb-card-header>Isolated Patient Reporting</nb-card-header>
       <nb-card-body>
         <nb-accordion multi>
-          <nb-accordion-item #patientSymptomsAndTests expanded>
+          <nb-accordion-item #patientDetails expanded>
             <nb-accordion-item-header>
-              Patient's PCR Tests
+              Patient Isolation Details
             </nb-accordion-item-header>
             <nb-accordion-item-body>
-              <div *ngFor="let record of pcrRecords; let index">
-                <div class="row">
-                  <div class="col-sm-4">
+              <div class="row">
+                  <div class="col-sm-6">
                     <div class="form-group">
-                      <label [for]="'pcrTestDate' + index" class="label"
-                        >PCR Test Date</label
+                      <label for="isoStartDate" class="label"
+                        >Isolation Start Date</label
                       >
                       <input
                         nbInput
                         fullWidth
-                        placeholder="Select PCR Test Date"
-                        [nbDatepicker]="pcrDatePicker"
-                        [id]="'pcrTestDate' + index"
+                        placeholder="Select Isolation Start Date"
+                        [nbDatepicker]="isolationStartDatePicker"
+                        id="isoStartDate"
                       />
-                      <nb-datepicker #pcrDatePicker></nb-datepicker>
+                      <nb-datepicker #isolationStartDatePicker></nb-datepicker>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
-                      <label [for]="'pcrTestResult' + index" class="label"
-                        >PCR Test Results</label
+                      <label for="isoEndDate" class="label"
+                        >Isolation End Date</label
                       >
-                      <div class="col-sm-6">
-                        <nb-radio-group
-                          [id]="'pcrTestResult' + index"
-                          class="row"
-                        >
-                          <nb-radio value="Negative">Negative</nb-radio>
-                          <nb-radio value="Positive">Positive</nb-radio>
-                          <nb-radio value="Pending">Pending</nb-radio>
-                        </nb-radio-group>
-                      </div>
+                      <input
+                        nbInput
+                        fullWidth
+                        placeholder="Select Isolation End Date"
+                        [nbDatepicker]="qEndDatePicker"
+                        id="isoEndDate"
+                      />
+                      <nb-datepicker #qEndDatePicker></nb-datepicker>
                     </div>
                   </div>
-                </div>
               </div>
               <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                   <div class="form-group">
-                    <button
-                      nbButton
-                      outline
-                      status="primary"
-                      size="small"
-                      (click)="addPCRRecord($event)"
+                    <label for="isoPlaceName" class="label"
+                      >Name of Isolation Place</label
                     >
-                      <nb-icon icon="file-add-outline"></nb-icon>Add PCR Test
-                      &nbsp; &nbsp;
-                    </button>
+                    <input
+                      nbInput
+                      fullWidth
+                      placeholder="Name of Isolation Place"
+                      id="isoPlaceName"
+                    />
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="isoAddress" class="label"
+                      >Isolation Place Address</label
+                    >
+                    <input
+                      nbInput
+                      fullWidth
+                      placeholder="Isolation Place Address"
+                      id="isoAddress"
+                    />
+                  </div>
+                </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="inputVentilation" class="label">Ventilation</label>
+                  <div class="col-sm-6">
+                    <nb-radio-group id="inputVentilation" class="row">
+                      <nb-radio>Yes</nb-radio>
+                      <nb-radio>No</nb-radio>
+                    </nb-radio-group>
                   </div>
                 </div>
               </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="inputCaseStatus" class="label">Case Status</label>
+                  <div class="col-sm-6">
+                    <nb-radio-group id="inputCaseStatus" class="row">
+                      <nb-radio>Normal</nb-radio>
+                      <nb-radio>Critical</nb-radio>
+                    </nb-radio-group>
+                  </div>
+                </div>
+              </div>
+            </div>
             </nb-accordion-item-body>
           </nb-accordion-item>
           <nb-accordion-item #patientDetails>
@@ -315,7 +347,7 @@
         </nb-accordion>
         <nb-card>
           <button type="submit" status="primary" nbButton>
-            <nb-icon icon="save-outline"></nb-icon> Save Patient's Details
+            <nb-icon icon="save-outline"></nb-icon> Save Isolated Patient's Details
           </button>
         </nb-card>
       </nb-card-body>

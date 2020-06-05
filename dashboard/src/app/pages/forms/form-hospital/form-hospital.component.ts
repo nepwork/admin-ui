@@ -15,11 +15,11 @@ class SymptomRecord {
 }
 
 @Component({
-  selector: 'ngx-form-qf',
-  styleUrls: ['./form-qf.component.scss'],
-  templateUrl: './form-qf.component.html',
+  selector: 'ngx-form-hospital',
+  styleUrls: ['./form-hospital.component.scss'],
+  templateUrl: './form-hospital.component.html',
 })
-export class FormQFComponent implements OnInit {
+export class FormHospitalComponent implements OnInit {
 
   countries: string[];
   nearbyCountries: string[];
@@ -37,6 +37,7 @@ export class FormQFComponent implements OnInit {
   symptomRecords: Array<SymptomRecord> = [];
 
   relationName = 'Father';
+  status = 'Recovery';
 
   ngOnInit() {
     this.countries = COUNTRIES;
@@ -56,6 +57,10 @@ export class FormQFComponent implements OnInit {
 
   changeRelationship(event: string) {
     this.relationName = event;
+  }
+
+  statusChange(event: string) {
+    this.status = event;
   }
 
   addSymptomRecord(_: boolean) {

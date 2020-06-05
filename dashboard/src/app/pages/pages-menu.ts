@@ -32,18 +32,22 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/hub/secured/forms/pcr-lab',
       },
       {
-        title: 'Municipality',
-        link: '/hub/secured/forms/municipality',
+        title: 'Isolation',
+        link: '/hub/secured/forms/isolation',
       },
       {
-        title: 'Returnees',
-        link: '/hub/secured/tables/returnee-table',
+        title: 'Hospital',
+        link: '/hub/secured/forms/hospital',
+      },
+      {
+        title: 'Municipality',
+        link: '/hub/secured/forms/municipality',
       },
     ],
   },
   {
-    title: 'Tests',
-    icon: 'file-add-outline',
+    title: 'Regional Totals',
+    icon: 'pie-chart-outline',
     children: [
       {
         title: 'PCR Tests',
@@ -52,6 +56,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'RDT Tests',
         link: '/hub/secured/tables/rdt-table',
+      },
+      {
+        title: 'Returnees',
+        link: '/hub/secured/tables/returnee-table',
       },
     ],
   },

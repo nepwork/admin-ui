@@ -1,5 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { NbCheckboxComponent } from '@nebular/theme';
+import { Component, OnInit } from '@angular/core';
 import { COUNTRIES, NEARBY_COUNTRIES } from '../../../@core/data/countries.geo';
 import { PROVINCES } from '../../../@core/data/province-districts.geo';
 

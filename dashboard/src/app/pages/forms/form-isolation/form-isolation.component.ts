@@ -15,11 +15,11 @@ class SymptomRecord {
 }
 
 @Component({
-  selector: 'ngx-form-qf',
-  styleUrls: ['./form-qf.component.scss'],
-  templateUrl: './form-qf.component.html',
+  selector: 'ngx-form-isolation',
+  styleUrls: ['./form-isolation.component.scss'],
+  templateUrl: './form-isolation.component.html',
 })
-export class FormQFComponent implements OnInit {
+export class FormIsolationComponent implements OnInit {
 
   countries: string[];
   nearbyCountries: string[];

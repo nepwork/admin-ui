@@ -22,6 +22,8 @@ import { FormPOEComponent } from './form-poe/form-poe.component';
 import { FormQFComponent } from './form-quarantine-facility/form-qf.component';
 import { FormRDTComponent } from './form-rdt-lab/form-rdt.component';
 import { FormPCRComponent } from './form-pcr-lab/form-pcr.component';
+import { FormIsolationComponent } from './form-isolation/form-isolation.component';
+import { FormHospitalComponent } from './form-hospital/form-hospital.component';
 
 @NgModule({
   imports: [
@@ -48,6 +50,8 @@ import { FormPCRComponent } from './form-pcr-lab/form-pcr.component';
     FormQFComponent,
     FormRDTComponent,
     FormPCRComponent,
+    FormIsolationComponent,
+    FormHospitalComponent,
   ],
 })
 export class FormsModule { }
