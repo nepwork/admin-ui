@@ -143,7 +143,7 @@ export abstract class TabularService {
     const dropdown = {
       type: 'list',
       config: {
-        selectText: 'Select Province',
+        selectText: 'Filter by Province',
         list: [
           { value: 'Province 1', title: 'Province 1'},
           { value: 'Province 2', title: 'Province 2'},

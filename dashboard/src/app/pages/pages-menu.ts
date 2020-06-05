@@ -17,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'Point of Entry',
-        link: '/hub/secured/forms/municipality',
+        link: '/hub/secured/forms/point-of-entry',
       },
       {
         title: 'Municipality',

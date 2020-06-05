@@ -17,6 +17,7 @@ import { FormsRoutingModule } from './forms-routing.module';
 import { FormsComponent } from './forms.component';
 import { FormsModule as ngFormsModule } from '@angular/forms';
 import { FormMunicipalityComponent } from './form-municipality/form-municipality.component';
+import { FormPOEComponent } from './form-poe/form-poe.component';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { FormMunicipalityComponent } from './form-municipality/form-municipality
     NbUserModule,
     NbCheckboxModule,
     NbRadioModule,
+    NbSelectModule,
     NbDatepickerModule,
     FormsRoutingModule,
     NbSelectModule,
@@ -37,6 +39,7 @@ import { FormMunicipalityComponent } from './form-municipality/form-municipality
   declarations: [
     FormsComponent,
     FormMunicipalityComponent,
+    FormPOEComponent,
   ],
 })
 export class FormsModule { }
