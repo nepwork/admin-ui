@@ -65,8 +65,8 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="inputGender" class="label">Gender</label>
-              <div class="col-sm-9">
-                <nb-radio-group class="row">
+              <div class="col-sm-6">
+                <nb-radio-group id="inputGender" class="row">
                   <nb-radio>Male</nb-radio>
                   <nb-radio>Female</nb-radio>
                   <nb-radio>Other</nb-radio>
@@ -84,7 +84,8 @@
               <nb-select
                 id="inputTraveledCountry"
                 fullWidth
-                placeholder="Traveled Country"
+                multiple
+                placeholder="Select one or more Traveled Countries"
               >
                 <nb-option-group title="Nearby Countries">
                   <nb-option
@@ -105,18 +106,18 @@
           </div>
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="inputTransitCountries" class="label"
-                >Transit Countries in Return Trip</label
+              <label for="inputNationality" class="label"
+                >Nationality</label
               >
               <nb-select
-                id="inputTransitCountries"
+                id="inputNationality"
                 fullWidth
-                multiple
-                placeholder="Transit Countries in Return Trip"
+                selected="Nepal"
+                placeholder="Select Nationality"
               >
                 <nb-option-group title="Nearby Countries">
                   <nb-option
-                    *ngFor="let country of nearbyCountries"
+                    *ngFor="let country of nepalAndNeighbors"
                     [value]="country"
                     >{{ country }}</nb-option
                   >
@@ -298,87 +299,175 @@
             <hr />
           </div>
         </div>
+      <div *ngFor="let symptom of symptomRecords; let index">
         <div class="row">
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
-              <button
-                nbButton
-                outline
-                status="primary"
-                (click)="addRDTRecord($event)"
+              <label [for]="'symptomDate' + index" class="label"
+                >First Occurrence of Symptoms</label
               >
-                <nb-icon icon="file-add-outline"></nb-icon>Add RDT Test
-              </button>
+              <input
+                nbInput
+                fullWidth
+                placeholder="Select First Date of Symptoms"
+                [nbDatepicker]="symptomDatePicker"
+                [id]="'symptomDate' + index"
+              />
+              <nb-datepicker #symptomDatePicker></nb-datepicker>
             </div>
           </div>
-          <div class="col-sm-3">
+          <div class="col-sm-4">
             <div class="form-group">
-              <button
-                nbButton
-                outline
-                status="primary"
-                (click)="addPCRRecord($event)"
+              <label for="inputSymptoms" class="label"
+                >Symptoms in Last Two Weeks</label
               >
-                <nb-icon icon="file-add-outline"></nb-icon>Add PCR Test
-              </button>
+              <nb-select
+                [id]="'inputSymptoms' + index"
+                fullWidth
+                multiple
+                placeholder="Recent Symptoms"
+              >
+                <nb-option value="Fever">Fever</nb-option>
+                <nb-option value="Cough">Cough</nb-option>
+                <nb-option value="Shortness of Breath">Shortness of Breath</nb-option>
+              </nb-select>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="form-group">
+              <label for="inputOtherSymptoms" class="label"
+                >Other symptoms, if any</label
+              >
+              <input
+              type="text"
+              nbInput
+              fullWidth
+              [id]="'inputOtherSymptoms' + index"
+              placeholder="Other symptoms (if any)"
+            />
             </div>
           </div>
         </div>
-        <div *ngFor="let record of rdtRecords; let index;">
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div class="form-group">
+            <button
+              nbButton
+              outline
+              status="primary"
+              size="small"
+              (click)="addSymptomRecord($event)"
+            >
+              <nb-icon icon="file-add-outline"></nb-icon>Add Symptoms
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+        <div *ngFor="let record of rdtRecords; let index">
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="form-group">
-                <label [for]="'rdtTestDate'+index" class="label">RDT Test Date</label>
+                <label [for]="'rdtTestDate' + index" class="label"
+                  >RDT Test Date</label
+                >
                 <input
                   nbInput
                   fullWidth
                   placeholder="Select RDT Test Date"
                   [nbDatepicker]="rdtDatePicker"
-                  [id]="'rdtTestDate'+index"
+                  [id]="'rdtTestDate' + index"
                 />
                 <nb-datepicker #rdtDatePicker></nb-datepicker>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <div class="form-group">
-                <label [for]="'rdtTestResult'+index" class="label">RDT Test Results</label>
-                <nb-radio-group [id]="'rdtTestResult'+index" class="row">
-                  <nb-radio value="Negative">Negative</nb-radio>
-                  <nb-radio value="Positive">Positive</nb-radio>
-                  <nb-radio value="Pending">Pending</nb-radio>
-                </nb-radio-group>
+                <label [for]="'rdtTestResult' + index" class="label"
+                  >RDT Test Results</label
+                >
+                <div class="col-sm-6">
+                  <nb-radio-group [id]="'rdtTestResult' + index" class="row">
+                    <nb-radio value="Negative">Negative</nb-radio>
+                    <nb-radio value="Positive">Positive</nb-radio>
+                    <nb-radio value="Pending">Pending</nb-radio>
+                  </nb-radio-group>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <div *ngFor="let record of pcrRecords; let index;">
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <button
+                nbButton
+                outline
+                status="primary"
+                size="small"
+                (click)="addRDTRecord($event)"
+              >
+                <nb-icon icon="file-add-outline"></nb-icon>Add RDT Test &nbsp; &nbsp;
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngFor="let record of pcrRecords; let index">
           <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
               <div class="form-group">
-                <label [for]="'pcrTestDate'+index" class="label">PCR Test Date</label>
+                <label [for]="'pcrTestDate' + index" class="label"
+                  >PCR Test Date</label
+                >
                 <input
                   nbInput
                   fullWidth
                   placeholder="Select PCR Test Date"
                   [nbDatepicker]="pcrDatePicker"
-                  [id]="'pcrTestDate'+index"
+                  [id]="'pcrTestDate' + index"
                 />
                 <nb-datepicker #pcrDatePicker></nb-datepicker>
               </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-6">
               <div class="form-group">
-                <label [for]="'pcrTestResult'+index" class="label">PCR Test Results</label>
-                <nb-radio-group [id]="'pcrTestResult'+index" class="row">
-                  <nb-radio value="Negative">Negative</nb-radio>
-                  <nb-radio value="Positive">Positive</nb-radio>
-                  <nb-radio value="Pending">Pending</nb-radio>
-                </nb-radio-group>
+                <label [for]="'pcrTestResult' + index" class="label"
+                  >PCR Test Results</label
+                >
+                <div class="col-sm-6">
+                  <nb-radio-group [id]="'pcrTestResult' + index" class="row">
+                    <nb-radio value="Negative">Negative</nb-radio>
+                    <nb-radio value="Positive">Positive</nb-radio>
+                    <nb-radio value="Pending">Pending</nb-radio>
+                  </nb-radio-group>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <button type="submit" status="primary" nbButton>Submit</button>
+        <div class="row">
+          <div class="col-sm-4">
+            <div class="form-group">
+              <button
+                nbButton
+                outline
+                status="primary"
+                size="small"
+                (click)="addPCRRecord($event)"
+              >
+                <nb-icon icon="file-add-outline"></nb-icon>Add PCR Test &nbsp; &nbsp;
+              </button>
+            </div>
+          </div>
+        </div>
+        <nb-card>
+          <button type="submit" status="primary" nbButton>
+            <nb-icon icon="save-outline"
+            ></nb-icon> Save Returnee Details
+          </button>
+        </nb-card>
       </nb-card-body>
     </nb-card>
   </div>

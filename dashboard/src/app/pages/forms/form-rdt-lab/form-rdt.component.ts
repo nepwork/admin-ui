@@ -16,15 +16,14 @@ class SymptomRecord {
 }
 
 @Component({
-  selector: 'ngx-form-poe',
-  styleUrls: ['./form-poe.component.scss'],
-  templateUrl: './form-poe.component.html',
+  selector: 'ngx-form-rdt',
+  styleUrls: ['./form-rdt.component.scss'],
+  templateUrl: './form-rdt.component.html',
 })
-export class FormPOEComponent implements OnInit {
+export class FormRDTComponent implements OnInit {
 
   countries: string[];
   nearbyCountries: string[];
-  nepalAndNeighbors: string[];
 
   provinces: string[];
   districts = { destinationOpts: [], addressOpts: []};
@@ -43,7 +42,6 @@ export class FormPOEComponent implements OnInit {
   ngOnInit() {
     this.countries = COUNTRIES;
     this.nearbyCountries = NEARBY_COUNTRIES;
-    this.nepalAndNeighbors = ['Nepal', ...NEARBY_COUNTRIES];
     this.provinces = PROVINCES.map(province => province.name);
   }
 

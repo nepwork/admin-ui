@@ -20,6 +20,18 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/hub/secured/forms/point-of-entry',
       },
       {
+        title: 'Quarantine Facility',
+        link: '/hub/secured/forms/quarantine-facility',
+      },
+      {
+        title: 'RDT Lab',
+        link: '/hub/secured/forms/rdt-lab',
+      },
+      {
+        title: 'PCR Lab',
+        link: '/hub/secured/forms/pcr-lab',
+      },
+      {
         title: 'Municipality',
         link: '/hub/secured/forms/municipality',
       },

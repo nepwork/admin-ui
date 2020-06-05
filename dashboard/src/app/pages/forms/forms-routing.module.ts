@@ -4,6 +4,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsComponent } from './forms.component';
 import { FormMunicipalityComponent } from './form-municipality/form-municipality.component';
 import { FormPOEComponent } from './form-poe/form-poe.component';
+import { FormQFComponent } from './form-quarantine-facility/form-qf.component';
+import { FormRDTComponent } from './form-rdt-lab/form-rdt.component';
+import { FormPCRComponent } from './form-pcr-lab/form-pcr.component';
 
 const routes: Routes = [
   {
@@ -13,6 +16,18 @@ const routes: Routes = [
       {
         path: 'point-of-entry',
         component: FormPOEComponent,
+      },
+      {
+        path: 'quarantine-facility',
+        component: FormQFComponent,
+      },
+      {
+        path: 'rdt-lab',
+        component: FormRDTComponent,
+      },
+      {
+        path: 'pcr-lab',
+        component: FormPCRComponent,
       },
       {
         path: 'municipality',
