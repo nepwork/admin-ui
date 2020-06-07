@@ -24,6 +24,11 @@ import { FormRDTComponent } from './form-rdt-lab/form-rdt.component';
 import { FormPCRComponent } from './form-pcr-lab/form-pcr.component';
 import { FormIsolationComponent } from './form-isolation/form-isolation.component';
 import { FormHospitalComponent } from './form-hospital/form-hospital.component';
+import { ReturneeDetailsComponent } from './form-sections/returnee-details/returnee-details.component';
+import { ReturneeLocationDetailsComponent } from './form-sections/returnee-location-details/returnee-location-details.component';
+import { PcrTestRecordComponent } from './form-sections/pcr-test-record/pcr-test-record.component';
+import { RdtTestRecordComponent } from './form-sections/rdt-test-record/rdt-test-record.component';
+import { SymptomRecordComponent } from './form-sections/symptom-record/symptom-record.component';
 
 @NgModule({
   imports: [
@@ -52,6 +57,11 @@ import { FormHospitalComponent } from './form-hospital/form-hospital.component';
     FormPCRComponent,
     FormIsolationComponent,
     FormHospitalComponent,
+    ReturneeDetailsComponent,
+    ReturneeLocationDetailsComponent,
+    PcrTestRecordComponent,
+    RdtTestRecordComponent,
+    SymptomRecordComponent,
   ],
 })
 export class FormsModule { }

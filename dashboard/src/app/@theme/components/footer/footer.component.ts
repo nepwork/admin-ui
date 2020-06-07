@@ -5,15 +5,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer.component.scss'],
   template: `
     <span class="created-by">
-      Created with ♥ by <b><a href="https://covidsim.team/about-us" target="_blank">covidsim.team</a></b> 2020
+      Created with ♥ for
+      <b><a href="https://covidsim.team/about-us" target="_blank">covidsim.team</a></b>
+      by <a href="https://risav.dev/introducing-nepwork-ck5294zz401bvmus1p2oskup0">Risav Karna</a>
     </span>
     <div class="socials">
-      <a href="https://github.com/covidsimteam" target="_blank" class="ion ion-social-github"></a>
-      <!-- <a href="#" target="_blank" class="ion ion-social-facebook"></a>
-      <a href="#" target="_blank" class="ion ion-social-twitter"></a>
-      <a href="#" target="_blank" class="ion ion-social-linkedin"></a> -->
+      <a href="https://github.com/covidsimteam" target="_blank" class="ion ion-social-github"></a>-
     </div>
   `,
 })
-export class FooterComponent {
-}
+export class FooterComponent {}

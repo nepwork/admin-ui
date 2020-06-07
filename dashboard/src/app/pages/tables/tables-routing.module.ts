@@ -12,15 +12,15 @@ const routes: Routes = [{
   component: TablesComponent,
   children: [
     {
-      path: 'returnee-table',
+      path: 'returnee',
       component: ReturneeComponent,
     },
     {
-      path: 'pcr-table',
+      path: 'pcr',
       component: PcrComponent,
     },
     {
-      path: 'rdt-table',
+      path: 'rdt',
       component: RdtComponent,
     },
     {

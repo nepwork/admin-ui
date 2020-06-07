@@ -51,15 +51,15 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'PCR Tests',
-        link: '/hub/secured/tables/pcr-table',
+        link: '/hub/secured/tables/pcr',
       },
       {
         title: 'RDT Tests',
-        link: '/hub/secured/tables/rdt-table',
+        link: '/hub/secured/tables/rdt',
       },
       {
         title: 'Returnees',
-        link: '/hub/secured/tables/returnee-table',
+        link: '/hub/secured/tables/returnee',
       },
     ],
   },
