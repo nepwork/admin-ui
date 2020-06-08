@@ -78,10 +78,6 @@ export class ReturneeTableService extends TabularService {
     super.enableDBToTableSyncTabular(source, this.returneeService);
   }
 
-  prepareNewTableRow(fields: RETTuple, docRev: string) {
-    return super.prepareNewTableRowTabular(fields, docRev, this.returneeService);
-  }
-
   prepareDoc(newRow: any, removeRev = false): PSchemaDoc {
     return super.prepareDocTabular(newRow, SCHEMA_VER, this.returneeService, removeRev);
   }

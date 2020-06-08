@@ -48,9 +48,11 @@ export abstract class TabularService {
           if (doc._deleted) {
             this.findAndRemoveFromTable(doc._id, source);
           } else {
-            const newRow = this.prepareNewTableRowTabular(doc.fields, doc._rev, service);
-            this.findAndRemoveFromTable(doc._id, source);
-            source.prepend(newRow);
+            if (doc.fields && doc.fields.length) {
+              const newRow = this.prepareNewTableRowTabular(doc.fields, doc._rev, service);
+              this.findAndRemoveFromTable(doc._id, source);
+              source.prepend(newRow);
+            }
           }
         });
       }
@@ -67,7 +69,11 @@ export abstract class TabularService {
     return newDoc;
   }
 
-  xTrim(str: string | number, toLowerCase = true) {
+  xTrim(str: string): string {
+    return str ? str.trim() : str;
+  }
+
+  xTrimWithLCase(str: string | number, toLowerCase = true): string {
     if (str && typeof str === 'string') {
       const trimmed = str.trim().replace(/ /g, '_');
       return toLowerCase ? trimmed.toLowerCase() : trimmed;
@@ -99,9 +105,10 @@ export abstract class TabularService {
   }
 
   prepareDocID(province: string, district: string, more: string[] = null) {
+    const t = this.xTrimWithLCase;
     return more ?
-      `province:${this.xTrim(province)}:district:${this.xTrim(district)}:municipality:${more[0]}:ward:${more[1]}` :
-      `province:${this.xTrim(province)}:district:${this.xTrim(district)}`;
+      `province:${t(province)}:district:${t(district)}:municipality:${t(more[0])}:ward:${t(more[1])}` :
+      `province:${t(province)}:district:${t(district)}`;
   }
 
   protected saveTableRowChangesTabular(oldRow: any, newRow: any, schemaVer: string, service: DataTableService) {

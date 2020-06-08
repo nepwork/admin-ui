@@ -16,7 +16,11 @@ export const settings = {
     confirmDelete: true,
   },
   actions: {
-    columnTitle: 'EDIT | DELETE',
+    columnTitle: 'EDIT|DELETE',
   },
   columns: null,
+  pager: {
+    perPage: 50,
+  },
+  // TODO utilize rowClassFunction for highlighting new added/updated rows
 };
