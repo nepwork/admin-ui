@@ -1,4 +1,4 @@
-Dashboard for tracking COVID-19 stats in Nepal
+# Dashboard for tracking COVID-19 stats in Nepal
 
 ## Key features
 
@@ -14,12 +14,12 @@ Dashboard for tracking COVID-19 stats in Nepal
 - Data change and deletion reviews for high level admins/auditors and transparency
 - Data access and usage monitoring dashboards 
 
-### What's included:
+### What's included
 
 - Angular 9+ & Typescript
 - Bootstrap 4+ & SCSS
 - Responsive layout
 
 ## Documentation
-This template is using [Nebular](https://github.com/akveo/nebular) modules set, [here you can find documentation and other useful articles](https://hubs.ly/H0n4ZPt0).
 
+This template is using [Nebular](https://github.com/akveo/nebular) modules set, [here you can find documentation and other useful articles](https://hubs.ly/H0n4ZPt0)

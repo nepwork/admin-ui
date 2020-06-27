@@ -1,5 +1,7 @@
 import { NbMenuItem } from '@nebular/theme';
 
+// TODO: remove all unused pages/modules
+
 export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Core Panels',
