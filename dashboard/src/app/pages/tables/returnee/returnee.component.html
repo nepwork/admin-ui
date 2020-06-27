@@ -4,7 +4,7 @@
       <nb-card-header>Returnee Bulk Editor</nb-card-header>
       <nb-card-body>
         <form class="form-inline">
-          <label for="csvFileUpload">Choose a CSV file to review before upload</label>
+          <label for="csvFileUpload">{{ uploadInstruction }}</label>
           <input
             type="file"
             accept=".csv"
@@ -19,7 +19,7 @@
           <button
             type="reset"
             nbButton
-            class="col-md-4"
+            class="col-md-2"
             status="warning"
             *ngIf="isFileLoaded"
             (click)="resetHandler($event)"

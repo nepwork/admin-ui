@@ -21,7 +21,7 @@ export class AppConf {
   public db: DBConf; // TODO add restricted authorization for role public before using this on prod
 
   constructor() {
-    this.uri = { dashboardUri: appUris.devDashboard, docDBUri: appUris.devDocDB};
+    this.uri = { docDBUri: appUris.devDocDB};
     // proxyUri: appUris.devProxy
     this.db = { docDBUser: appUris.docDBUser, docDBPassword: appUris.docDBPassword };
   }

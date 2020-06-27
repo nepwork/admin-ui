@@ -89,11 +89,11 @@ export class EchartsBarAnimationComponent implements AfterViewInit, OnDestroy {
         animationDelayUpdate: idx => idx * 5,
       };
 
-      for (let i = 0; i < 100; i++) {
+      [...Array(100).keys()].forEach((_, i) => {
         xAxisData.push('Category ' + i);
         data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
         data2.push((Math.cos(i / 5) * (i / 5 - 10) + i / 6) * 5);
-      }
+      });
     });
   }
 

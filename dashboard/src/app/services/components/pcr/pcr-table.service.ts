@@ -78,10 +78,6 @@ export class PcrTableService extends TabularService {
     super.enableDBToTableSyncTabular(source, this.pcrService);
   }
 
-  prepareNewTableRow(fields: PCRTuple, docRev: string) {
-    return super.prepareNewTableRowTabular(fields, docRev, this.pcrService);
-  }
-
   prepareDoc(newRow: any, removeRev = false): PSchemaDoc {
     return super.prepareDocTabular(newRow, SCHEMA_VER, this.pcrService, removeRev);
   }
