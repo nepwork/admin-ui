@@ -79,10 +79,6 @@ export class RdtTableService extends TabularService {
     super.enableDBToTableSyncTabular(source, this.rdtService);
   }
 
-  prepareNewTableRow(fields: RDTTuple, docRev: string) {
-    return super.prepareNewTableRowTabular(fields, docRev, this.rdtService);
-  }
-
   prepareDoc(newRow: any, removeRev = false): PSchemaDoc {
     return super.prepareDocTabular(newRow, SCHEMA_VER, this.rdtService, removeRev);
   }
