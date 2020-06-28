@@ -185,6 +185,7 @@ export class RdtComponent implements OnInit {
 
   onDeleteConfirm(event: any): void {
     if (window.confirm('Confirm RDT test record deletion:')) {
+      this.rdtTableService.saveTableRowDeletion(event.data);
       event.confirm.resolve();
     } else {
       event.confirm.reject();
