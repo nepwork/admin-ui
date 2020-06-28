@@ -61,4 +61,16 @@ export class MapUtilsService {
   get baseLayers() {
     return { ...this.layersControl_ };
   }
+
+  getDefaultMarker(pointOfInaccessibility: [number, number]) {
+    return L.marker({ lng: pointOfInaccessibility[0], lat: pointOfInaccessibility[1] }, {
+      icon: L.icon({
+        iconSize: [ 26, 42 ],
+        iconAnchor: [ 13, 42 ],
+        iconUrl: 'assets/img/markers/marker-icon.png',
+        iconRetinaUrl: 'assets/img/markers/marker-icon-2x.png',
+        shadowUrl: 'assets/img/markers/marker-shadow.png',
+      }),
+    });
+  }
 }

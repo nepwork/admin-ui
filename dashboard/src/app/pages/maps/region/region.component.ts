@@ -82,6 +82,15 @@ export class RegionComponent implements OnInit, OnDestroy {
     });
   }
 
+  private receiveAndSetStats() {
+    this.getStats().subscribe((stats: Area.Stats) => {
+      this.stats = stats;
+      this.wardDataReceived.subscribe(received => {
+        if (received) this.setStats();
+      });
+    });
+  }
+
   private setStats() {
     this.markerClusterGroup = L.markerClusterGroup();
     this.featureGroup = L.featureGroup();
@@ -89,15 +98,7 @@ export class RegionComponent implements OnInit, OnDestroy {
     this.stats.data.forEach(datum => {
       const foundFeature = this.wards.features.find(feature => datum.DDGNWW === feature.properties.DDGNWW);
       const pointOfInaccessibility = polylabel(foundFeature.geometry.coordinates) as [number, number];
-      const poiLabelMarker = L.marker({ lng: pointOfInaccessibility[0], lat: pointOfInaccessibility[1] }, {
-        icon: L.icon({
-          iconSize: [ 26, 42 ],
-          iconAnchor: [ 13, 42 ],
-          iconUrl: 'assets/img/markers/marker-icon.png',
-          iconRetinaUrl: 'assets/img/markers/marker-icon-2x.png',
-          shadowUrl: 'assets/img/markers/marker-shadow.png',
-        }),
-      });
+      const poiLabelMarker = this.mapUtilsService.getDefaultMarker(pointOfInaccessibility);
       this.setPopup(poiLabelMarker, datum, foundFeature);
       this.markerClusterGroup.addLayer(poiLabelMarker);
     });
@@ -110,14 +111,7 @@ export class RegionComponent implements OnInit, OnDestroy {
     });
   }
 
-  private receiveAndSetStats() {
-    this.getStats().subscribe((stats: Area.Stats) => {
-      this.stats = stats;
-      this.wardDataReceived.subscribe(received => {
-        if (received) this.setStats();
-      });
-    });
-  }
+
 
   get regionKey() {
     return this.region ? this.region.trim().replace(/ /g, '_').toLowerCase() : null;
@@ -182,9 +176,10 @@ export class RegionComponent implements OnInit, OnDestroy {
         .tg .tg-pidv{background-color:#ffce93;border-color:inherit;text-align:left;vertical-align:top}
       </style>
       <table class="tg">
-        <thead><tr>
-          <th class="tg-y698" colspan="2">District</th>
-          <th class="tg-y698" colspan="3">${feature.properties.DISTRICT}</th>
+        <thead>
+          <tr>
+            <th class="tg-y698" colspan="2">District</th>
+            <th class="tg-y698" colspan="3">${feature.properties.DISTRICT}</th>
           </tr>
         </thead>
         <tbody>

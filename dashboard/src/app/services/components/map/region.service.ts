@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { from, Observable, ObservableInput } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { Census2011, HealthStats } from '../../../models/db-response.model';
 import { Area, FeatureCollection, WardProperties } from '../../../models/domain.model';
 import { SpatialService } from '../../db/spatial.service';
 
@@ -22,6 +23,14 @@ export class RegionService {
         }
       }),
     );
+  }
+
+  getCacheDistrictWiseCensus(): Observable<Census2011.Districts> {
+    return this.getAndCache<Census2011.Districts>('district_stats_2011');
+  }
+
+  getCacheDistrictHealthStats(): Observable<HealthStats.Districts> {
+    return this.getAndCache<HealthStats.Districts>('district_health_stats');
   }
 
   getCacheAreaWards(area: string): Observable<FeatureCollection<WardProperties>> {
