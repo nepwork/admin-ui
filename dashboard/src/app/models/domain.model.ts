@@ -176,3 +176,10 @@ export type DataTableService = RdtService | PcrService | ReturneeService;
 export function isReturneeService(service: DataTableService): service is ReturneeService {
   return 'getAllWards' in service;
 }
+
+
+export interface BarChartDataSet {
+  data: number[];
+  label: string;
+  backgroundColor: string;
+}

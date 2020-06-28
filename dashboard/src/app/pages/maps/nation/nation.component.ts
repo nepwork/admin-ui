@@ -1,19 +1,20 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NbColorHelper, NbThemeService } from '@nebular/theme';
 import * as L from 'leaflet';
 import 'leaflet.markercluster';
 import polylabel from 'polylabel';
-import { AsyncSubject, forkJoin, from, merge, Subject, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from, merge, Subscription } from 'rxjs';
 import 'style-loader!leaflet/dist/leaflet.css';
 import {
   Census2011,
   HealthStats,
-  RETTupleRev,
+  RETTupleRev
 } from '../../../models/db-response.model';
 import {
-  FeatureCollection,
+  BarChartDataSet, FeatureCollection,
   GovDistrictProperties,
   GovProvinceProperties,
-  RoadMajorProperties,
+  RoadMajorProperties
 } from '../../../models/domain.model';
 import { MapUtilsService } from '../../../services/components/map/map-utils.service';
 import { RegionService } from '../../../services/components/map/region.service';
@@ -30,7 +31,7 @@ interface MapLayer {
   templateUrl: './nation.component.html',
 })
 export class NationComponent implements OnInit, OnDestroy {
-  title = 'National Map';
+  title = 'National Covid Map';
 
   private readonly mapLayerDistrict = {
     bucket: 'gov_districts',
@@ -49,6 +50,21 @@ export class NationComponent implements OnInit, OnDestroy {
   private districtsHealthStats: HealthStats.Districts;
   private districtPopulation: Census2011.Districts;
   private returneeStats: Array<RETTupleRev>;
+
+  districtNameValPairsSero: [string, number][] = [];
+  districtNamesSero: string[];
+  districtNameValPairsRatio: [string, number][] = [];
+  districtNamesRatio: string[];
+
+  districtPcrDataSets: BarChartDataSet[] = [{
+    label: '',
+    data: [],
+    backgroundColor: ''
+  }, {
+    label: '',
+    data: [],
+    backgroundColor: ''
+  }];
 
   private quadDataCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
@@ -82,11 +98,28 @@ export class NationComponent implements OnInit, OnDestroy {
     },
   };
 
+  private themeSubscription: Subscription;
+
+  readyToRenderChart = false;
+
   constructor(
     private mapUtilsService: MapUtilsService,
     private regionService: RegionService,
-    private returneeService: ReturneeService
-  ) {}
+    private returneeService: ReturneeService,
+    private themeService: NbThemeService
+  ) {
+    this.themeSubscription = this.themeService.getJsTheme()
+      .subscribe(config => {
+        this.districtPcrDataSets = [{
+          ...this.districtPcrDataSets[0],
+          backgroundColor: NbColorHelper.hexToRgbA(config.variables.primaryLight, 0.8),
+        },
+        {
+          ...this.districtPcrDataSets[1],
+          backgroundColor: NbColorHelper.hexToRgbA(config.variables.infoLight, 0.8)
+        }];
+      });
+  }
 
   ngOnInit() {
     this.layersControl = { ...this.mapUtilsService.baseLayers, overlays: {} };
@@ -116,7 +149,6 @@ export class NationComponent implements OnInit, OnDestroy {
             this.geoJsonLayerOptions
           );
           this.raiseQuadDataCount();
-          console.log('NationComponent -> layer', layer);
         }
       });
   }
@@ -134,33 +166,17 @@ export class NationComponent implements OnInit, OnDestroy {
       if (HealthStats.isDistrictHealthStats(stats)) {
         this.districtsHealthStats = stats;
         this.raiseQuadDataCount();
-        console.log(
-          'NationComponent -> receiveAndSetStats -> this.districtsHealthStats',
-          this.districtsHealthStats
-        );
       } else if (Census2011.isDistrictCensus(stats)) {
         this.districtPopulation = stats;
         this.raiseQuadDataCount();
-        console.log(
-          'NationComponent -> receiveAndSetStats -> this.districtPopulation',
-          this.districtPopulation
-        );
       } else {
         this.returneeStats = stats;
         this.raiseQuadDataCount();
-        console.log(
-          'NationComponent -> receiveAndSetStats -> this.returneeStats',
-          this.returneeStats
-        );
       }
     });
 
-    // wait for all data to be received first
+    // wait for all 5 data sets to be received first
     this.quadDataCounter.subscribe((count) => {
-      console.log(
-        'NationComponent -> receiveAndSetStats -> count',
-        count
-      );
       if (count === 4) this.setStats();
     });
   }
@@ -204,6 +220,9 @@ export class NationComponent implements OnInit, OnDestroy {
 
     this.layersControl.overlays['Stats'] = this.markerClusterGroup;
 
+    this.sortAndAddSetRankingChartData();
+    this.readyToRenderChart = true;
+
     this.mapReady.subscribe((ready) => {
       if (ready) {
         this.featureGroup.addTo(this.map);
@@ -212,12 +231,38 @@ export class NationComponent implements OnInit, OnDestroy {
     });
   }
 
+  sortAndAddSetRankingChartData() {
+    const sortFunc = (a: [string, number], b: [string, number]) => b[1] - a[1]; // highest to lowest
+    const mapLabelFunc = (val: [string, number]) => val[0];
+    const mapDataFunc = (val: [string, number]) => val[1];
+
+    this.districtNameValPairsSero.sort(sortFunc);
+    this.districtNameValPairsRatio.sort(sortFunc);
+
+    this.districtNamesSero = this.districtNameValPairsSero.map(mapLabelFunc);
+    this.districtPcrDataSets[0].data = this.districtNameValPairsSero.map(mapDataFunc);
+
+    this.districtNamesRatio = this.districtNameValPairsRatio.map(mapLabelFunc);
+    this.districtPcrDataSets[1].data = this.districtNameValPairsRatio.map(mapDataFunc);
+  }
+
+  appendSeroRankingChartData(districtName: string, proSero: number) {
+    this.districtNameValPairsSero.push([districtName, proSero]);
+  }
+
+  appendRatioRankingChartData(districtName: string, pcrRatio: number) {
+    this.districtNameValPairsRatio.push([districtName, pcrRatio]);
+  }
+
+
   private setPopup(poiMarker: L.Marker, datum: HealthStats.District) {
     const returneeInfo = this.findByNameFromReturneeStats(datum.district);
     const censusInfo = this.findByNameFromCensusStats(datum.district);
 
+    // this array is based on the returnee v8 schema, FIX ME create an object with keys instead
     const returneeTotal = returneeInfo ? returneeInfo[5] : 0;
     const populationTotal = censusInfo ? censusInfo.total : 100_000;
+    // TODO get all district population in the database to remove a need for a default population
 
     const pcrTotal = datum.total_swab_collection;
     const rdtTotal = datum.total_rdt_tests;
@@ -226,12 +271,34 @@ export class NationComponent implements OnInit, OnDestroy {
     const rdtNegatives = datum.negatives_1;
 
     const returneeOverPop = (returneeTotal / populationTotal).toFixed(4);
-    const pcrCoverageOverPop = (pcrTotal / populationTotal).toFixed(4);
-    const pcrPositiveOverTests = ((pcrTotal - pcrNegatives) / pcrTotal).toFixed(4);
     const rdtCoverageOverPop = (rdtTotal / populationTotal).toFixed(4);
     const rdtPositiveOverTests = ((rdtTotal - rdtNegatives) / rdtTotal).toFixed(4);
 
-    const postiveSeroPrevalence = ((pcrTotal - pcrNegatives) / populationTotal).toFixed(4);
+    const pcrCoverageOverPop = (pcrTotal / populationTotal).toFixed(4);
+    const pcrPositiveOverTestsNum = (pcrTotal - pcrNegatives) / pcrTotal;
+    const pcrPositiveOverTests = pcrPositiveOverTestsNum.toFixed(4);
+    const positiveSeroPrevalenceNum = (pcrTotal - pcrNegatives) / populationTotal;
+    const positiveSeroPrevalence = positiveSeroPrevalenceNum.toFixed(4);
+
+    if (
+      positiveSeroPrevalenceNum !== 0 &&
+      !Number.isNaN(positiveSeroPrevalenceNum)
+    ) {
+      this.appendSeroRankingChartData(
+        datum.district,
+        positiveSeroPrevalenceNum * 100,
+      );
+    }
+
+    if (
+      pcrPositiveOverTestsNum !== 0 &&
+      !Number.isNaN(pcrPositiveOverTestsNum)
+    ) {
+      this.appendRatioRankingChartData(
+        datum.district,
+        pcrPositiveOverTestsNum * 100
+      );
+    }
 
     const popup = L.popup({ maxWidth: 100 });
     const popupHtml = `
@@ -272,7 +339,7 @@ export class NationComponent implements OnInit, OnDestroy {
         <tbody>
           <tr>
             <td class="tg-0pky" colspan="2">+ve Sero Prev.</td>
-            <td class="tg-0pky" colspan="3">${postiveSeroPrevalence}</td>
+            <td class="tg-0pky" colspan="3">${positiveSeroPrevalence}</td>
           </tr>
           <tr>
             <td class="tg-y698" colspan="2">PCR coverage</td>
@@ -331,6 +398,7 @@ export class NationComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.map.remove();
+    this.themeSubscription.unsubscribe();
   }
 
   onMapReady(currentMap: L.Map) {
