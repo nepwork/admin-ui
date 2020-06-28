@@ -46,9 +46,9 @@ export class ReturneeService implements DBService {
   async getAllWards(): Promise<Array<RETTupleRev>> {
     try {
       const response = await this.getAll();
-      return response.rows.map(row => [...row.doc.fields, row.doc._rev] as RETTupleRev);
+      return response.rows.map(row => [...row.doc.fields, row.doc._rev] as unknown as RETTupleRev);
     } catch (error) {
-      throw Error('District-wise PCR test data could not be fetched');
+      throw Error('Ward-wise Returnee data could not be fetched');
     }
   }
 
