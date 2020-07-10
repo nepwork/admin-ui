@@ -125,8 +125,7 @@
                 outline
                 status="primary"
                 size="large"
-                [disabled]="submitted || !loginForm.valid"
-                [class.btn-pulse]="submitted"
+                [disabled]="!loginForm.valid"
               >
                 Log in
               </button>
