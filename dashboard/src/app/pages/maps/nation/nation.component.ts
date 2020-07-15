@@ -96,7 +96,7 @@ export class NationComponent implements OnInit, OnDestroy {
         },
       });
     }, style: {
-      "color": "#aa78dd",
+      "color": "#33A8FF",
       "weight": 4,
       "opacity": 0.65
     }
@@ -134,12 +134,12 @@ export class NationComponent implements OnInit, OnDestroy {
   async fetchLabelFeatures() {
     this.setLayerFromBucket<GovDistrictProperties>(this.mapLayerDistrict);
     this.setLayerFromBucket<GovProvinceProperties>(this.mapLayerProvince, {
-      "color": "#ff7800",
+      "color": "#043EB9",
       "weight": 5,
       "opacity": 0.65
   });
     this.setLayerFromBucket<RoadMajorProperties>(this.mapLayerRoads, {
-      "color": "#aa7800",
+      "color": "#2E70E4",
       "weight": 3,
       "opacity": 0.65
   });
