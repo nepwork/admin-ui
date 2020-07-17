@@ -96,9 +96,9 @@ export class NationComponent implements OnInit, OnDestroy {
         },
       });
     }, style: {
-      "color": "#33A8FF",
-      "weight": 4,
-      "opacity": 0.65
+      'color': '#33A8FF',
+      'weight': 4,
+      'opacity': 0.65
     }
   };
 
@@ -134,14 +134,14 @@ export class NationComponent implements OnInit, OnDestroy {
   async fetchLabelFeatures() {
     this.setLayerFromBucket<GovDistrictProperties>(this.mapLayerDistrict);
     this.setLayerFromBucket<GovProvinceProperties>(this.mapLayerProvince, {
-      "color": "#043EB9",
-      "weight": 5,
-      "opacity": 0.65
+      'color': '#043EB9',
+      'weight': 5,
+      'opacity': 0.65
   });
     this.setLayerFromBucket<RoadMajorProperties>(this.mapLayerRoads, {
-      "color": "#2E70E4",
-      "weight": 3,
-      "opacity": 0.65
+      'color': '#2E70E4',
+      'weight': 3,
+      'opacity': 0.65
   });
 
   }
@@ -150,7 +150,6 @@ export class NationComponent implements OnInit, OnDestroy {
     this.regionService
       .getAndCache<FeatureCollection<T>>(layer.bucket)
       .subscribe((featureCollection) => {
-        //console.log(JSON.stringify(featureCollection));
         this.layersControl.overlays[layer.label] = L.geoJSON(
           featureCollection as any, {style: style}
         );
@@ -158,7 +157,6 @@ export class NationComponent implements OnInit, OnDestroy {
           this.districtsGeoJson = (featureCollection as unknown) as FeatureCollection<
             GovDistrictProperties
           >;
-          console.log(JSON.stringify(featureCollection));
           this.layersControl.overlays['Districts'] = L.geoJSON(
             featureCollection as any,
             this.geoJsonLayerOptions
