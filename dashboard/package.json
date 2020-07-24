@@ -1,7 +1,7 @@
 {
-  "name": "ngx-admin",
-  "version": "5.0.0",
-  "license": "MIT",
+  "name": "covidsimteam-dashboard",
+  "version": "0.0.9",
+  "license": "GNU GPL v3",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nepwork/admin-ui.git"
@@ -79,6 +79,9 @@
     "tinymce": "4.9.10",
     "tslib": "^1.10.0",
     "typeface-exo": "0.0.22",
+    "vis-data": "^6.6.1",
+    "vis-network": "^7.10.1",
+    "vis-util": "^4.3.3",
     "web-animations-js": "^2.3.2",
     "zone.js": "~0.10.2"
   },
