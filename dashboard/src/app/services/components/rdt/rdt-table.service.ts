@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { from, Observable } from 'rxjs';
 import { SCHEMA_VER } from '../../../@core/data/pschema:rdts:v8';
-import { PSchemaDoc, RDTTuple, RDTTupleRev } from '../../../models/db-response.model';
+
 import { RdtService } from '../../db/rdt.service';
 import { TabularService } from '../tabular/tabular.service';
+import { RDTTupleRev } from '../../../models/db/table-headers.model';
+import { PSchemaDoc } from '../../../models/db/schema/pschema.model';
 
 @Injectable({
   providedIn: 'root',

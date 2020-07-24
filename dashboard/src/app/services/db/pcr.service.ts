@@ -1,9 +1,12 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { AllDocs, BulkAddResponse, PCRTupleRev, PSchema } from '../../models/db-response.model';
 import { Doc } from '../../models/domain.model';
 import { Database, ExistingDoc } from '../../models/domain.model';
 import { DBService } from './db.service.interface';
 import { PouchDBService } from './pouchdb.service';
+import { AllDocs } from '../../models/db/all-docs.model';
+import { BulkAddResponse } from '../../models/db/response.model';
+import { PCRTupleRev } from '../../models/db/table-headers.model';
+import { PSchema } from '../../models/db/schema/pschema.model';
 
 
 @Injectable({

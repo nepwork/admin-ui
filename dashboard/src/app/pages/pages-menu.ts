@@ -106,4 +106,36 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
     ],
   },
+  {
+    title: 'Meta Graphs',
+    group: true,
+  },
+  {
+    title: 'Dashboard',
+    icon: 'activity-outline',
+    children: [
+      {
+        title: 'Concepts',
+        link: '/hub/graphs/concepts',
+      },
+      {
+        title: 'Potatoes',
+        link: '/hub/graphs/servers',
+      },
+    ],
+  },
+  {
+    title: 'System',
+    icon: 'activity-outline',
+    children: [
+      {
+        title: 'Concepts',
+        link: '/hub/graphs/concepts',
+      },
+      {
+        title: 'Couches',
+        link: '/hub/graphs/servers',
+      },
+    ],
+  },
 ];

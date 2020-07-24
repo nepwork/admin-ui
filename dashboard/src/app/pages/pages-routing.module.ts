@@ -33,6 +33,11 @@ const routes: Routes = [{
         .then(m => m.ChartsModule),
     },
     {
+      path: 'graphs',
+      loadChildren: () => import('./graphs/graphs.module')
+        .then(m => m.GraphsModule),
+    },
+    {
       path: 'secured/tables',
       canActivate: [AuthGuard],
       loadChildren: () => import('./tables/tables.module')
