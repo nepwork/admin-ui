@@ -125,8 +125,7 @@
                 outline
                 status="primary"
                 size="large"
-                [disabled]="submitted || !loginForm.valid"
-                [class.btn-pulse]="submitted"
+                [disabled]="!loginForm.valid"
               >
                 Log in
               </button>
@@ -137,3 +136,4 @@
     </nb-card>
   </div>
 </div>
+<nb-layout style="display: none"></nb-layout>

@@ -1,4 +1,4 @@
-import { DBErrorResponse } from './db-response.model';
+import { DBErrorResponse } from './db/response.model';
 
 export interface DBAuthResponse {
   proxyCookie?: string;

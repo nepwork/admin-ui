@@ -14,8 +14,8 @@ export const routes: Routes = [
     loadChildren: () => import('./auth/login.module')
       .then(m => m.LoginModule),
   },
-  { path: '', redirectTo: 'hub', pathMatch: 'full' },
-  { path: '**', redirectTo: 'hub' },
+  { path: '', redirectTo: 'auth/login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'auth/login' },
 ];
 
 const config: ExtraOptions = {

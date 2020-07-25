@@ -5,11 +5,7 @@ import 'leaflet.markercluster';
 import polylabel from 'polylabel';
 import { BehaviorSubject, from, merge, Subscription } from 'rxjs';
 import 'style-loader!leaflet/dist/leaflet.css';
-import {
-  Census2011,
-  HealthStats,
-  RETTupleRev
-} from '../../../models/db-response.model';
+
 import {
   BarChartDataSet, FeatureCollection,
   GovDistrictProperties,
@@ -19,6 +15,9 @@ import {
 import { MapUtilsService } from '../../../services/components/map/map-utils.service';
 import { RegionService } from '../../../services/components/map/region.service';
 import { ReturneeService } from '../../../services/db/returnee.service';
+import { HealthStats } from '../../../models/db/docs/health-stats.model';
+import { Census2011 } from '../../../models/db/docs/census.model';
+import { RETTupleRev } from '../../../models/db/table-headers.model';
 
 interface MapLayer {
   bucket: string;
@@ -95,7 +94,11 @@ export class NationComponent implements OnInit, OnDestroy {
           thisMap.fitBounds(e.target.getBounds());
         },
       });
-    },
+    }, style: {
+      'color': '#33A8FF',
+      'weight': 4,
+      'opacity': 0.65
+    }
   };
 
   private themeSubscription: Subscription;
@@ -129,16 +132,25 @@ export class NationComponent implements OnInit, OnDestroy {
 
   async fetchLabelFeatures() {
     this.setLayerFromBucket<GovDistrictProperties>(this.mapLayerDistrict);
-    this.setLayerFromBucket<GovProvinceProperties>(this.mapLayerProvince);
-    this.setLayerFromBucket<RoadMajorProperties>(this.mapLayerRoads);
+    this.setLayerFromBucket<GovProvinceProperties>(this.mapLayerProvince, {
+      'color': '#043EB9',
+      'weight': 5,
+      'opacity': 0.65
+  });
+    this.setLayerFromBucket<RoadMajorProperties>(this.mapLayerRoads, {
+      'color': '#2E70E4',
+      'weight': 3,
+      'opacity': 0.65
+  });
+
   }
 
-  setLayerFromBucket<T>(layer: MapLayer) {
+  setLayerFromBucket<T>(layer: MapLayer, style?) {
     this.regionService
       .getAndCache<FeatureCollection<T>>(layer.bucket)
       .subscribe((featureCollection) => {
         this.layersControl.overlays[layer.label] = L.geoJSON(
-          featureCollection as any
+          featureCollection as any, {style: style}
         );
         if (layer.bucket === this.mapLayerDistrict.bucket) {
           this.districtsGeoJson = (featureCollection as unknown) as FeatureCollection<

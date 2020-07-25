@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanActivate } from '@angular/router';
 import { AuthGuard } from '../services/guards/auth.guard';
 import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
@@ -12,6 +12,7 @@ const routes: Routes = [{
   children: [
     {
       path: 'home',
+      canActivate: [AuthGuard],
       component: ECommerceComponent,
     },
     {
@@ -30,6 +31,11 @@ const routes: Routes = [{
       path: 'charts',
       loadChildren: () => import('./charts/charts.module')
         .then(m => m.ChartsModule),
+    },
+    {
+      path: 'graphs',
+      loadChildren: () => import('./graphs/graphs.module')
+        .then(m => m.GraphsModule),
     },
     {
       path: 'secured/tables',
