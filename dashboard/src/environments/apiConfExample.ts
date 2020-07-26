@@ -3,10 +3,10 @@ export const appUris = {
   stagingDashboard: 'https://staginghost/',
   prodDashboard: 'https://remotehost/',
 
-  devDocDB: 'http://127.0.0.1:5984/',
-  stagingDocDB: 'http://127.0.0.1:5984/',
-  prodDocDB: 'http://127.0.0.1:5984/',
+  devDocDB: 'http://localhost:5984/',
+  stagingDocDB: 'http://localhost:5984/',
+  prodDocDB: 'http://localhost:5984/',
 
-  docDBUser: 'kripa',
-  docDBPassword: 'KripaBhattarai',
+  docDBUser: 'admin',
+  docDBPassword: 'password',
 };
