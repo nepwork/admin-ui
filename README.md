@@ -1,3 +1,5 @@
+[![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/nepwork/admin-ui)
+
 # UiCore
 
 This app and website is being developed by the covidsim.team for research, modeling and simulations for mitigation of COVID-19 spread in LDCs and EM/DEs.
