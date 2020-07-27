@@ -1,5 +1,5 @@
 export const pschema_pcrs_v8 = {
-  _id: 'pschema:rdts:v8',
+  _id: 'pschema:pcrs:v8',
   fields: [
     [
       '_id',
