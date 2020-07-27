@@ -105,8 +105,6 @@ export class AuthService {
     this.role_ = role;
     Object.entries({ username, password, role, isLoggedIn: 'true' }).forEach(
       ([key, val]) => {
-        console.log('key' + key);
-        console.log('value' + val);
         localStorage.setItem(key, val);
       },
     );

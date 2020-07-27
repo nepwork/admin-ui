@@ -26,7 +26,7 @@ export class FormAComponent implements OnInit,OnDestroy {
 
   formValueChanged(formValue){
 
-    console.log(JSON.stringify(formValue));
+    // console.log(JSON.stringify(formValue));
 
   }
 
