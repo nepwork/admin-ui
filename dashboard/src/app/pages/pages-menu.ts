@@ -18,6 +18,10 @@ export const MENU_ITEMS: NbMenuItem[] = [
     icon: 'people-outline',
     children: [
       {
+        title: 'Form A',
+        link: '/hub/secured/forms/form-a',
+      },
+      {
         title: 'Point of Entry',
         link: '/hub/secured/forms/point-of-entry',
       },
