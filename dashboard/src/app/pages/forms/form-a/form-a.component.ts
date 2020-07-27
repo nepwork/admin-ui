@@ -6,8 +6,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
   templateUrl: './form-a.component.html',
   styleUrls: ['./form-a.component.scss']
 })
-export class FormAComponent implements OnInit,OnDestroy {
-
+export class FormAComponent implements OnInit, OnDestroy {
 
   aForm: FormGroup;
 
@@ -24,12 +23,6 @@ export class FormAComponent implements OnInit,OnDestroy {
     this.aForm.valueChanges.subscribe(this.formValueChanged);
   }
 
-  formValueChanged(formValue){
-
-    // console.log(JSON.stringify(formValue));
-
-  }
-
-
+  formValueChanged(formValue) {}
 
 }
