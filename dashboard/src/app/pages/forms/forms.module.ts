@@ -16,7 +16,7 @@ import {
 import { ThemeModule } from '../../@theme/theme.module';
 import { FormsRoutingModule } from './forms-routing.module';
 import { FormsComponent } from './forms.component';
-import { FormsModule as ngFormsModule } from '@angular/forms';
+import { FormsModule as ngFormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormMunicipalityComponent } from './form-municipality/form-municipality.component';
 import { FormPOEComponent } from './form-poe/form-poe.component';
 import { FormQFComponent } from './form-quarantine-facility/form-qf.component';
@@ -31,6 +31,7 @@ import {
 import { PcrTestRecordComponent } from './form-sections/pcr-test-record/pcr-test-record.component';
 import { RdtTestRecordComponent } from './form-sections/rdt-test-record/rdt-test-record.component';
 import { SymptomRecordComponent } from './form-sections/symptom-record/symptom-record.component';
+import { FormAComponent } from './form-a/form-a.component';
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { SymptomRecordComponent } from './form-sections/symptom-record/symptom-r
     NbSelectModule,
     NbIconModule,
     ngFormsModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     FormsComponent,
@@ -64,6 +66,7 @@ import { SymptomRecordComponent } from './form-sections/symptom-record/symptom-r
     PcrTestRecordComponent,
     RdtTestRecordComponent,
     SymptomRecordComponent,
+    FormAComponent,
   ],
 })
 export class FormsModule {}
