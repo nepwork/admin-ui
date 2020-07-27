@@ -9,6 +9,8 @@ import { FormRDTComponent } from './form-rdt-lab/form-rdt.component';
 import { FormPCRComponent } from './form-pcr-lab/form-pcr.component';
 import { FormIsolationComponent } from './form-isolation/form-isolation.component';
 import { FormHospitalComponent } from './form-hospital/form-hospital.component';
+import { FormAComponent } from './form-a/form-a.component';
+import { AdminGuard } from '../../services/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -18,6 +20,11 @@ const routes: Routes = [
       {
         path: 'point-of-entry',
         component: FormPOEComponent,
+      },
+      {
+        path: 'form-a',
+        // canActivate: [AdminGuard],
+        component: FormAComponent,
       },
       {
         path: 'quarantine-facility',

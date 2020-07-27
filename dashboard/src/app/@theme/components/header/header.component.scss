@@ -7,6 +7,7 @@
   justify-content: space-between;
   width: 100%;
 
+
   .logo-container {
     display: flex;
     align-items: center;
@@ -32,6 +33,7 @@
     align-items: center;
     width: auto;
 
+
     .sidebar-toggle {
       @include nb-ltr(padding-right, 1.25rem);
       @include nb-rtl(padding-left, 1.25rem);
@@ -53,9 +55,9 @@
   }
 
   @include media-breakpoint-down(sm) {
-    .control-item {
-      display: none;
-    }
+    // .control-item {
+    //   display: none;
+    // }
     .user-action {
       border: none;
       padding: 0;
