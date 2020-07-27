@@ -5,7 +5,7 @@ import { Database, DBList, Doc, ExistingDoc } from '../../models/domain.model';
 import { AuthService } from '../auth/auth.service';
 import { EnvironmentService } from '../env/environment.service';
 import { LoggingService } from '../logging.service';
-import { BulkAddResponse } from '../../models/db-response.model';
+import { BulkAddResponse } from '../../models/db/response.model';
 import { from } from 'rxjs';
 
 PouchDB.plugin(PouchAuth);

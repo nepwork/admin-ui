@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ReturneeService } from '../../db/returnee.service';
 import { Observable, from } from 'rxjs';
-import { RETTupleRev, RETTuple, PSchemaDoc } from '../../../models/db-response.model';
+
 import { LocalDataSource } from 'ng2-smart-table';
 import { TabularService } from '../tabular/tabular.service';
 import { SCHEMA_VER } from '../../../@core/data/pschema:returnees:v8';
+import { RETTupleRev } from '../../../models/db/table-headers.model';
+import { PSchemaDoc } from '../../../models/db/schema/pschema.model';
 
 @Injectable({
   providedIn: 'root',
