@@ -13,3 +13,14 @@ export interface Node extends IdentifiableObject {
   fx?: number | null;
   fy?: number | null;
 }
+
+export class Node implements Node {
+  constructor(public id: string) {}
+}
+
+export interface NodeOrder {
+  [nodeId: string]: {
+    sources: number;
+    targets: number;
+  };
+}
