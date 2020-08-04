@@ -1,9 +1,30 @@
 {
-  "name": "hgraph",
-  "version": "0.0.1",
-  "peerDependencies": {
-    "@angular/common": "^9.0.3",
-    "@angular/core": "^9.0.3",
-    "tslib": "^1.10.0"
-  }
+    "name": "@cosys-work/hgraph",
+    "version": "0.0.2",
+    "peerDependencies": {
+        "@angular/common": "^10.0.7",
+        "@angular/core": "^10.0.7",
+    },
+    "dependencies": {},
+    "description": "This library provides hypergraph services for nep.work, cosys.work and coplanetary.work nodes.",
+    "main": "src/public-api.ts",
+    "scripts": {
+        "test": "ng test"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cosys-work/ts.git"
+    },
+    "keywords": [
+        "hypergraph",
+        "graph",
+        "theory",
+        "networks"
+    ],
+    "author": "Risav Karna",
+    "license": "GPL-3.0-or-later",
+    "bugs": {
+        "url": "https://github.com/cosys-work/ts/issues"
+    },
+    "homepage": "https://github.com/cosys-work/ts#readme"
 }
