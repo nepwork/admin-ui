@@ -1,9 +1,9 @@
 {
-    "name": "@nepwork/hgraph",
-    "version": "0.0.1",
+    "name": "@cosys-work/hgraph",
+    "version": "0.0.2",
     "peerDependencies": {
-        "@angular/common": "^9.0.3",
-        "@angular/core": "^9.0.3"
+        "@angular/common": "^10.0.7",
+        "@angular/core": "^10.0.7"
     },
     "dependencies": {
         "tslib": "^2.0.0"
@@ -23,9 +23,6 @@
         "theory",
         "networks"
     ],
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
-    },
     "author": "Risav Karna",
     "license": "GPL-3.0-or-later",
     "bugs": {

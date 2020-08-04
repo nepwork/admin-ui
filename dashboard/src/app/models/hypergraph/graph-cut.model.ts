@@ -1,5 +1,5 @@
+import { IdentifiableObject, UntypedTuple } from './../../../../projects/model/core.model';
 import { DataSet } from 'vis-data';
-import { IdentifiableObject, UntypedTuple } from '../core/entity.model';
 
 export interface Node extends IdentifiableObject {
   attributes?: UntypedTuple;

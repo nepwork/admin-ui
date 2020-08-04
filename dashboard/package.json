@@ -124,9 +124,6 @@
         "tslint-language-service": "^0.9.9",
         "typescript": "3.9.7"
     },
-    "publishConfig": {
-        "registry": "https://npm.pkg.github.com/"
-    },
     "description": "COVSIMTEAM - NEPAL Dashboard",
     "homepage": "https://github.com/nepwork/admin-ui#readme",
     "main": "index.html",
