@@ -19,6 +19,7 @@ export enum Database {
   pcr_tests = 'pcr_tests',
   rdt_tests = 'rdt_tests',
   audit = 'usage_audit',
+  matrix = 'matrix'
 }
 
 export interface ExistingDoc {

@@ -71,6 +71,15 @@ export class PouchDBService {
     return remoteDB.bulkDocs(docs);
   }
 
+  async getAll(dbName: Database): Promise<any> {
+    const remoteDB = this.getRemoteDBInstance(dbName);
+    const localDB = this.instance(dbName);
+
+    if (localDB) return localDB.allDocs();
+
+    return remoteDB.allDocs();
+  }
+
   /**
    * Use only when the id of the doc is not relevant for its access patterns/queries
   */

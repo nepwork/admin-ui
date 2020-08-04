@@ -25,11 +25,11 @@ export class ECommerceVisitorsAnalyticsComponent implements OnDestroy {
         this.setLegendItems(theme.variables.visitorsLegend);
       });
 
-    forkJoin(
+    forkJoin([
       this.visitorsAnalyticsChartService.getInnerLineChartData(),
       this.visitorsAnalyticsChartService.getOutlineLineChartData(),
-      this.visitorsAnalyticsChartService.getPieChartData(),
-    )
+      this.visitorsAnalyticsChartService.getPieChartData()
+    ])
       .pipe(takeWhile(() => this.alive))
       .subscribe(([innerLine, outerLine, pieChartValue]: [number[], OutlineData[], number]) => {
         this.visitorsAnalyticsData = {
