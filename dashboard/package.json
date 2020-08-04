@@ -71,7 +71,7 @@
         "pouchdb-find": "^7.2.1",
         "pouchdb-live-find": "^0.4.0",
         "roboto-fontface": "0.8.0",
-        "rxjs": "6.5.4",
+        "rxjs": "6.6.2",
         "rxjs-compat": "6.3.0",
         "screenfull": "^5.0.2",
         "socicon": "3.0.5",

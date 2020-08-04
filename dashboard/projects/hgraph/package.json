@@ -6,6 +6,7 @@
         "@angular/core": "^10.0.7"
     },
     "dependencies": {
+        "@nebular/theme": "^5.1.0",
         "tslib": "^2.0.0"
     },
     "description": "This library provides hypergraph services for nep.work, cosys.work and coplanetary.work nodes.",
