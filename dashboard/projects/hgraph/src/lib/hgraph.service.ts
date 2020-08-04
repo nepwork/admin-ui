@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { Edge, BinaryEdge } from 'projects/model/edge.model';
-import { Node } from 'projects/model/node.model';
-import { Graph } from 'projects/model/hgraph.model';
+import { Edge, BinaryEdge } from '../../../model/edge.model';
+import { Node } from '../../../model/node.model';
+import { Graph, HGraph } from '../../../model/hgraph.model';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +33,7 @@ export class HgraphService {
   getEdgeInGraph(e: Partial<BinaryEdge>): BinaryEdge {
     return {
       id: e.id,
+      label: e.label,
       from: e.from,
       to: e.to,
     };
@@ -96,5 +97,12 @@ export class HgraphService {
     return new Graph(this.idStr, this.nodeArr, this.edgeArr);
   }
 
+  get hgraph(): HGraph {
+    const hgraph = new HGraph();
+    hgraph.id = this.id;
+    hgraph.edges = this.hedges;
+    hgraph.nodes = this.nodes;
+    return hgraph;
+  }
 
 }

@@ -1,24 +1,24 @@
 import { Injectable } from '@angular/core';
-import { Node } from 'projects/model/node.model';
 import { Observable } from 'rxjs';
+import { IdStream } from '../../../identity/src/lib/identity.service';
 
-export type Idx = string | Node;
+export type EntityStream = IdStream;
+export type Edx = Observable<IdStream | unknown>;
+export type ValueStream = Observable<Edx>;
 @Injectable({
   providedIn: 'root'
 })
-export class EntityService<T extends Idx> {
+export class EntityService {
 
-  private idx: Observable<Idx>;
-  private values: Observable<Array<T>>;
+  private idx: IdStream;
+  private values: ValueStream;
 
   constructor() { }
 
-  get id(): Observable<Idx> { return this.idx; }
+  get id(): EntityStream { return this.idx; }
 
-  set id(id: Observable<Idx>) { this.idx = id; }
+  set id(id: EntityStream) { this.idx = id; }
 
-  get val(): Observable<T[]> { return this.values; }
-
-  set val(headers: Observable<T[]>) { this.values = headers; }
-
+  get val(): ValueStream { return this.values; }
+  set val(headers: ValueStream) { this.values = headers; }
 }

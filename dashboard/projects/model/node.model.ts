@@ -1,4 +1,5 @@
-import { IdentifiableObject, UntypedTuple } from './entity.model';
+import { IdentifiableObject, UntypedTuple } from './../../src/app/models/core/entity.model';
+import { ModelStream } from './model.stream';
 
 export interface Node extends IdentifiableObject {
   index?: number;
@@ -23,4 +24,10 @@ export interface NodeOrder {
     sources: number;
     targets: number;
   };
+}
+
+export interface NodeStream<T extends Node | NodeOrder> {
+  id: ModelStream;
+  model: NodeStream<T>;
+  value: T;
 }

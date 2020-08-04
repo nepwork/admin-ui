@@ -59,7 +59,7 @@ export class Graph {
 }
 
 export class HGraph {
-  id: number;
+  id: string;
   nodes: Node[] = [];
   edges: Edge[] = [];
 }
