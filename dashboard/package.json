@@ -42,7 +42,7 @@
         "@angular/router": "^10.0.7",
         "@asymmetrik/ngx-leaflet": "^7.0.0",
         "@nebular/eva-icons": "5.0.0",
-        "@nebular/theme": "5.0.0",
+        "@nebular/theme": "^5.1.0",
         "@swimlane/ngx-charts": "^13.0.2",
         "angular2-chartjs": "0.4.1",
         "bootstrap": "4.3.1",
