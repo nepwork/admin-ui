@@ -8,10 +8,10 @@ import {
   NbProgressBarModule,
   NbSelectModule,
   NbTabsetModule,
-  NbUserModule } from '@nebular/theme';
+  NbUserModule
+} from '@nebular/theme';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ChartModule } from 'angular2-chartjs';
-import { NgxEchartsModule } from 'ngx-echarts';
 import { ThemeModule } from '../../@theme/theme.module';
 import { ChartPanelHeaderComponent } from './charts-panel/chart-panel-header/chart-panel-header.component';
 import { ChartPanelSummaryComponent } from './charts-panel/chart-panel-summary/chart-panel-summary.component';
@@ -22,6 +22,11 @@ import { CountryOrdersChartComponent } from './country-orders/chart/country-orde
 import { CountryOrdersComponent } from './country-orders/country-orders.component';
 import { CountryOrdersMapComponent } from './country-orders/map/country-orders-map.component';
 import { CountryOrdersMapService } from './country-orders/map/country-orders-map.service';
+import { TestStatsAreaChartComponent } from './covid-test-card/back-side/test-stats-area-chart.component';
+import { TestStatsCardBackComponent } from './covid-test-card/back-side/test-stats-card-back.component';
+import { PcrStatsBarAnimationChartComponent } from './covid-test-card/front-side/test-stats-bar-animation-chart.component';
+import { TestStatsCardFrontComponent } from './covid-test-card/front-side/test-stats-card-front.component';
+import { TestCardComponent } from './covid-test-card/test-card.component';
 import { ECommerceComponent } from './e-commerce.component';
 import { EarningCardBackComponent } from './earning-card/back-side/earning-card-back.component';
 import { EarningPieChartComponent } from './earning-card/back-side/earning-pie-chart.component';
@@ -29,13 +34,6 @@ import { EarningCardComponent } from './earning-card/earning-card.component';
 import { EarningCardFrontComponent } from './earning-card/front-side/earning-card-front.component';
 import { EarningLiveUpdateChartComponent } from './earning-card/front-side/earning-live-update-chart.component';
 import { ECommerceLegendChartComponent } from './legend-chart/legend-chart.component';
-import { TestStatsAreaChartComponent } from './covid-test-card/back-side/test-stats-area-chart.component';
-import { TestStatsCardBackComponent } from './covid-test-card/back-side/test-stats-card-back.component';
-import {
-  PcrStatsBarAnimationChartComponent,
-} from './covid-test-card/front-side/test-stats-bar-animation-chart.component';
-import { TestStatsCardFrontComponent } from './covid-test-card/front-side/test-stats-card-front.component';
-import { TestCardComponent } from './covid-test-card/test-card.component';
 import { ECommerceProgressSectionComponent } from './progress-section/progress-section.component';
 import { SlideOutComponent } from './slide-out/slide-out.component';
 import { TrafficBackCardComponent } from './traffic-reveal-card/back-side/traffic-back-card.component';
@@ -45,18 +43,10 @@ import { TrafficFrontCardComponent } from './traffic-reveal-card/front-side/traf
 import { TrafficCardsHeaderComponent } from './traffic-reveal-card/traffic-cards-header/traffic-cards-header.component';
 import { TrafficRevealCardComponent } from './traffic-reveal-card/traffic-reveal-card.component';
 import { ECommerceUserActivityComponent } from './user-activity/user-activity.component';
-import {
-  ECommerceVisitorsAnalyticsChartComponent,
-} from './visitors-analytics/visitors-analytics-chart/visitors-analytics-chart.component';
+import { ECommerceVisitorsAnalyticsChartComponent } from './visitors-analytics/visitors-analytics-chart/visitors-analytics-chart.component';
 import { ECommerceVisitorsAnalyticsComponent } from './visitors-analytics/visitors-analytics.component';
-import {
-  ECommerceVisitorsStatisticsComponent,
- } from './visitors-analytics/visitors-statistics/visitors-statistics.component';
-
-
-
-
-
+import { ECommerceVisitorsStatisticsComponent } from './visitors-analytics/visitors-statistics/visitors-statistics.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 
 @NgModule({
@@ -71,7 +61,7 @@ import {
     NbListModule,
     ChartModule,
     NbProgressBarModule,
-    NgxEchartsModule,
+    NgxEchartsModule.forChild(),
     NgxChartsModule,
     LeafletModule,
   ],
