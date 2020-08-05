@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ModelStream } from '../../../model/model.stream';
-import { CacheService, CacheStream } from './../../../cache/src/lib/cache.service';
-import { ConceptService, ConceptStream } from './../../../concept/src/lib/concept.service';
-import { EntityService, EntityStream, ValueStream } from './../../../entity/src/lib/entity.service';
-import { IdentityService, IdStream } from './../../../identity/src/lib/identity.service';
-import { KeyService, KeyStream } from './../../../key/src/lib/key.service';
-import { Graph } from './../../../model/hgraph.model';
-import { ModelService } from './../../../model/model.service';
-import { QueueService, TemporalQueue } from './../../../queue/src/lib/queue.service';
-import { SsotService, TruthStream } from './../../../ssot/src/lib/ssot.service';
+import { ModelStream } from './model/model.stream';
+import { CacheService, CacheStream } from './cache/cache.service';
+import { ConceptService, ConceptStream } from './concept/concept.service';
+import { EntityService, EntityStream, ValueStream } from './entity/entity.service';
+import { IdentityService, IdStream } from './identity/identity.service';
+import { KeyService, KeyStream } from './key/key.service';
+import { Graph } from './model/hgraph.model';
+import { ModelService } from './model/model.service';
+import { QueueService, TemporalQueue } from './queue/queue.service';
+import { SsotService, TruthStream } from './ssot/ssot.service';
 import { HgraphService } from './hgraph.service';
 @Injectable({
   providedIn: 'root'
