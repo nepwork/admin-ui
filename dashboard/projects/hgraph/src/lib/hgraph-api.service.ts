@@ -1,3 +1,5 @@
+import { PaymentService } from './payment/lib/payment.service';
+import { PaymentStream } from './payment/lib/model/payment.stream';
 import { Injectable } from '@angular/core';
 import { ModelStream } from './model/model.stream';
 import { CacheService, CacheStream } from './cache/cache.service';
@@ -24,7 +26,8 @@ export class HgraphApiService {
     private key: KeyService,
     private model: ModelService,
     private queue: QueueService,
-    private ssot: SsotService
+    private ssot: SsotService,
+    private payments: PaymentService,
     ) {}
 
   updateInMemoryGraph(g: Graph, remove = false): Graph {
@@ -43,5 +46,6 @@ export class HgraphApiService {
   get models(): ModelStream { return this.model.model; }
   get queues(): TemporalQueue { return this.queue.queue; }
   get truth(): TruthStream { return this.ssot.truth; }
+  get payment(): PaymentStream { return this.payments.pay; }
 
 }
