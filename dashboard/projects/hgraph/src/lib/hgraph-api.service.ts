@@ -1,7 +1,10 @@
+
+import { PipeService } from './pipes/pipe.service';
+import { InterstellarService } from './interstellar/interstellar.service';
 import { PaymentService } from './payment/lib/payment.service';
 import { PaymentStream } from './payment/lib/model/payment.stream';
 import { Injectable } from '@angular/core';
-import { ModelStream } from './model/model.stream';
+import { ModelStream, UserStream, PipeStream } from './model/model.stream';
 import { CacheService, CacheStream } from './cache/cache.service';
 import { ConceptService, ConceptStream } from './concept/concept.service';
 import { EntityService, EntityStream, ValueStream } from './entity/entity.service';
@@ -12,6 +15,7 @@ import { ModelService } from './model/model.service';
 import { QueueService, TemporalQueue } from './queue/queue.service';
 import { SsotService, TruthStream } from './ssot/ssot.service';
 import { HgraphService } from './hgraph.service';
+import { UserService } from './user/user.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +31,10 @@ export class HgraphApiService {
     private model: ModelService,
     private queue: QueueService,
     private ssot: SsotService,
-    private payments: PaymentService,
+    private payment: PaymentService,
+    private xellar: InterstellarService,
+    private pipe: PipeService,
+    private user: UserService
     ) {}
 
   updateInMemoryGraph(g: Graph, remove = false): Graph {
@@ -36,7 +43,10 @@ export class HgraphApiService {
     return this.graph.graph;
   }
 
+  get xellars(): CacheStream { return this.xellar.xellar; }
+  get pipes(): PipeStream { return this.pipe.pipe; }
   get caches(): CacheStream { return this.cache.cache; }
+  get users(): UserStream { return this.user.; }
   get concepts(): ConceptStream { return this.concept.concept; }
   get identities(): IdStream { return this.identity.id; }
   get entityKeys(): EntityStream { return this.entity.id; }
@@ -45,6 +55,6 @@ export class HgraphApiService {
   get values(): ValueStream { return this.key.value; }
   get models(): ModelStream { return this.model.model; }
   get queues(): TemporalQueue { return this.queue.queue; }
-  get truth(): TruthStream { return this.ssot.truth; }
-  get payment(): PaymentStream { return this.payments.pay; }
+  get truths(): TruthStream { return this.ssot.truth; }
+  get payments(): PaymentStream { return this.payment.pay; }
 }

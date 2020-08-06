@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export type IdStream = Observable<string | unknown>;
-
 @Injectable({
   providedIn: 'root'
 })
