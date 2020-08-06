@@ -81,7 +81,7 @@ export abstract class TabularService {
   }
 
   protected prepareDocTabular(newRow: any, schemaVersion: string, service: DataTableService, removeRev = false) {
-    const pcrsDoc: PSchemaDoc = {
+    const schemaDoc: PSchemaDoc = {
       _id: newRow._id,
       _rev: newRow._rev,
       pschema: schemaVersion,
@@ -91,17 +91,17 @@ export abstract class TabularService {
     // but not when using PouchDBServce->create or addAll method.
 
     service.headers.map(headerAndType => headerAndType[0]).forEach((header) => {
-      pcrsDoc.fields.push(newRow[header]);
+      schemaDoc.fields.push(newRow[header]);
     });
 
     // TODO update this iif schema changes to not having province and district first in the row
-    pcrsDoc._id = pcrsDoc.fields[0] = isReturneeService(service) ?
-      this.prepareDocID(pcrsDoc.fields[1], pcrsDoc.fields[2], [pcrsDoc.fields[3], pcrsDoc.fields[4]]) :
-      this.prepareDocID(pcrsDoc.fields[1], pcrsDoc.fields[2]);
+    schemaDoc._id = schemaDoc.fields[0] = isReturneeService(service) ?
+      this.prepareDocID(schemaDoc.fields[1], schemaDoc.fields[2], [schemaDoc.fields[3], schemaDoc.fields[4]]) :
+      this.prepareDocID(schemaDoc.fields[1], schemaDoc.fields[2]);
 
-    if (!pcrsDoc._rev || removeRev) delete pcrsDoc._rev;
+    if (!schemaDoc._rev || removeRev) delete schemaDoc._rev;
 
-    return pcrsDoc;
+    return schemaDoc;
   }
 
   prepareDocID(province: string, district: string, more: string[] = null) {
@@ -142,7 +142,7 @@ export abstract class TabularService {
       rowsToDelete.forEach(rowToDelete => source.remove(rowToDelete));
     })
     .catch(err => {
-
+      console.err('Deletion from table err', err);
     });
   }
 
