@@ -36,7 +36,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ThemeModule.forRoot(),
     ReactiveFormsModule,
     LoginModule,
-    NgxEchartsModule.forRoot({ echarts: () => import('echarts') }),
+    NgxEchartsModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   bootstrap: [AppComponent],

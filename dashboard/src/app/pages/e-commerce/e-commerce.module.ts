@@ -61,7 +61,7 @@ import { NgxEchartsModule } from 'ngx-echarts';
     NbListModule,
     ChartModule,
     NbProgressBarModule,
-    NgxEchartsModule.forChild(),
+    NgxEchartsModule,
     NgxChartsModule,
     LeafletModule,
   ],
