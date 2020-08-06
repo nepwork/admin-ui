@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-theme',
+  selector: 'lib-theme',
   templateUrl: './theme.component.html',
   styleUrls: ['./theme.component.scss']
 })

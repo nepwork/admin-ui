@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-auth',
+  selector: 'lib-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss']
 })
