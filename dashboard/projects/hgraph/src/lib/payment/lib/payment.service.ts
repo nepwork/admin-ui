@@ -13,4 +13,6 @@ export class PaymentService {
   set pay(payment: PaymentStream) { this.id = payment; }
 
   get pay(): PaymentStream { return this.id; }
+
+
 }
