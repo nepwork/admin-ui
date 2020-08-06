@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-history',
+  selector: 'lib-history',
   templateUrl: './history.component.html',
   styleUrls: ['./history.component.scss']
 })

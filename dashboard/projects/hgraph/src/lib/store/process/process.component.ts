@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-process',
+  selector: 'lib-process',
   templateUrl: './process.component.html',
   styleUrls: ['./process.component.scss']
 })

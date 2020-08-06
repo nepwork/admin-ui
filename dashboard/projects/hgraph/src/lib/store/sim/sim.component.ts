@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-sim',
+  selector: 'lib-sim',
   templateUrl: './sim.component.html',
   styleUrls: ['./sim.component.scss']
 })

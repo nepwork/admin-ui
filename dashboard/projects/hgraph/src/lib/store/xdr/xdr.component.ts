@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-xdr',
+  selector: 'lib-xdr',
   templateUrl: './xdr.component.html',
   styleUrls: ['./xdr.component.scss']
 })

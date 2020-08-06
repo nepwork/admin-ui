@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-transaction',
+  selector: 'lib-transaction',
   templateUrl: './transaction.component.html',
   styleUrls: ['./transaction.component.scss']
 })

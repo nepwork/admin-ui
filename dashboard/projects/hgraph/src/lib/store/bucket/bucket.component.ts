@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-bucket',
+  selector: 'lib-bucket',
   templateUrl: './bucket.component.html',
   styleUrls: ['./bucket.component.scss']
 })

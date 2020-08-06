@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-overlay',
+  selector: 'lib-overlay',
   templateUrl: './overlay.component.html',
   styleUrls: ['./overlay.component.scss']
 })

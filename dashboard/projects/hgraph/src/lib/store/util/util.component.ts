@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-util',
+  selector: 'lib-util',
   templateUrl: './util.component.html',
   styleUrls: ['./util.component.scss']
 })

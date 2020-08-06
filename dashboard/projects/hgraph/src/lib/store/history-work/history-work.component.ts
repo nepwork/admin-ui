@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-history-work',
+  selector: 'lib-history-work',
   templateUrl: './history-work.component.html',
   styleUrls: ['./history-work.component.scss']
 })

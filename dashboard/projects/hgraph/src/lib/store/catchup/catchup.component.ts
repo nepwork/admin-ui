@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-catchup',
+  selector: 'lib-catchup',
   templateUrl: './catchup.component.html',
   styleUrls: ['./catchup.component.scss']
 })

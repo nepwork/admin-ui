@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-invariant',
+  selector: 'lib-invariant',
   templateUrl: './invariant.component.html',
   styleUrls: ['./invariant.component.scss']
 })

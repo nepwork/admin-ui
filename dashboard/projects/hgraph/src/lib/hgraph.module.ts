@@ -19,12 +19,29 @@ import { UtilComponent } from './store/util/util.component';
 import { WorkComponent } from './store/work/work.component';
 import { XdrComponent } from './store/xdr/xdr.component';
 
-
-
 @NgModule({
-  declarations: [HgraphComponent, CatchupComponent, CryptoComponent, DatabaseComponent, HerderComponent, HistoryComponent, HistoryWorkComponent, InvariantComponent, LedgerComponent, MainComponent, OverlayComponent, ProcessComponent, ScpComponent, SimComponent, TestComponent, TransactionComponent, UtilComponent, WorkComponent, XdrComponent],
-  imports: [
+  declarations: [
+    HgraphComponent,
+    CatchupComponent,
+    CryptoComponent,
+    DatabaseComponent,
+    HerderComponent,
+    HistoryComponent,
+    HistoryWorkComponent,
+    InvariantComponent,
+    LedgerComponent,
+    MainComponent,
+    OverlayComponent,
+    ProcessComponent,
+    ScpComponent,
+    SimComponent,
+    TestComponent,
+    TransactionComponent,
+    UtilComponent,
+    WorkComponent,
+    XdrComponent,
   ],
-  exports: [HgraphComponent]
+  imports: [],
+  exports: [HgraphComponent],
 })
-export class HgraphModule { }
+export class HgraphModule {}

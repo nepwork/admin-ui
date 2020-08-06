@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-work',
+  selector: 'lib-work',
   templateUrl: './work.component.html',
   styleUrls: ['./work.component.scss']
 })

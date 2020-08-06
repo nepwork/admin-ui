@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-ledger',
+  selector: 'lib-ledger',
   templateUrl: './ledger.component.html',
   styleUrls: ['./ledger.component.scss']
 })
