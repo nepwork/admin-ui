@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-interstellar',
+  selector: 'lib-interstellar',
   templateUrl: './interstellar.component.html',
   styleUrls: ['./interstellar.component.scss']
 })
