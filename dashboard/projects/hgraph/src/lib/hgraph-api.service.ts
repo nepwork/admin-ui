@@ -4,7 +4,7 @@ import { InterstellarService } from './interstellar/interstellar.service';
 import { PaymentService } from './payment/lib/payment.service';
 import { PaymentStream } from './payment/lib/model/payment.stream';
 import { Injectable } from '@angular/core';
-import { ModelStream, UserStream, PipeStream } from './model/model.stream';
+import { ModelStream, UserStream, PipeStream, CosmosStream } from './model/model.stream';
 import { CacheService, CacheStream } from './cache/cache.service';
 import { ConceptService, ConceptStream } from './concept/concept.service';
 import { EntityService, EntityStream, ValueStream } from './entity/entity.service';
@@ -43,7 +43,7 @@ export class HgraphApiService {
     return this.graph.graph;
   }
 
-  get xellars(): CacheStream { return this.xellar.xellar; }
+  get xellars(): CosmosStream { return this.xellar.cosmo; }
   get pipes(): PipeStream { return this.pipe.pipe; }
   get caches(): CacheStream { return this.cache.cache; }
   get users(): UserStream { return this.user.; }
