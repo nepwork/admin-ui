@@ -47,5 +47,4 @@ export class HgraphApiService {
   get queues(): TemporalQueue { return this.queue.queue; }
   get truth(): TruthStream { return this.ssot.truth; }
   get payment(): PaymentStream { return this.payments.pay; }
-
 }
