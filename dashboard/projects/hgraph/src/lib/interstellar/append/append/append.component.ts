@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'ngx-append',
+  selector: 'lib-append',
   templateUrl: './append.component.html',
   styleUrls: ['./append.component.scss']
 })
