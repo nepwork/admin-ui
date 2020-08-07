@@ -1,6 +1,6 @@
 {
     "author": "Risav Karna",
-    "name": "@nepwork/dashboard",
+    "name": "@nepwork/covidsimteam-dashboard",
     "version": "0.0.1",
     "license": "GPL-3.0-or-later",
     "repository": {
@@ -71,7 +71,6 @@
         "core-js": "2.5.1",
         "echarts": "^4.0.2",
         "eva-icons": "^1.1.3",
-        "hoodie-client": "^3.4.1",
         "intl": "1.2.5",
         "ionicons": "2.0.1",
         "keycharm": "^0.3.1",
@@ -117,7 +116,7 @@
         }
     },
     "devDependencies": {
-        "@angular-devkit/build-angular": "~0.900.4",
+        "@angular-devkit/build-angular": "^0.900.7",
         "@angular/cli": "^9.0.4",
         "@angular/compiler-cli": "^9.0.4",
         "@angular/language-service": "9.0.4",
@@ -155,6 +154,6 @@
         "ts-node": "3.2.2",
         "tslint": "^5.7.0",
         "tslint-language-service": "^0.9.9",
-        "typescript": "3.7.5"
+        "typescript": "3.8.3"
     }
 }
