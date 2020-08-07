@@ -142,7 +142,7 @@ export abstract class TabularService {
       rowsToDelete.forEach(rowToDelete => source.remove(rowToDelete));
     })
     .catch(err => {
-      console.err('Deletion from table err', err);
+      console.error('Deletion from table err', err);
     });
   }
 
