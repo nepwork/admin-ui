@@ -78,6 +78,7 @@
         "leaflet.fullscreen": "^1.6.0",
         "leaflet.markercluster": "^1.4.1",
         "nebular-icons": "1.1.0",
+        "ng-packagr": "^9.1.5",
         "ng2-ckeditor": "^1.2.2",
         "ng2-smart-table": "^1.6.0",
         "ngx-csv-parser": "0.0.2",

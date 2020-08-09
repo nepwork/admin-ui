@@ -19,5 +19,5 @@ steps:
     cd dashboard
     npm install -g @angular/cli@9.0.4
     npm install
-    ng build --prod
+    npm run build:prod
   displayName: 'npm install and build'
