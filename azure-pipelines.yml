@@ -17,6 +17,7 @@ steps:
 
 - script: |
     cd dashboard
-    npm i
+    mkdir -p /tmp/exts
+    npm install --cache /tmp/exts
     npm run build:prod
   displayName: 'npm install and build dashboard'
