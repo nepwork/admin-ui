@@ -18,6 +18,7 @@ steps:
 - script: |
     cd dashboard
     npm install -g @angular/cli@9.0.4
+    npm i -g npm@latest
     npm install
     npm run build:prod
   displayName: 'npm install and build'
